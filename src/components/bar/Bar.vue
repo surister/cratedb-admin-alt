@@ -1,7 +1,10 @@
 <script setup>
 import VerticalDivider from "@/components/VerticalDivider.vue";
 import {useSettingsStore} from "@/store/settingsStore";
-import SystemLoad from "@/components/bar/info/SystemLoad.vue";
+
+import Nodes from "@/components/bar/info/Nodes.vue";
+import Health from "@/components/bar/info/Health.vue";
+import InfoGroup from "@/components/bar/info/InfoGroup.vue";
 
 const settingsStore = useSettingsStore()
 </script>
@@ -9,7 +12,8 @@ const settingsStore = useSettingsStore()
 <template>
 <v-app-bar :elevation="2">
   <template v-slot:append>
-    <system-load></system-load>
+    <vertical-divider></vertical-divider>
+    <info-group></info-group>
     <vertical-divider></vertical-divider>
     <v-btn variant="flat" color="primary">Crate</v-btn>
     <vertical-divider></vertical-divider>
