@@ -26,7 +26,12 @@ const consoleStore = useConsoleStore()
       </div>
     </v-col>
   </v-row>
-  <console-response v-if="consoleStore.response.type !== ''"></console-response>
+  <v-row>
+    <v-col>
+      <console-response v-if="consoleStore.response.type !== ''"></console-response>
+    </v-col>
+    <v-col cols="3"></v-col>
+  </v-row>
 </template>
 
 <style scoped>

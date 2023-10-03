@@ -8,7 +8,10 @@ import {useTheme} from "vuetify";
 const localStorageKey = 'crateDB@storedPreferences'
 export const useStoredPreferencesStore = defineStore('storedPreferences', () => {
   const state = reactive({
-    theme: 'light'
+    theme: 'light',
+    console: {
+      fontSize: 25
+    }
   })
   const theme = useTheme()
 
@@ -35,7 +38,11 @@ export const useStoredPreferencesStore = defineStore('storedPreferences', () => 
 
   // Whenever the state of any stored preferences changes, we store it.
   watch(
-    state, () => save()
+    state, () => {
+      console.log('Stored State changed')
+      console.log(state)
+      save()
+    }
   )
 
   return {

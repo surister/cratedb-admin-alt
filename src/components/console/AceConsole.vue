@@ -1,7 +1,9 @@
 <script setup>
 import {VAceEditor} from "vue3-ace-editor";
 import {useConsoleStore} from "@/store/consoleStore";
+import {useStoredPreferencesStore} from "@/store/storedPreferences";
 const consoleStore = useConsoleStore()
+const storedPreferences = useStoredPreferencesStore()
 </script>
 
 <template>
@@ -9,7 +11,7 @@ const consoleStore = useConsoleStore()
         <VAceEditor
         v-model:value="consoleStore.content"
         lang="sql"
-        style="font-size: 25px"
+        :style="{ 'font-size': storedPreferences.console.fontSize + 'px' }"
         :min-lines="10"
         :max-lines="10">
       </VAceEditor>
