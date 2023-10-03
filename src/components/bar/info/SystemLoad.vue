@@ -5,12 +5,13 @@ const nodeInfoStore = useNodeInfoStore()
 </script>
 
 <template>
-  System Load
-  <v-chip class="ma-2" label>
-    <p class="font-weight-bold">
-      {{ nodeInfoStore.load1 }} / {{ nodeInfoStore.load5 }}  / {{ nodeInfoStore.load15 }}
-    </p>
-  </v-chip>
+    <v-label>System Load</v-label>
+    <v-chip class="ma-2" label>
+      <p class="font-weight-bold" style="font-size: 17px">
+        {{ nodeInfoStore.load1 }} / {{ nodeInfoStore.load5 }} / {{ nodeInfoStore.load15 }}
+      </p>
+    </v-chip>
+
 </template>
 
 <style scoped>
