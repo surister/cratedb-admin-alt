@@ -1,4 +1,6 @@
-// Utilities
+// Use this store to control state of any variable that you want to be persisted across sessions.
+// it will be automatically stored/loaded in localStorage
+
 import {defineStore} from 'pinia'
 import {reactive, toRefs, watch} from 'vue';
 import {useTheme} from "vuetify";

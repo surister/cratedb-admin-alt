@@ -1,4 +1,5 @@
-// Utilities
+// Store for Settings drawer component.
+
 import {defineStore} from 'pinia'
 import {reactive, toRefs} from 'vue';
 
