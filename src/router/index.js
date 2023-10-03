@@ -16,10 +16,15 @@ const routes = [
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
       },
       {
-        path: '/console',
+        path: 'console',
         name: 'console',
         component: () => import('@/views/Console.vue')
       },
+      {
+        path: 'tables',
+        name: 'tables',
+        component: () => import('@/views/Tables.vue')
+      }
     ],
   },
 ]
