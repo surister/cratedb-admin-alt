@@ -10,7 +10,10 @@ export const useStoredPreferencesStore = defineStore('storedPreferences', () => 
   const state = reactive({
     theme: 'light',
     console: {
-      fontSize: 25
+      fontSize: 25,
+      minLines: 10,
+      maxLines: 20,
+      queryLimit: 100
     }
   })
   const theme = useTheme()

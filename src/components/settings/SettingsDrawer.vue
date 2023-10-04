@@ -69,13 +69,24 @@ const drawerLinks = [
             v-model:model-value="storedPreferences.console.fontSize"
             suffix="px">
           </v-text-field>
+          <v-text-field
+            label="Min lines"
+            v-model:model-value="storedPreferences.console.minLines"
+            suffix="lines">
+          </v-text-field>
         </v-col>
-        <v-col cols="">
+        <v-col>
           <v-text-field
             label="Query limit"
+            v-model:model-value="storedPreferences.console.queryLimit"
             model-value="100"
             suffix="rows"
           ></v-text-field>
+          <v-text-field
+            label="Max lines"
+            v-model:model-value="storedPreferences.console.maxLines"
+            suffix="lines">
+          </v-text-field>
         </v-col>
       </v-row>
     </v-container>
