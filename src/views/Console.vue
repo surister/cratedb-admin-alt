@@ -3,7 +3,6 @@
 import AceConsole from "@/components/console/AceConsole.vue";
 import ConsoleResponse from "@/components/console/ConsoleResponse.vue";
 import {useConsoleStore} from "@/store/consoleStore";
-import TracebackDialog from "@/components/console/TracebackDialog.vue";
 
 const consoleStore = useConsoleStore()
 </script>

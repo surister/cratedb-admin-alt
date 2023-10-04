@@ -2,8 +2,6 @@
 import VerticalDivider from "@/components/VerticalDivider.vue";
 import {useSettingsStore} from "@/store/settingsStore";
 
-import Nodes from "@/components/bar/info/Nodes.vue";
-import Health from "@/components/bar/info/Health.vue";
 import InfoGroup from "@/components/bar/info/InfoGroup.vue";
 
 const settingsStore = useSettingsStore()
@@ -19,7 +17,6 @@ const settingsStore = useSettingsStore()
     <vertical-divider></vertical-divider>
     <v-btn icon="mdi-cog"
            @click="settingsStore.settingsDrawerToggle = !settingsStore.settingsDrawerToggle"></v-btn>
-    <!--    <theme-toggle></theme-toggle>-->
   </template>
 </v-app-bar>
 </template>
