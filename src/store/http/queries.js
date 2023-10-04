@@ -1,3 +1,4 @@
 export default {
-  NODE_INFO: 'SELECT load FROM SYS.NODES'
+  // load
+  NODE_INFO: 'SELECT name, load, fs, heap, rest_url FROM SYS.NODES'
 }
