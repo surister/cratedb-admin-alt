@@ -1,14 +1,14 @@
 <script setup>
 import {useNodeInfoStore} from "@/store/nodeInfo";
 
-const nodeInfo = useNodeInfoStore()
+const nodeStore = useNodeInfoStore()
 
 </script>
 
 <template>
   <v-chip class="mr-4" size="large" prepend-icon="mdi-resistor-nodes">
     <p class="font-weight-bold">
-          Nodes: {{ nodeInfo.nodeCount }}
+          Nodes: {{ nodeStore.nodes.nodeCount }}
     </p>
 
   </v-chip>
