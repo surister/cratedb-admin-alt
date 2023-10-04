@@ -24,6 +24,11 @@ const routes = [
         path: 'tables',
         name: 'tables',
         component: () => import('@/views/Tables.vue')
+      },
+      {
+        path: 'cluster',
+        name: 'cluster',
+        component: () => import('@/views/Cluster.vue')
       }
     ],
   },

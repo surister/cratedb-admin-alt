@@ -36,6 +36,7 @@ const router = useRoute()
       <v-list-item prepend-icon="mdi-home-city" title="Overview" value="home" :to="{ name: 'home' }" :active="router.path == '/'" link></v-list-item>
       <v-list-item prepend-icon="mdi-console" title="Console" value="console" :to="{ name: 'console'}" link></v-list-item>
       <v-list-item prepend-icon="mdi-account-group-outline" title="Tables" :to="{ name : 'tables' }" value="tables"></v-list-item>
+      <v-list-item prepend-icon="mdi-checkerboard" title="Cluster" :to="{ name : 'cluster' }" value="cluster"></v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
