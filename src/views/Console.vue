@@ -3,23 +3,38 @@
 import AceConsole from "@/components/console/AceConsole.vue";
 import ConsoleResponse from "@/components/console/ConsoleResponse.vue";
 import {useConsoleStore} from "@/store/consoleStore";
+import History from "@/components/console/History.vue";
+import {useStoredPreferencesStore} from "@/store/storedPreferences";
 
 const consoleStore = useConsoleStore()
+const storedPreferences = useStoredPreferencesStore()
+function query(){
+  consoleStore.queryFromConsole()
+  storedPreferences.addToQueryHistory(consoleStore.content)
+}
 </script>
 
 <template>
-  <h1>Console</h1>
+  <v-row align="center" class="mt-2">
+    <v-col><h1>Console</h1></v-col>
+  </v-row>
+  <v-row>
+    <v-col>
+      <v-chip class="m-5">mode: read/write</v-chip>
+      <v-checkbox label="Add query to history" v-model="storedPreferences.console.addQueryToHistory"></v-checkbox>
+    </v-col>
+  </v-row>
   <v-row>
     <v-col>
       <ace-console></ace-console>
     </v-col>
     <v-col cols="3">
-      <v-card>History</v-card>
+      <history/>
     </v-col>
   </v-row>
   <v-row>
     <v-col>
-      <v-btn :loading="consoleStore.queryIsRunning" size="x-large" @click="consoleStore.queryFromConsole();push()"
+      <v-btn :loading="consoleStore.queryIsRunning" size="x-large" @click="query"
              class="mx-2" :disabled="consoleStore.content.length === 0">Submit
       </v-btn>
       <v-tooltip location="bottom" text="Stop running query">
