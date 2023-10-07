@@ -13,9 +13,15 @@ export const useStoredPreferencesStore = defineStore('storedPreferences', () => 
       fontSize: 25,
       minLines: 10,
       maxLines: 20,
-      queryLimit: 100
+      queryLimit: 100,
+      queryHistory: []
+    },
+    general: {
+      masterNodeUrl: 'http://localhost:4201'
     }
-  })
+  }
+export const useStoredPreferencesStore = defineStore('storedPreferences', () => {
+  const state = reactive(defaultState)
   const theme = useTheme()
 
   function load() {
