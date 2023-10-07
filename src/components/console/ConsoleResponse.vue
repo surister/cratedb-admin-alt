@@ -14,10 +14,11 @@ const consoleStore = useConsoleStore()
         {{ consoleStore.response.title }}</p>
     </template>
     <template #text>
-      <p class="" style="font-size: 20px">{{ consoleStore.response.subtitle }}</p>
+      <p style="font-size: 20px">{{ consoleStore.response.subtitle }}</p>
     </template>
-    <v-card-actions v-if="consoleStore.response.type === 'error'">
+    <v-card-actions>
       <traceback-dialog v-if="consoleStore.response.errorTrace"></traceback-dialog>
+      <v-btn @click="consoleStore.setConsoleResponseToEmpty()">Clear</v-btn>
     </v-card-actions>
   </v-card>
 

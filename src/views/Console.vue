@@ -19,10 +19,17 @@ const consoleStore = useConsoleStore()
   </v-row>
   <v-row>
     <v-col>
-      <div>
-        <v-btn size="x-large" @click="consoleStore.queryFromConsole()">Submit</v-btn>
-        <v-btn size="x-large" class="ml-4">Copy</v-btn>
-      </div>
+      <v-btn :loading="consoleStore.queryIsRunning" size="x-large" @click="consoleStore.queryFromConsole();push()"
+             class="mx-2" :disabled="consoleStore.content.length === 0">Submit
+      </v-btn>
+      <v-tooltip location="bottom" text="Stop running query">
+        <template v-slot:activator="{ props }">
+          <v-btn size="x-large" prepend-icon="mdi-cancel" v-bind="props" class="mx-2"
+                 :disabled="!consoleStore.queryIsRunning" @click="consoleStore.cancelQuery()">Cancel query
+          </v-btn>
+        </template>
+      </v-tooltip>
+      <v-btn size="x-large" class="mx-2">Copy</v-btn>
     </v-col>
   </v-row>
   <v-row>
