@@ -1,23 +1,30 @@
 export class CrateNodes {
-  // The purpose of this class is to create the different CrateNode(s) from the HTTP json response  and
+  // The purpose of this class is to create the different Node(s) from the HTTP json response  and
   // to offer some utilities such as filtering of nodes.
   nodes = []
   nodeCount = 0
 
   constructor(data, nodeCount) {
-    if (nodeCount === 0){ return }
+    if (nodeCount === 0) {
+      return
+    }
 
     this.nodeCount = nodeCount
 
     let master = true
 
     for (const rawNodeData of data) {
-      // The indexes that we assign the data to, is related to the query we use, be careful.
-      let newNode = new CrateNode(
+      // The indexes that we assign the data to, is related to the query we use, be careful if you change the
+      // query order, indexes will change and break.
+      let newNode = new Node(
         master,
         rawNodeData[0],
         rawNodeData[4],
-        {load1: rawNodeData[1][1], load5: rawNodeData[1][5], load15: rawNodeData[1][15]}
+        {
+          load1: rawNodeData[1][1],
+          load5: rawNodeData[1][5],
+          load15: rawNodeData[1][15],
+        }
       )
 
       this.nodes.push(newNode)
@@ -34,11 +41,11 @@ export class CrateNodes {
     return this.nodes[0]
   }
 
-  hasNodes(){
+  hasNodes() {
     return this.nodes.length != 0
   }
 
-  toVDataItems(){
+  toVDataItems() {
     return this.nodes.map((node) => {
       return {
         node: {
@@ -53,7 +60,7 @@ export class CrateNodes {
   }
 }
 
-class CrateNode {
+class Node {
   constructor(isMaster, name, httpEndpoint, load) {
     this.isMaster = isMaster
     this.name = name
