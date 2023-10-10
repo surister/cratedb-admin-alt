@@ -5,6 +5,7 @@ import {reactive, toRefs} from "vue";
 import {requestCrate} from "@/store/http/requests";
 import queries from "@/store/http/queries";
 import {CrateNodes} from "@/store/crate_api/node";
+import {CrateTableHealths} from "@/store/crate_api/health";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 
@@ -45,15 +46,13 @@ const emptyNodeResult = [
     "max": 0,
     "probe_timestamp": 0
   }, "load"]
-
+const emptyHealthResult = []
 export const useNodeInfoStore = defineStore('nodeInfo',  () => {
   const state = reactive({
     nodes: new CrateNodes([emptyNodeResult,], 1),
-    load1: 'nan',
-    load5: 'nan',
-    load15: 'nan',
-    data: [],
+    health: new CrateTableHealths([]),
     nodeCount: '0'
+
   })
 
   async function updateNodeInfo() {
@@ -61,13 +60,19 @@ export const useNodeInfoStore = defineStore('nodeInfo',  () => {
     const nodeInfo = await _response.json()
     state.nodes = new CrateNodes(nodeInfo.rows, nodeInfo.rowcount)
   }
-
+  async function updateHealthInfo(){
+    const _response = await requestCrate(queries.HEALTH)
+    const healthInfo = await _response.json()
+    state.health = new CrateTableHealths(healthInfo.rows)
+  }
   // We update it non-asynchronously
   updateNodeInfo()
   setInterval(async () => {
     await updateNodeInfo()
+    await updateHealthInfo()
   }, REFRESH_EVERY_MS);
+
   return {
-    ...toRefs(state), updateNodeInfo
+    ...toRefs(state),
   }
 })

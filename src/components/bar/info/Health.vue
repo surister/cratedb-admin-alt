@@ -7,23 +7,23 @@ let menu = ref(false)
 </script>
 
 <template>
-  <v-row>
+  <v-row class="mr-1">
+    <v-col>
       <v-menu
-      v-model="menu"
-      :close-on-content-click="false"
-      location="bottom">
+        v-model="menu"
+        :close-on-content-click="false"
+        location="bottom">
         <template v-slot:activator="{ props }">
-          <v-label :clickable="true" v-bind="props">Health</v-label>
+          <v-label class="mr-2" :clickable="true" v-bind="props">Health:</v-label>
         </template>
         <health-info-pop-over></health-info-pop-over>
       </v-menu>
-
-    <v-radio value="1" :readonly="false" class="mr-1"></v-radio>
-    <v-label>Data</v-label>
-    <v-radio value="1" :readonly="false" class="mr-4"></v-radio>
+      <v-progress-circular model-value="100" size="20" width="5"></v-progress-circular>
+      <v-label class="mx-2">Data:</v-label>
+      <v-progress-circular color="green" model-value="100" size="20" width="5"></v-progress-circular>
+    </v-col>
   </v-row>
 </template>
 
 <style scoped>
-
 </style>
