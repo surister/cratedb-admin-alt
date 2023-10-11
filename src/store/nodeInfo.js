@@ -6,6 +6,7 @@ import {requestCrate} from "@/store/http/requests";
 import queries from "@/store/http/queries";
 import {CrateNodes} from "@/store/crate_api/node";
 import {CrateTableHealths} from "@/store/crate_api/health";
+import {AllocationIssues} from "@/store/crate_api/allocations";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 
@@ -51,6 +52,8 @@ export const useNodeInfoStore = defineStore('nodeInfo',  () => {
   const state = reactive({
     nodes: new CrateNodes([emptyNodeResult,], 1),
     health: new CrateTableHealths([]),
+    allocations: new AllocationIssues([]),
+    shouldUpdateAllocation: false,
     nodeCount: '0'
 
   })
@@ -64,12 +67,29 @@ export const useNodeInfoStore = defineStore('nodeInfo',  () => {
     const _response = await requestCrate(queries.HEALTH)
     const healthInfo = await _response.json()
     state.health = new CrateTableHealths(healthInfo.rows)
+
+    // If there is a bad health table, we start fetching allocation issues, otherwise
+    // we can stop fetching it.
+    state.shouldUpdateAllocation = !!state.health.hasBadHealth;
   }
+  async function updateAllocationIssuesInfo(){
+    const _response = await requestCrate(queries.ALLOCATIONS)
+    const allocationInfo = await _response.json()
+    state.allocations = new AllocationIssues(allocationInfo.rows)
+    console.log(state.allocations.issues)
+  }
+
   // We update it non-asynchronously
   updateNodeInfo()
+  updateHealthInfo()
+
   setInterval(async () => {
     await updateNodeInfo()
     await updateHealthInfo()
+
+    if (state.shouldUpdateAllocation){
+      await updateAllocationIssuesInfo()
+    }
   }, REFRESH_EVERY_MS);
 
   return {
