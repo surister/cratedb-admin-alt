@@ -1,6 +1,6 @@
 <script setup>
 
-import {reactive, ref} from "vue";
+import {ref} from "vue";
 import {adaptVTableHeader} from "@/store/utils";
 import {useNodeInfoStore} from "@/store/nodeInfo";
 
@@ -47,10 +47,7 @@ const headers = adaptVTableHeader([
           <v-chip color="red mt-2">
             {{ value.name }}
           </v-chip>
-
-
         </v-col>
-
       </v-row>
 
 
