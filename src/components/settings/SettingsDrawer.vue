@@ -1,13 +1,13 @@
 <script setup>
-import {useSettingsStore} from "@/store/settingsStore";
+import { useGlobalStore } from "@/store/globalStore";
+
 import ThemeToggle from "@/components/settings/ThemeToggle.vue";
 import ListItemLink from "@/components/settings/ListItemLink.vue";
-import {useStoredPreferencesStore} from "@/store/storedPreferences";
 import ConsoleSettings from "@/components/settings/ConsoleSettings.vue";
 import GeneralSettings from "@/components/settings/GeneralSettings.vue";
 
-const settingsStore = useSettingsStore()
-const storedPreferences = useStoredPreferencesStore()
+const global_store = useGlobalStore()
+
 
 const drawerLinks = [
   {
@@ -46,7 +46,7 @@ const drawerLinks = [
 <template>
   <v-navigation-drawer
     width="350"
-    v-model="settingsStore.settingsDrawerToggle"
+    v-model="global_store.settingsDrawerToggle"
     temporary
     location="right">
 
@@ -55,7 +55,7 @@ const drawerLinks = [
         <v-btn
           icon="mdi-close"
           variant="flat"
-          @click="settingsStore.settingsDrawerToggle = false"
+          @click="global_store.settingsDrawerToggle = false"
         />
       </template>
     </v-toolbar>

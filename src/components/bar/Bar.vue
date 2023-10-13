@@ -1,10 +1,10 @@
 <script setup>
 import VerticalDivider from "@/components/VerticalDivider.vue";
-import {useSettingsStore} from "@/store/settingsStore";
+import { useGlobalStore } from "@/store/globalStore";
 
 import InfoGroup from "@/components/bar/info/InfoGroup.vue";
 
-const settingsStore = useSettingsStore()
+const global_store = useGlobalStore()
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const settingsStore = useSettingsStore()
     <v-btn variant="flat" color="primary">Crate</v-btn>
     <vertical-divider></vertical-divider>
     <v-btn icon="mdi-cog"
-           @click="settingsStore.settingsDrawerToggle = !settingsStore.settingsDrawerToggle"></v-btn>
+           @click="global_store.settingsDrawerToggle = !global_store.settingsDrawerToggle"></v-btn>
   </template>
 </v-app-bar>
 </template>
