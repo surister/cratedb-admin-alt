@@ -9,7 +9,6 @@ const consoleStore = useConsoleStore()
     <template v-slot:activator="{ props }">
       <v-btn v-bind="props" text="View traceback"></v-btn>
     </template>
-
     <template v-slot:default="{ isActive }">
       <v-card title="Crate DB server traceback">
         <v-card-text>

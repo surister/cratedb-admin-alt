@@ -46,7 +46,6 @@ export const useStoredPreferencesStore = defineStore('storedPreferences', () => 
 
     function addToQueryHistory(stmt) {
       let lastIndex = 0
-      console.log(state.console.queryHistory)
       if (state.console.queryHistory.length !== 0) {
         lastIndex = state.console.queryHistory.slice(-1)[0].id
       }
