@@ -14,5 +14,5 @@
   import Bar from "@/components/bar/Bar.vue";
   import SettingsDrawer from "@/components/settings/SettingsDrawer.vue";
   import NavigationDrawer from "@/components/leftdrawer/NavigationDrawer.vue";
-  import ConnectionAlert from "@/components/ConnectionAlert.vue";
+  import ConnectionAlert from "@/components/snackbars/NetworkErrorSnackbar.vue";
 </script>
