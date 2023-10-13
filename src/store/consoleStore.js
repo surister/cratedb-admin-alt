@@ -8,7 +8,11 @@ const defaultConsoleResponseState = {
   type: '',
   title: '',
   subtitle: '',
-  errorTrace: ''
+  errorTrace: '',
+  data: {
+    headers: [],
+    rows: [],
+  }
 }
 export const useConsoleStore = defineStore('console', () => {
   const state = reactive({
@@ -25,7 +29,7 @@ export const useConsoleStore = defineStore('console', () => {
     state.response.errorTrace = jsonResponse.error_trace
   }
 
-  async function setConsoleResponseToEmpty(){
+  async function setConsoleResponseToEmpty() {
     state.response = {...defaultConsoleResponseState}
   }
 
@@ -45,14 +49,17 @@ export const useConsoleStore = defineStore('console', () => {
   }
 
   async function queryFromConsole() {
+    await setConsoleResponseToEmpty()
     state.queryIsRunning = true
 
     const _response = await requestCrate(state.content, 'error_trace=true')
     const consoleResponse = await _response.json()
     if (_response.ok) {
       state.response.type = 'success'
-      state.response.title = 'Ok'
-      state.response.subtitle = `SELECT OK, ${consoleResponse.rowcount} record(s) returned`
+      state.response.title = 'Success!'
+      state.response.subtitle = `QUERY OK, ${consoleResponse.rowcount} record(s) returned in ${consoleResponse.duration / 1000}s`
+      state.response.data.rows = consoleResponse.rows
+      state.response.data.headers = consoleResponse.cols
     } else {
       await setConsoleResponseToError(consoleResponse)
     }
