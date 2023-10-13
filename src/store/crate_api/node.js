@@ -19,12 +19,16 @@ export class CrateNodes {
       let newNode = new Node(
         master,
         rawNodeData[0],
-        rawNodeData[4],
         {
           load1: rawNodeData[1][1],
           load5: rawNodeData[1][5],
           load15: rawNodeData[1][15],
-        }
+        },
+        rawNodeData[2],
+        rawNodeData[3],
+        rawNodeData[4],
+        rawNodeData[5],
+        rawNodeData[6]
       )
 
       this.nodes.push(newNode)
@@ -38,6 +42,7 @@ export class CrateNodes {
   }
 
   getMasterNode() {
+    // Master always comes first in the API response.
     return this.nodes[0]
   }
 
@@ -48,11 +53,14 @@ export class CrateNodes {
   toVDataItems() {
     return this.nodes.map((node) => {
       return {
-        node: {
+        node_name: {
           name: node.name,
-          version: node.version,
-          isMaster: node.isMaster
+          is_master: node.is_master
         },
+        os_info: node.os_info,
+        version: node.version,
+        disk_usage: node.fs,
+        heap_usage: node.heap,
         http_endpoint: node.http_endpoint,
         load: node.load
       }
@@ -61,10 +69,14 @@ export class CrateNodes {
 }
 
 class Node {
-  constructor(isMaster, name, httpEndpoint, load) {
-    this.isMaster = isMaster
+  constructor(is_master, name, load, fs, heap, rest_url, version, os_info) {
+    this.is_master = is_master
     this.name = name
-    this.http_endpoint = httpEndpoint
     this.load = load
+    this.fs = fs
+    this.heap = heap
+    this.http_endpoint = rest_url
+    this.version = version
+    this.os_info = os_info
   }
 }

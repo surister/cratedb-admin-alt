@@ -2,6 +2,7 @@
 
 import {defineStore} from "pinia";
 import {reactive, toRefs} from "vue";
+
 import {requestCrate} from "@/store/http/requests";
 import queries from "@/store/http/queries";
 import {CrateNodes} from "@/store/crate_api/node";
@@ -23,7 +24,8 @@ const emptyNodeResult = [
     "15": 'load',
     "5": 'load',
     "probe_timestamp": 'load'
-  }, {
+  },
+  {
     "disks": [{
       "available": 0,
       "used": 0,
@@ -46,7 +48,11 @@ const emptyNodeResult = [
     "free": 0,
     "max": 0,
     "probe_timestamp": 0
-  }, "load"]
+  },
+  "load",
+  {version: "version"}, // version
+  {} // os info
+]
 const emptyHealthResult = []
 export const useNodeInfoStore = defineStore('nodeInfo',  () => {
   const state = reactive({
@@ -55,7 +61,6 @@ export const useNodeInfoStore = defineStore('nodeInfo',  () => {
     allocations: new AllocationIssues([]),
     shouldUpdateAllocation: false,
     nodeCount: '0'
-
   })
 
   async function updateNodeInfo() {
@@ -76,10 +81,9 @@ export const useNodeInfoStore = defineStore('nodeInfo',  () => {
     const _response = await requestCrate(queries.ALLOCATIONS)
     const allocationInfo = await _response.json()
     state.allocations = new AllocationIssues(allocationInfo.rows)
-    console.log(state.allocations.issues)
   }
 
-  // We update it non-asynchronously
+  // We update them non-asynchronously
   updateNodeInfo()
   updateHealthInfo()
 
