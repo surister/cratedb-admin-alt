@@ -17,7 +17,7 @@ const healthColor = computed(() => {
     case 'RED':
       return 'red'
     default:
-      return ''
+      return 'warning'
   }
 })
 </script>

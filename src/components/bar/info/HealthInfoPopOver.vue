@@ -17,6 +17,11 @@ const messages = {
     icon: 'mdi-close-octagon',
     color: 'red',
     msg: 'At least one primary shard is missing (primary shard not started or unassigned).'
+  },
+  UNKNOWN: {
+    icon: 'mdi-wifi-strength-alert-outline',
+    color: 'warning',
+    msg: ' Cannot get health info, check that you have connection or that the cluster is up'
   }
 }
 const nodeInfoStore = useNodeInfoStore()
@@ -28,7 +33,6 @@ const healthInfo = computed(() => {return messages[nodeInfoStore.health.getHealt
   <v-card min-width="300" class="pa-5">
       <v-icon :icon="healthInfo.icon" :color="healthInfo.color"></v-icon>
       {{ healthInfo.msg }}
-
     <template v-for="badHealthTable in nodeInfoStore.health.getBadHealths()"
               :key="badHealthTable.tableName">
       <p class="mt-5">Found the following issues:</p>

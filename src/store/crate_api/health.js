@@ -33,8 +33,9 @@ export class CrateTableHealths {
     // We can just return the first one since the query that produces the data is ordered by severity
     // Meaning that the highest severity will decide the 'health' marker.
     if (this.isEmpty()){
-      return ''
+      return {health: 'UNKNOWN'}
     }
+
     return this.tableHealths[0]
   }
 }
