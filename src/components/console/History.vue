@@ -1,6 +1,7 @@
 <script setup>
 import {useConsoleStore} from "@/store/consoleStore";
 import {useStoredPreferencesStore} from "@/store/storedPreferences";
+import {ref} from "vue";
 
 const consoleStore = useConsoleStore()
 const storedPreferences = useStoredPreferencesStore()
@@ -67,7 +68,8 @@ const historyHeader = [
           </td>
           <td>
             <v-btn flat icon="mdi-delete" size="small"
-                   @click="storedPreferences.deleteHistory(item)"></v-btn>
+                   @click="storedPreferences.deleteHistory(item)">
+            </v-btn>
           </td>
         </tr>
       </template>
@@ -77,7 +79,7 @@ const historyHeader = [
 
 <style>
 .spec:hover {
-  background-color: rgba(56, 67, 73, 0.1) !important;
+  background-color: rgba(56, 67, 73, 0.3) !important;
   cursor: pointer;
 }
 </style>
