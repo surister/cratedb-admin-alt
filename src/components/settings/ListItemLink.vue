@@ -17,6 +17,7 @@ const props = defineProps({
 
     <template v-slot:append>
       <v-btn
+        target="_blank"
         :href="linkTo"
         color="grey-darken-1"
         :append-icon="appendIcon"
