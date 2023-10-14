@@ -40,7 +40,7 @@ export const useStoredPreferencesStore = defineStore('storedPreferences', () => 
       }), 1);
     }
 
-    function resetHistoryState() {
+    function resetQueryHistoryState() {
       state.console.queryHistory = []
     }
 
@@ -79,7 +79,7 @@ export const useStoredPreferencesStore = defineStore('storedPreferences', () => 
       ...toRefs(state),
       load,
       save,
-      resetHistoryState,
+      resetHistoryState: resetQueryHistoryState,
       addToQueryHistory,
       deleteHistory
     }
