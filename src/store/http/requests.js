@@ -32,15 +32,12 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
     );
 
     globalStore.show_network_connection_snackbar = false
+    globalStore.network_connection_attemps = 0
     return request
 
   } catch (err) {
     globalStore.show_network_connection_snackbar = true
     globalStore.network_connection_attemps += 1
   }
-
-}
-
-async function notice_failure() {
 
 }
