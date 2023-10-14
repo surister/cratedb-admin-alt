@@ -20,9 +20,7 @@ const storedPreferences = useStoredPreferencesStore()
   </v-row>
   <v-row>
     <v-col cols="9">
-      <v-checkbox label="Add query to history"
-                  v-model="storedPreferences.console.addQueryToHistory">
-      </v-checkbox>
+
       <ace-console></ace-console>
       <v-row>
         <v-col class="mt-6">
