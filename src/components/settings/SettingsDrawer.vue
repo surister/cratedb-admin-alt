@@ -11,32 +11,32 @@ const global_store = useGlobalStore()
 
 const drawerLinks = [
   {
-    title: 'Latest release',
+    title: 'Current release',
     appendIcon: 'mdi-open-in-new',
     preprendIcon: 'mdi-link-variant',
-    linkTitle: 'v1.2.4',
+    linkTitle: 'v0.0.1',
     linkTo: ''
   },
   {
-    title: 'Documentation',
+    title: 'CrateDB Docs',
     appendIcon: 'mdi-open-in-new',
     preprendIcon: 'mdi-text-box-multiple-outline',
     linkTitle: 'v5.4',
-    linkTo: ''
+    linkTo: 'https://cratedb.com/docs/crate/reference/en/latest/'
   },
   {
     title: 'Edit this in Github',
     appendIcon: 'mdi-open-in-new',
     preprendIcon: 'mdi-github',
     linkTitle: 'Repo',
-    linkTo: ''
+    linkTo: 'https://github.com/surister/crate-admin-alt'
   },
   {
-    title: 'Check our blog!',
+    title: 'Check CrateDB blog!',
     appendIcon: 'mdi-open-in-new',
     preprendIcon: 'mdi-post-outline',
     linkTitle: 'Blog',
-    linkTo: ''
+    linkTo: 'https://cratedb.com/blog'
   },
 
 ]
@@ -75,9 +75,12 @@ const drawerLinks = [
                         :append-icon="link.appendIcon"
                         :preprend-icon="link.preprendIcon"
                         :link-title="link.linkTitle"
-                        :link-to="link.linkTo"></list-item-link>
+                        :link-to="link.linkTo"
+
+        ></list-item-link>
       </v-list>
     </template>
+
   </v-navigation-drawer>
 
 </template>
