@@ -8,7 +8,7 @@ const global_store = useGlobalStore()
 </script>
 
 <template>
-<v-app-bar :elevation="2">
+<v-app-bar :elevation="2" title="CrateDB Alternative panel">
   <template v-slot:append>
     <vertical-divider></vertical-divider>
     <info-group></info-group>
