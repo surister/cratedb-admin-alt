@@ -10,7 +10,7 @@ const globalStore = useGlobalStore()
   <v-snackbar
     timeout="99999999"
     v-model="globalStore.show_network_connection_snackbar"
-    color="deep-purple-accent-4"
+    color="warning"
     elevation="24"
     location="bottom end"
     vertical
@@ -18,9 +18,14 @@ const globalStore = useGlobalStore()
     <template #actions>
       <v-btn @click="globalStore.show_network_connection_snackbar = false">Close</v-btn>
     </template>
-    <p>Could not connect to <strong>'{{ storedPreferences.general.masterNodeUrl }}'</strong>
-    will try again in 5s.</p>
-   <p> Tried {{ globalStore.network_connection_attemps || 1 }} time(s)</p>
+
+    <v-label class="font-weight-bold ml-1 pt-1">
+      <v-icon icon="mdi-wifi-strength-alert-outline"/>
+      <span class="pl-2">Possible network issue</span>
+    </v-label>
+    <p class="pt-2">Could not connect to <strong>'{{ storedPreferences.general.masterNodeUrl }}'</strong>
+      will try again in 5s.</p>
+    <p> Tried {{ globalStore.network_connection_attemps || 1 }} time(s)</p>
   </v-snackbar>
 </template>
 
