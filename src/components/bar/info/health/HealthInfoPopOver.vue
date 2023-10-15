@@ -38,7 +38,7 @@ const healthInfo = computed(() => {return messages[nodeInfoStore.health.getHealt
       <p class="mt-5">Found the following issues:</p>
       <template
         v-for="issue in nodeInfoStore.allocations.getBadHealthByTable(badHealthTable.tableName)"
-        key="issue.shard_id">
+        :key="issue.shard_id">
         <div class="pa-4">
           Table `<strong>{{ issue.table_name }}</strong>` (shard {{ issue.shard_id }}):
           <v-label>{{ issue.explanation }}.</v-label><br>

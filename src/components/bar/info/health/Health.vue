@@ -1,5 +1,5 @@
 <script setup>
-import HealthInfoPopOver from "@/components/bar/info/HealthInfoPopOver.vue";
+import HealthInfoPopOver from "@/components/bar/info/health/HealthInfoPopOver.vue";
 
 import {computed, ref} from "vue";
 import {useNodeInfoStore} from "@/store/nodeInfo";
@@ -35,8 +35,6 @@ const healthColor = computed(() => {
         <health-info-pop-over></health-info-pop-over>
       </v-menu>
       <v-progress-circular model-value="100" size="20" width="5" :color="healthColor" class="mr-1"></v-progress-circular>
-      <v-label class="ml-3 mr-2">Data:</v-label>
-      <v-progress-circular color="green" model-value="100" size="20" width="5"></v-progress-circular>
     </v-col>
   </v-row>
 </template>
