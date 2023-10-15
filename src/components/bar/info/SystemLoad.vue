@@ -5,8 +5,9 @@ const nodeInfoStore = useNodeInfoStore()
 </script>
 
 <template>
-    <v-label>System Load</v-label>
-    <v-chip class="ma-2" label>
+<span>
+  <v-label class="pr-2">System Load</v-label>
+    <v-chip label>
       <p class="font-weight-bold" style="font-size: 17px">
         <template v-if="nodeInfoStore.nodes.hasNodes()">
           {{ nodeInfoStore.nodes.getMasterNode().load.load1 }} /
@@ -18,6 +19,7 @@ const nodeInfoStore = useNodeInfoStore()
         </template>
       </p>
     </v-chip>
+</span>
 
 </template>
 
