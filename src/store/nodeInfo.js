@@ -77,7 +77,7 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
 
     // If there is a bad health table, we start fetching allocation issues, otherwise
     // we can stop fetching it.
-    state.shouldUpdateAllocation = !!state.health.hasBadHealth;
+    state.shouldUpdateAllocation = !!state.health.hasBadHealth();
   }
 
   async function updateAllocationIssuesInfo() {
