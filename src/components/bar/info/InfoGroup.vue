@@ -7,10 +7,11 @@ import NodeChecks from "@/components/bar/info/nodechecks/NodeChecks.vue";
 </script>
 
 <template>
-  <nodes></nodes>
-  <health></health>
-  <node-checks></node-checks>
-  <system-load></system-load>
+  <nodes class="mx-2"></nodes>
+  <health class="mx-2"></health>
+  <node-checks class="mx-2"></node-checks>
+  <system-load class="mx-2"></system-load>
+
 </template>
 
 <style scoped>

@@ -23,8 +23,7 @@ const healthColor = computed(() => {
 </script>
 
 <template>
-  <v-row class="mr-1">
-    <v-col>
+  <span class="">
       <v-menu
         v-model="menu"
         :close-on-content-click="false"
@@ -34,9 +33,10 @@ const healthColor = computed(() => {
         </template>
         <health-info-pop-over></health-info-pop-over>
       </v-menu>
-      <v-progress-circular model-value="100" size="20" width="5" :color="healthColor" class="mr-1"></v-progress-circular>
-    </v-col>
-  </v-row>
+      <v-progress-circular model-value="100" size="20" width="5" :color="healthColor"
+                           class="mr-1"></v-progress-circular>
+
+  </span>
 </template>
 
 <style scoped>

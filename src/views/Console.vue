@@ -13,7 +13,7 @@ const storedPreferences = useStoredPreferencesStore()
 </script>
 
 <template>
-  <v-row class="mt-2">
+  <v-row>
     <v-col>
       <h1>Console</h1>
     </v-col>

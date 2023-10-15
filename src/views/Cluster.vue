@@ -3,7 +3,7 @@ import Nodelist from "@/components/NodeTable.vue";
 </script>
 
 <template>
-  <v-row align="center" class="mt-2">
+  <v-row align="center">
     <v-col><h1>Cluster</h1></v-col>
     <nodelist class="mt-2"></nodelist>
   </v-row>

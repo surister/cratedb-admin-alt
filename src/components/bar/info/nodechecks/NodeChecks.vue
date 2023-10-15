@@ -25,8 +25,8 @@ const status = computed(()=>{
 
 
 <template>
-
-  <v-menu
+  <span>
+    <v-menu
     v-model="menu"
     :close-on-content-click="false"
     location="bottom left">
@@ -36,7 +36,7 @@ const status = computed(()=>{
         v-bind="props"
       >
         <v-icon start :icon="status.icon" :color="status.color"></v-icon>
-        <v-label :color="status.color">Node Checks</v-label>
+        <v-label :color="status.color" clickable="true">Node Checks</v-label>
       </v-chip>
     </template>
     <node-checks-pop-over
@@ -46,8 +46,7 @@ const status = computed(()=>{
       :node_checks="nodeInfoStore.node_checks"
     ></node-checks-pop-over>
   </v-menu>
-
-
+  </span>
 </template>
 
 <style scoped>
