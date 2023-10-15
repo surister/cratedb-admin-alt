@@ -5,6 +5,10 @@ export class AllocationIssues{
       return this.issues.filter((issue) => issue.table_name === table_name)
   }
   constructor(data) {
+    if (Array.isArray(data) && data.length === 0){
+      return
+    }
+
     for (const rawAllocationIssueData of data) {
       const newAllocationIssue = new AllocationIssue(
         rawAllocationIssueData[0],
