@@ -8,6 +8,7 @@ import queries from "@/store/http/queries";
 import {CrateNodes} from "@/store/crate_api/node";
 import {CrateTableHealths} from "@/store/crate_api/health";
 import {AllocationIssues} from "@/store/crate_api/allocations";
+import {NodeChecks} from "@/store/crate_api/node_checks";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 
@@ -53,12 +54,12 @@ const emptyNodeResult = [
   {version: "version"}, // version
   {} // os info
 ]
-const emptyHealthResult = []
-export const useNodeInfoStore = defineStore('nodeInfo',  () => {
+export const useNodeInfoStore = defineStore('nodeInfo', () => {
   const state = reactive({
     nodes: new CrateNodes([emptyNodeResult,], 1),
     health: new CrateTableHealths([]),
     allocations: new AllocationIssues([]),
+    node_checks: new NodeChecks([]),
     shouldUpdateAllocation: false,
     nodeCount: '0'
   })
@@ -68,7 +69,8 @@ export const useNodeInfoStore = defineStore('nodeInfo',  () => {
     const nodeInfo = await _response.json()
     state.nodes = new CrateNodes(nodeInfo.rows, nodeInfo.rowcount)
   }
-  async function updateHealthInfo(){
+
+  async function updateHealthInfo() {
     const _response = await requestCrate(queries.HEALTH)
     const healthInfo = await _response.json()
     state.health = new CrateTableHealths(healthInfo.rows)
@@ -77,21 +79,30 @@ export const useNodeInfoStore = defineStore('nodeInfo',  () => {
     // we can stop fetching it.
     state.shouldUpdateAllocation = !!state.health.hasBadHealth;
   }
-  async function updateAllocationIssuesInfo(){
+
+  async function updateAllocationIssuesInfo() {
     const _response = await requestCrate(queries.ALLOCATIONS)
     const allocationInfo = await _response.json()
     state.allocations = new AllocationIssues(allocationInfo.rows)
   }
 
-  // We update them non-asynchronously
+  async function updateNodeChecks() {
+    const _response = await requestCrate(queries.NODE_CHECKS)
+    const nodeChecksInfo = await _response.json()
+    state.node_checks = new NodeChecks(nodeChecksInfo.rows)
+  }
+
+  // We update them synchronously the first time we launch the site
   updateNodeInfo()
   updateHealthInfo()
+  updateNodeChecks()
 
   setInterval(async () => {
     await updateNodeInfo()
     await updateHealthInfo()
+    await updateNodeChecks()
 
-    if (state.shouldUpdateAllocation){
+    if (state.shouldUpdateAllocation) {
       await updateAllocationIssuesInfo()
     }
   }, REFRESH_EVERY_MS);
