@@ -3,9 +3,15 @@ import Nodelist from "@/components/NodeTable.vue";
 </script>
 
 <template>
-  <v-row align="center">
-    <v-col><h1>Cluster</h1></v-col>
-    <nodelist class="mt-2"></nodelist>
+  <v-row>
+    <v-col>
+      <h1>Cluster</h1>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col>
+      <nodelist></nodelist>
+    </v-col>
   </v-row>
 
 </template>
