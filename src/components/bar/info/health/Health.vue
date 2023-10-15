@@ -6,24 +6,34 @@ import {useNodeInfoStore} from "@/store/nodeInfo";
 
 let menu = ref(false)
 
-
-const nodeInfoStore = useNodeInfoStore()
-const healthColor = computed(() => {
-  switch (nodeInfoStore.health.getHealthLevel().health) {
-    case 'GREEN':
-      return 'green'
-    case 'YELLOW':
-      return 'yellow'
-    case 'RED':
-      return 'red'
-    default:
-      return 'warning'
+const messages = {
+  GREEN: {
+    icon: 'mdi-check',
+    color: 'green',
+    message: 'All shards (primary and replicated) are started.'
+  },
+  YELLOW: {
+    icon: 'mdi-alert',
+    color: 'warning',
+    message: 'At least one shard is under-replicated (replica shard not started or unassigned).'
+  },
+  RED: {
+    icon: 'mdi-close-octagon',
+    color: 'red',
+    message: 'At least one primary shard is missing (primary shard not started or unassigned).'
+  },
+  UNKNOWN: {
+    icon: 'mdi-wifi-strength-alert-outline',
+    color: '',
+    message: 'Cannot get health info, check that you have connection or that the cluster is up'
   }
-})
+}
+const nodeInfoStore = useNodeInfoStore()
+const health_status = computed(() => {return messages[nodeInfoStore.health.getHealthLevel().health]})
 </script>
 
 <template>
-  <span class="">
+  <span>
       <v-menu
         v-model="menu"
         :close-on-content-click="false"
@@ -31,11 +41,20 @@ const healthColor = computed(() => {
         <template v-slot:activator="{ props }">
           <v-label class="ml-2 mr-2" :clickable="true" v-bind="props">Health:</v-label>
         </template>
-        <health-info-pop-over></health-info-pop-over>
+        <health-info-pop-over
+          :icon="health_status.icon"
+          :color="health_status.color"
+          :message="health_status.message"
+          :healths="nodeInfoStore.health.getBadHealths()"
+        ></health-info-pop-over>
       </v-menu>
-      <v-progress-circular model-value="100" size="20" width="5" :color="healthColor"
-                           class="mr-1"></v-progress-circular>
-
+      <v-progress-circular
+        model-value="100"
+        size="20"
+        width="5"
+        :color="health_status.color"
+        class="mr-1">
+      </v-progress-circular>
   </span>
 </template>
 
