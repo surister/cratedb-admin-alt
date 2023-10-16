@@ -25,7 +25,7 @@ const messages = {
   UNKNOWN: {
     icon: 'mdi-wifi-strength-alert-outline',
     color: '',
-    message: 'Cannot get health info, check that you have connection or that the cluster is up'
+    message: 'Cannot get health info, check that you have connection, that the cluster is up or that there are tables in the cluster.'
   }
 }
 const nodeInfoStore = useNodeInfoStore()

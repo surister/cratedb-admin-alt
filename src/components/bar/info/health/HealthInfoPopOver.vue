@@ -17,7 +17,7 @@ const nodeInfoStore = useNodeInfoStore()
 <template>
   <v-card min-width="300" class="pa-5">
       <v-icon :icon="icon" :color="color"></v-icon>
-      {{ message }}
+      <v-label class="ml-2">{{ message }}</v-label>
     <template v-for="health in healths"
               :key="health.tableName">
       <p class="mt-5 pb-4">Found the following issues:</p>
@@ -37,7 +37,6 @@ const nodeInfoStore = useNodeInfoStore()
             Not explained by the node.
           </template>
         </div>
-
       </template>
     </template>
   </v-card>
