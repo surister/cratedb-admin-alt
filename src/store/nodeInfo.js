@@ -9,6 +9,7 @@ import {CrateNodes} from "@/store/crate_api/node";
 import {CrateTableHealths} from "@/store/crate_api/health";
 import {AllocationIssues} from "@/store/crate_api/allocations";
 import {NodeChecks} from "@/store/crate_api/node_checks";
+import {Jobs} from "@/store/crate_api/jobs";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 
@@ -60,6 +61,7 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
     health: new CrateTableHealths([]),
     allocations: new AllocationIssues([]),
     node_checks: new NodeChecks([]),
+    jobs: new Jobs([]),
     shouldUpdateAllocation: false,
     nodeCount: '0'
   })
@@ -92,15 +94,27 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
     state.node_checks = new NodeChecks(nodeChecksInfo.rows)
   }
 
+  async function updateJobsInfo() {
+    const _response = await requestCrate(queries.JOBS)
+    const jobs_info = await _response.json()
+    state.jobs = new Jobs(jobs_info.rows)
+  }
   // We update them synchronously the first time we launch the site
+  //
+  // What happens if for some reason one fails and the others don't ?
   updateNodeInfo()
   updateHealthInfo()
   updateNodeChecks()
+  updateJobsInfo()
 
   setInterval(async () => {
-    await updateNodeInfo()
-    await updateHealthInfo()
-    await updateNodeChecks()
+    await Promise.allSettled([
+        updateNodeInfo(),
+        updateHealthInfo(),
+        updateNodeChecks(),
+        updateJobsInfo(),
+      ]
+    )
 
     if (state.shouldUpdateAllocation) {
       await updateAllocationIssuesInfo()
