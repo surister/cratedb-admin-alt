@@ -1,5 +1,5 @@
 <script setup>
-import Nodelist from "@/components/NodeTable.vue";
+import Nodelist from "@/components/clusterinfo/NodeTable.vue";
 </script>
 
 <template>
