@@ -33,7 +33,7 @@ export class CrateNodes {
 
       this.nodes.push(newNode)
 
-      if (!master) {
+      if (master) {
         // We use this to pass true to isMaster to the first node
         // we are assuming that CrateDB always returns the master node in the first position.
         master = false
