@@ -7,10 +7,8 @@ export class NodeChecks {
 
   constructor(data) {
     for (const raw_node_check_data of data) {
-      let new_node_check = new NodeCheck(
-        ...raw_node_check_data
-      )
-        this.node_checks.push(new_node_check)
+      let new_node_check = new NodeCheck(...raw_node_check_data)
+      this.node_checks.push(new_node_check)
     }
   }
 }

@@ -22,8 +22,6 @@ const status = computed(()=>{
 })
 </script>
 
-
-
 <template>
   <span>
     <v-menu
@@ -33,18 +31,17 @@ const status = computed(()=>{
     <template v-slot:activator="{ props }">
       <v-chip
         label
-        v-bind="props"
-      >
+        v-bind="props">
         <v-icon start :icon="status.icon" :color="status.color"></v-icon>
-        <v-label :color="status.color" clickable="true">Node Checks</v-label>
+        <v-label :color="status.color" :clickable="true">Node Checks</v-label>
       </v-chip>
     </template>
     <node-checks-pop-over
       :icon="status.icon"
       :color="status.color"
       :message="status.message"
-      :node_checks="nodeInfoStore.node_checks"
-    ></node-checks-pop-over>
+      :node_checks="nodeInfoStore.node_checks">
+    </node-checks-pop-over>
   </v-menu>
   </span>
 </template>
