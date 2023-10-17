@@ -1,6 +1,6 @@
 <script setup>
 import {useConsoleStore} from "@/store/consoleStore";
-import {adaptVTableHeader, adaptVTableItems, isArray, isObject} from "@/store/utils";
+import {adaptVTableHeader, adaptVTableItems, is_array, is_object} from "@/store/utils";
 import DialogText from "@/components/objectrepresentation/DialogText.vue";
 
 const consoleStore = useConsoleStore()
@@ -16,7 +16,6 @@ function color_objects(object) {
     default:
       return ''
   }
-
 }
 </script>
 
@@ -35,7 +34,7 @@ function color_objects(object) {
       <template v-slot:item="{ item }">
         <tr>
           <td v-for="it, index in item" :key="index">
-            <template v-if="isObject(it) || Array.isArray(it)">
+            <template v-if="is_object(it) || Array.isArray(it)">
               <dialog-text :object="it"></dialog-text>
             </template>
             <template v-else>

@@ -1,6 +1,6 @@
 <script setup>
 import {computed} from "vue";
-import {isArray, isObject} from "@/store/utils";
+import {is_array, is_object} from "@/store/utils";
 
 const props = defineProps({object: Object, type: String})
 
@@ -23,7 +23,7 @@ const is_object = computed(() => props.type === 'object')
         </v-expansion-panel-title>
         <v-expansion-panel-text v-if="is_array" style="max-height: 200px" class="overflow-y-auto">[
                        <template v-for="k in object" :key="k">
-                          <template v-if="isObject(k)">
+                          <template v-if="is_object(k)">
                             <collapsible-text :object="k"></collapsible-text>,
                           </template>
                          <template v-else>{{ k }}, </template>
@@ -34,12 +34,12 @@ const is_object = computed(() => props.type === 'object')
           {
           <template v-for="entry in Object.entries(object)" :key="entry">
             <template
-              v-if="isObject(entry[1])">
+              v-if="is_object(entry[1])">
               <span><strong>{{ entry[0] }}</strong>: <collapsible-text
                 :object="entry[1]"></collapsible-text></span>
             </template>
             <template
-              v-else-if="isArray(entry[1])">
+              v-else-if="is_array(entry[1])">
               <p>array: <collapsible-text :object="entry[1]" type="array"></collapsible-text></p>
             </template>
             <template v-else>

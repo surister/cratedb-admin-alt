@@ -1,7 +1,7 @@
 <script setup>
 
 import {ref} from "vue";
-import {adaptVTableHeader, humanFileSize} from "@/store/utils";
+import {adaptVTableHeader, human_file_size} from "@/store/utils";
 import {useNodeInfoStore} from "@/store/nodeInfo";
 
 import TitledText from "@/components/text/TitledText.vue";
@@ -79,9 +79,9 @@ const headers = adaptVTableHeader([
       <template v-slot:[`item.heap_usage`]="{ value }">
         <v-progress-linear :model-value="(value.used / value.max) * 100"
                            class="mt-4"></v-progress-linear>
-        <p class="pt-3"> Used: <strong>{{ humanFileSize(value.used) }}</strong></p>
-        <p>Free: <strong>{{ humanFileSize(value.free) }}</strong></p>
-        <p>Max: <strong>{{ humanFileSize(value.max) }}</strong></p>
+        <p class="pt-3"> Used: <strong>{{ human_file_size(value.used) }}</strong></p>
+        <p>Free: <strong>{{ human_file_size(value.free) }}</strong></p>
+        <p>Max: <strong>{{ human_file_size(value.max) }}</strong></p>
       </template>
       <template v-slot:[`item.load`]="{ value }">
         <p class="pt-3">Load 1min: <strong>{{ value.load1 }} </strong></p>
@@ -92,10 +92,10 @@ const headers = adaptVTableHeader([
         <v-progress-linear :model-value="(value.disks[0].used / value.disks[0].size) * 100"
                            class="mt-4"></v-progress-linear>
         <p class="pt-3">Available: <strong>{{
-            humanFileSize(value.disks[0].available)
+            human_file_size(value.disks[0].available)
           }} </strong></p>
-        <p>Used: <strong>{{ humanFileSize(value.disks[0].used) }} </strong></p>
-        <p>Size: <strong>{{ humanFileSize(value.disks[0].size) }} </strong></p>
+        <p>Used: <strong>{{ human_file_size(value.disks[0].used) }} </strong></p>
+        <p>Size: <strong>{{ human_file_size(value.disks[0].size) }} </strong></p>
       </template>
       <template v-slot:[`item.actions`]="{ value, item }">
         <v-tooltip text="View jobs">

@@ -1,5 +1,4 @@
 // Store that keeps the node info from CrateDB instances.
-
 import {defineStore} from "pinia";
 import {reactive, toRefs} from "vue";
 
