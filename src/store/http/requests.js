@@ -17,6 +17,7 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
       stmt = stmt.replace(entry[0], entry[1])
     });
   }
+  // Clean up stuff from query such as line breaks.
 
   try {
     const request = await fetch(
@@ -30,7 +31,6 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
         },
       }
     );
-
     globalStore.show_network_connection_snackbar = false
     globalStore.network_connection_attemps = 0
     return request
