@@ -1,7 +1,8 @@
 <script setup>
 
 import {use_tables_store} from "@/store/tables";
-import {human_file_size, human_numbers} from "../../store/utils";
+import {human_file_size, human_numbers} from "@/store/utils";
+
 
 const tables_info = use_tables_store()
 
@@ -25,8 +26,8 @@ const tables_info = use_tables_store()
       <v-list-group fluid v-for="schema in tables_info.schemas.schemas" :key="schema">
         <v-divider/>
         <v-list-item :value="table.name"
-                     v-for="table in schema.tables"
                      :key="table.name"
+                     v-for="table in schema.tables"
                      class="pl-4"
                      @click="tables_info.current_open_table = table">
           <template #title>
@@ -42,11 +43,13 @@ const tables_info = use_tables_store()
         </v-list-item>
         <template v-slot:activator="{ props }">
           <v-list-item
-              v-bind="props"
-              :title="schema.name"
-              :subtitle="`${schema.tables.length} tables - 304MB`">
+            v-bind="props"
+            :title="schema.name"
+            :subtitle="`${schema.tables.length} tables - 304MB`">
             <template #subtitle>
-              {{ schema.tables.length }} tables - Size: {{ human_file_size(schema.get_size_bytes()) }}
+              {{ schema.tables.length }} tables - Size: {{
+                human_file_size(schema.get_size_bytes())
+              }}
             </template>
           </v-list-item>
         </template>
