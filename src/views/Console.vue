@@ -5,7 +5,7 @@ import {useConsoleStore} from "@/store/consoleStore";
 import History from "@/components/console/History.vue";
 import {useStoredPreferencesStore} from "@/store/storedPreferences";
 import ConsoleTableResults from "@/components/console/ConsoleTableResults.vue";
-import ConsoleActions from "@/components/console/ConsoleActions.vue";
+import ConsoleActions from "@/components/console/actions/ConsoleActions.vue";
 
 const consoleStore = useConsoleStore()
 const storedPreferences = useStoredPreferencesStore()
@@ -20,7 +20,6 @@ const storedPreferences = useStoredPreferencesStore()
   </v-row>
   <v-row>
     <v-col cols="9">
-
       <ace-console></ace-console>
       <v-row>
         <v-col class="mt-6">

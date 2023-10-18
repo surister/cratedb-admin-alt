@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {reactive, toRefs} from "vue";
+import {reactive, toRefs, watch} from "vue";
 import {requestCrate} from "@/store/http/requests";
 import Queries from "@/store/http/queries";
 
@@ -14,12 +14,15 @@ const defaultConsoleResponseState = {
     rows: [],
   }
 }
+
 export const useConsoleStore = defineStore('console', () => {
   const state = reactive({
     content: '', // The current content of the console.
     response: {...defaultConsoleResponseState},
     queryIsRunning: false,
     addQueryToHistory: true,
+    watch_query: false,
+    _watch_query_interval: null
   })
 
   async function setConsoleResponseToError(jsonResponse) {
@@ -57,7 +60,7 @@ export const useConsoleStore = defineStore('console', () => {
     if (_response.ok) {
       state.response.type = 'success'
       state.response.title = 'Success!'
-      state.response.subtitle = `QUERY OK, ${consoleResponse.rowcount} record(s) returned in ${consoleResponse.duration / 1000}s`
+      state.response.subtitle = `QUERY OK, ${consoleResponse.rowcount} record(s) returned in ${(consoleResponse.duration / 1000).toFixed(4)}s`
       state.response.data.rows = consoleResponse.rows
       state.response.data.headers = consoleResponse.cols
     } else {
@@ -65,6 +68,21 @@ export const useConsoleStore = defineStore('console', () => {
     }
     state.queryIsRunning = false
   }
+
+  watch(
+  () => state.watch_query, () => {
+      if (state.watch_query) {
+        state._watch_query_interval = setInterval(
+          async () => {
+            await queryFromConsole()
+          }, 5000
+        )
+      } else {
+        console.log('cleaning')
+        clearInterval(state._watch_query_interval)
+      }
+  }
+)
 
   return {...toRefs(state), queryFromConsole, cancelQuery, setConsoleResponseToEmpty}
 })

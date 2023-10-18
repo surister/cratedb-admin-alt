@@ -17,7 +17,6 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
       stmt = stmt.replace(entry[0], entry[1])
     });
   }
-  // Clean up stuff from query such as line breaks.
 
   try {
     const request = await fetch(
