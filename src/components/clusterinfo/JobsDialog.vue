@@ -31,16 +31,21 @@ const table_headers = adaptVTableHeader([
     <v-card>
       <v-toolbar>
         <h3 class="ml-4">Jobs for {{ cluster_name }} cluster</h3>
-          <vertical-divider></vertical-divider>
+        <vertical-divider></vertical-divider>
         <h3>Live update</h3>
-            <v-progress-circular class="ml-3" color="red" model-value="100" width="5" size="20" indeterminate>
-            </v-progress-circular>
+        <v-progress-circular class="ml-3" color="red" model-value="100" width="5" size="20"
+                             indeterminate>
+        </v-progress-circular>
       </v-toolbar>
-
       <v-card-text>
         <v-data-table :headers="table_headers"
-                      :items="nodeInfoStore.jobs.toVDataItems()">
-          <template v-slot:[`item.actions`]="{ item }">
+                      :items="jobs"
+                      no-data-text="No jobs running"
+        >
+          <template v-slot:[`item.node_name`]="{ item }">
+            {{ item.node.name }}
+          </template>
+          <template v-slot:[`item.actions`]>
             <v-tooltip text="Kill job">
               <template v-slot:activator="{ props }">
                 <v-btn
