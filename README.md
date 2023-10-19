@@ -1,4 +1,8 @@
-# essentials
+# CrateDB Alt panel
+
+### Current version 0.0.2
+
+
 
 ## Project setup
 
@@ -16,54 +20,32 @@ pnpm install
 bun install
 ```
 
-### Compiles and hot-reloads for development
-
-```
-# yarn
-yarn dev
-
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# bun
-bun run dev
+## Run with docker
+```shell
+docker run -p 3000:80 cratedbaltadmin:latest
 ```
 
-### Compiles and minifies for production
-
+## Solving the cors 'issue'
+In order to be able to query CrateDB's API you will need to start the cluster with these options:
 ```
-# yarn
-yarn build
-
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# bun
-bun run build
+-Chttp.cors.enabled=true
+-Chttp.cors.allow-origin=http://localhost:3000
 ```
 
-### Lints and fixes files
+https://cratedb.com/docs/crate/reference/en/5.4/config/node.html#cross-origin-resource-sharing-cors
 
+An example in docker would be:
+
+```shell
+docker run --rm -d \
+      --name=crate01 \
+      --net=crate \
+      -p 4200:4200 \
+      --env CRATE_HEAP_SIZE=2g \
+      crate -Cnetwork.host=_site_ \
+            -Cnode.name=crate01 \
+            -Chttp.cors.enabled=true \
+            -Chttp.cors.allow-origin=http://localhost:3000
 ```
-# yarn
-yarn lint
 
-# npm
-npm run lint
-
-# pnpm
-pnpm lint
-
-# bun
-bun run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://vitejs.dev/config/).
+Bear in mind that if you run the admin panel from another port, it will have to match the `http.cors.allow-origin` setting.
