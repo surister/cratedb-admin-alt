@@ -18,7 +18,7 @@ const tables_info = use_tables_store()
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
-            <v-btn icon="mdi-cog" flat></v-btn>
+            <v-btn icon="mdi-cog" flat v-show="false"></v-btn>
           </v-col>
         </v-row>
       </v-list-item>

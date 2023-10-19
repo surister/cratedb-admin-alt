@@ -16,7 +16,7 @@ const items = [
     open-on-hover
   >
     <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" text="Support" variant="tonal"/>
+      <v-btn class="ml-2" v-bind="props" text="Support" variant="tonal"/>
     </template>
 
     <v-list>
