@@ -24,7 +24,7 @@ bun install
 
 ## Run with docker
 ```shell
-docker run -p 3000:80 cratedbaltadmin:latest
+docker run -p 3000:80 surister/cratedbaltadmin:0.0.2
 ```
 
 ## Solving the cors 'issue'
