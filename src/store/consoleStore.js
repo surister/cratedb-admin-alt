@@ -6,6 +6,7 @@ import Queries from "@/store/http/queries";
 
 
 import {format} from 'sql-formatter';
+import {format_sql} from "@/store/utils";
 
 
 const defaultConsoleResponseState = {
@@ -32,7 +33,7 @@ export const useConsoleStore = defineStore('console', () => {
     })
 
     async function format_query_content() {
-        state.content = format(state.content, {language: 'postgresql', tabulateAlias: true})
+        state.content = format_sql(state.content)
     }
 
     async function setConsoleResponseToError(jsonResponse) {

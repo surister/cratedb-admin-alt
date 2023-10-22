@@ -1,0 +1,65 @@
+<script setup>
+
+import {ref} from "vue";
+import {download} from "@/store/utils";
+import {useConsoleStore} from "@/store/consoleStore";
+
+const button = ref()
+
+const selectedItems = ref('')
+const items = [
+  // {title: 'CSV', format: 'csv'},
+  {title: 'JSON', format: 'json'}
+]
+const console_store = useConsoleStore()
+</script>
+
+<template>
+<span v-show="false">
+  <v-btn size="x-large" class="ml-2" ref="button" v-show="true">
+    Watch query every {{ selectedItems.value }}s
+    <template #prepend>
+      <v-icon>mdi-pencil</v-icon>
+    </template>
+  </v-btn>
+  <v-select
+      :menu-props="{
+    activator: button,
+    openOnClick: true,
+  }"
+      v-model="selectedItems"
+      label="User"
+      :items="items"
+      hide-details
+      return-object
+      v-show="false">
+    <template v-slot:item="{ props, item }">
+      <v-list-item v-bind="props" :title="`${item.value} Seconds`"></v-list-item>
+    </template>
+  </v-select>
+</span>
+  <v-menu>
+    <template v-slot:activator="{ props }">
+      <v-btn
+          v-bind="props"
+          icon="mdi-download"
+      >
+      </v-btn>
+    </template>
+    <v-list>
+      <v-list-item
+          v-for="(item, index) in items"
+          :key="index"
+          :value="index"
+          :prepend-icon="item.icon"
+          @click="download(console_store.response.data.rows, item.format)"
+      >
+        <v-list-item-title>{{ item.title }}</v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-menu>
+</template>
+
+<style scoped>
+
+</style>

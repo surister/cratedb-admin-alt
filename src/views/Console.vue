@@ -2,7 +2,7 @@
 import AceConsole from "@/components/console/AceConsole.vue";
 import ConsoleResponse from "@/components/console/ConsoleResponse.vue";
 import History from "@/components/console/History.vue";
-import ConsoleTableResults from "@/components/console/ConsoleTableResults.vue";
+import ConsoleTableResults from "@/components/console/table_response/ConsoleTableResults.vue";
 import ConsoleActions from "@/components/console/actions/ConsoleActions.vue";
 
 import {useConsoleStore} from "@/store/consoleStore";

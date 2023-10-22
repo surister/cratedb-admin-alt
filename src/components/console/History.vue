@@ -2,6 +2,8 @@
 import {useConsoleStore} from "@/store/consoleStore";
 import {useStoredPreferencesStore} from "@/store/storedPreferences";
 import {ref} from "vue";
+import {format} from "sql-formatter";
+import {format_sql} from "../../store/utils";
 
 const consoleStore = useConsoleStore()
 const storedPreferences = useStoredPreferencesStore()
@@ -59,6 +61,9 @@ const historyHeader = [
               class="spec text-truncate text-no-wrap"
               style="max-width: 15vw; min-width: 15vw">
             <v-tooltip :text="item.query">
+              <template #default>
+                <pre>{{ item.query }}</pre>
+              </template>
               <template v-slot:activator="{ props }">
                 <span v-bind="props">
                   {{ item.query }}
