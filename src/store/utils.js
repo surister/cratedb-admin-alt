@@ -1,3 +1,5 @@
+import {format} from "sql-formatter";
+
 export function adaptVTableHeader(arr, align = 'start', sortable = false) {
     // Adapts a flat string array like [ 'col1', 'col2', 'col3' ]
     // to a format that used in Vuetify Data tables headers:
@@ -99,4 +101,21 @@ export function color_objects(object) {
         default:
             return ''
     }
+}
+
+export function format_sql(stmt){
+    return format(stmt, {language: 'postgresql', tabulateAlias: true})
+}
+
+export function download(object, format) {
+    const jsonData = JSON.stringify(object);
+    const blob = new Blob([jsonData], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'data.json';
+    link.click();
+
+    URL.revokeObjectURL(url);
 }
