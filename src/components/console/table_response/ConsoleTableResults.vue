@@ -3,6 +3,7 @@ import {useConsoleStore} from "@/store/consoleStore";
 import {adaptVTableHeader, adaptVTableItems, is_object} from "@/store/utils";
 
 import DialogText from "@/components/objectrepresentation/DialogText.vue";
+import DownloadBtn from "@/components/console/table_response/DownloadBtn.vue";
 
 const consoleStore = useConsoleStore()
 
@@ -31,6 +32,7 @@ function color_objects(object) {
         <v-toolbar flat>
           <v-toolbar-title>Query data response [{{ consoleStore.response.data.row_count }} records]</v-toolbar-title>
           <v-btn @click="consoleStore.show_raw_response = !consoleStore.show_raw_response" text="View raw"/>
+          <download-btn/>
           <v-btn v-if="!consoleStore.show_full_screen_response"
                  icon="mdi-fullscreen"
                  @click="consoleStore.show_full_screen_response = !consoleStore.show_full_screen_response"/>
@@ -38,7 +40,7 @@ function color_objects(object) {
       </template>
       <template v-slot:item="{ item }">
         <tr>
-          <td v-for="it, index in item" :key="index">
+          <td v-for="(it, index) in item" :key="index">
             <template v-if="is_object(it) || Array.isArray(it)">
               <dialog-text :object="it"></dialog-text>
             </template>
