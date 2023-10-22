@@ -61,7 +61,11 @@ export function is_array(o) {
 }
 
 export function human_file_size(bytes, si = true, dp = 1) {
-    if (bytes === null){return bytes}
+    // Transform bytes example: 23924082398 into human-readable values such as: 38TB, 10kB, 18MB
+    // Even if we call it bytes, it accepts 'bits' since we support both unit scales.
+    if (bytes === null) {
+        return bytes
+    }
     const thresh = si ? 1000 : 1024;
 
     if (Math.abs(bytes) < thresh) {
@@ -103,7 +107,7 @@ export function color_objects(object) {
     }
 }
 
-export function format_sql(stmt){
+export function format_sql(stmt) {
     return format(stmt, {language: 'postgresql', tabulateAlias: true})
 }
 
