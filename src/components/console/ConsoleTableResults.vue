@@ -1,6 +1,7 @@
 <script setup>
 import {useConsoleStore} from "@/store/consoleStore";
-import {adaptVTableHeader, adaptVTableItems, is_array, is_object} from "@/store/utils";
+import {adaptVTableHeader, adaptVTableItems, is_object} from "@/store/utils";
+
 import DialogText from "@/components/objectrepresentation/DialogText.vue";
 
 const consoleStore = useConsoleStore()
@@ -21,14 +22,18 @@ function color_objects(object) {
 
 <template>
   <v-card
-    v-if="consoleStore.response.data.rows.length !== 0 && consoleStore.response.data.rows[0].length !== 0">
+      v-if="consoleStore.response.data.rows.length !== 0 && consoleStore.response.data.rows[0].length !== 0">
     <v-data-table
-      :items="adaptVTableItems(consoleStore.response.data.rows, consoleStore.response.data.headers)"
-      :headers="adaptVTableHeader(consoleStore.response.data.headers)"
-      :items-per-page="5">
+        :items="adaptVTableItems(consoleStore.response.data.rows, consoleStore.response.data.headers)"
+        :headers="adaptVTableHeader(consoleStore.response.data.headers)"
+        :items-per-page="!consoleStore.show_full_screen_response ? 5: 10">
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Query data response.</v-toolbar-title>
+          <v-toolbar-title>Query data response [{{ consoleStore.response.data.row_count }} records]</v-toolbar-title>
+          <v-btn @click="consoleStore.show_raw_response = !consoleStore.show_raw_response" text="View raw"/>
+          <v-btn v-if="!consoleStore.show_full_screen_response"
+                 icon="mdi-fullscreen"
+                 @click="consoleStore.show_full_screen_response = !consoleStore.show_full_screen_response"/>
         </v-toolbar>
       </template>
       <template v-slot:item="{ item }">
@@ -45,7 +50,6 @@ function color_objects(object) {
       </template>
     </v-data-table>
   </v-card>
-
 </template>
 
 <style scoped>

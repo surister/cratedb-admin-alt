@@ -2,7 +2,7 @@
 import {computed} from "vue";
 
 const props = defineProps({
-  object: Object
+  object: Object,
 })
 const object_name = computed(()=>`Object[${Object.entries(props.object).length}]`)
 </script>

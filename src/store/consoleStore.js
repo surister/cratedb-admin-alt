@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import {reactive, toRefs, watch} from "vue";
 import {requestCrate} from "@/store/http/requests";
+
 import Queries from "@/store/http/queries";
 
 
@@ -25,7 +26,9 @@ export const useConsoleStore = defineStore('console', () => {
         queryIsRunning: false,
         addQueryToHistory: true,
         watch_query: false,
-        _watch_query_interval: null
+        _watch_query_interval: null,
+        show_raw_response: false,
+        show_full_screen_response: false,
     })
 
     async function format_query_content() {
@@ -70,6 +73,7 @@ export const useConsoleStore = defineStore('console', () => {
             state.response.subtitle = `QUERY OK, ${consoleResponse.rowcount} record(s) returned in ${(consoleResponse.duration / 1000).toFixed(4)}s`
             state.response.data.rows = consoleResponse.rows
             state.response.data.headers = consoleResponse.cols
+            state.response.data.row_count = consoleResponse.rowcount
         } else {
             await setConsoleResponseToError(consoleResponse)
         }
@@ -85,17 +89,16 @@ export const useConsoleStore = defineStore('console', () => {
                     }, 5000
                 )
             } else {
-                console.log('cleaning')
                 clearInterval(state._watch_query_interval)
             }
         }
     )
 
     return {
-      ...toRefs(state),
-      queryFromConsole,
-      cancelQuery,
-      setConsoleResponseToEmpty,
-      format_query_content
+        ...toRefs(state),
+        queryFromConsole,
+        cancelQuery,
+        setConsoleResponseToEmpty,
+        format_query_content
     }
 })
