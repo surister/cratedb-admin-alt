@@ -1,5 +1,5 @@
 <template>
-  <router-view />
+  <router-view/>
 </template>
 
 <script setup>
@@ -26,4 +26,14 @@ body:after{
   z-index: 999999;
 }
 
+.v-theme--dark svg text {
+  fill: white !important;
+}
+.v-theme--dark .apexcharts-legend-text {
+  color: white !important;
+  fill: white !important;
+}
+.v-theme--dark .apexcharts-menu {
+    background: #424242;
+}
 </style>

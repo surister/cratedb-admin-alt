@@ -1,6 +1,6 @@
 {
   "name": "cratedb-alt-admin",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -11,12 +11,15 @@
   "dependencies": {
     "@mdi/font": "7.0.96",
     "ace-builds": "^1.28.0",
+    "chart.js": "^4.4.0",
     "core-js": "^3.29.0",
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
+    "sql-formatter": "^13.0.0",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",
     "vue3-ace-editor": "^2.2.3",
+    "vue3-apexcharts": "^1.4.4",
     "vuetify": "^3.0.0"
   },
   "devDependencies": {

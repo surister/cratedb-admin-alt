@@ -9,8 +9,11 @@ import {CrateTableHealths} from "@/store/crate_api/health";
 import {AllocationIssues} from "@/store/crate_api/allocations";
 import {NodeChecks} from "@/store/crate_api/node_checks";
 import {Jobs} from "@/store/crate_api/jobs";
+import {use_chart_store} from "@/store/charts";
+import {QueryStats} from "@/store/crate_api/query_stats";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
+const CHART_MAX_INTERVAL_S = 300 // 5 minutes in seconds.
 
 // We need the emptyNodeResult as a 'default' value when the initial requests to populate data
 // hasn't yet been completed, will usually only be on screen for .1-.2 seconds.
@@ -55,72 +58,120 @@ const emptyNodeResult = [
   {} // os info
 ]
 export const useNodeInfoStore = defineStore('nodeInfo', () => {
-  const state = reactive({
-    nodes: new CrateNodes([emptyNodeResult,], 1),
-    health: new CrateTableHealths([]),
-    allocations: new AllocationIssues([]),
-    node_checks: new NodeChecks([]),
-    jobs: new Jobs([]),
-    shouldUpdateAllocation: false,
-    nodeCount: '0'
-  })
+    const state = reactive({
+        nodes: new CrateNodes([emptyNodeResult,], 1),
+        health: new CrateTableHealths([]),
+        allocations: new AllocationIssues([]),
+        node_checks: new NodeChecks([]),
+        jobs: new Jobs([]),
+        query_stats: new QueryStats([]),
+        shouldUpdateAllocation: false,
+        nodeCount: '0'
+    })
 
-  async function updateNodeInfo() {
-    const _response = await requestCrate(queries.NODE_INFO)
-    const nodeInfo = await _response.json()
-    state.nodes = new CrateNodes(nodeInfo.rows, nodeInfo.rowcount)
-  }
+    const charts_store = use_chart_store()
 
-  async function updateHealthInfo() {
-    const _response = await requestCrate(queries.HEALTH)
-    const healthInfo = await _response.json()
-    state.health = new CrateTableHealths(healthInfo.rows)
-
-    // If there is a bad health table, we start fetching allocation issues, otherwise
-    // we can stop fetching it.
-    state.shouldUpdateAllocation = !!state.health.hasBadHealth();
-  }
-
-  async function updateAllocationIssuesInfo() {
-    const _response = await requestCrate(queries.ALLOCATIONS)
-    const allocationInfo = await _response.json()
-    state.allocations = new AllocationIssues(allocationInfo.rows)
-  }
-
-  async function updateNodeChecks() {
-    const _response = await requestCrate(queries.NODE_CHECKS)
-    const nodeChecksInfo = await _response.json()
-    state.node_checks = new NodeChecks(nodeChecksInfo.rows)
-  }
-
-  async function updateJobsInfo() {
-    const _response = await requestCrate(queries.JOBS)
-    const jobs_info = await _response.json()
-    state.jobs = new Jobs(jobs_info.rows)
-  }
-  // We update them synchronously the first time we launch the site
-  //
-  // What happens if for some reason one fails and the others don't ?
-  updateNodeInfo()
-  updateHealthInfo()
-  updateNodeChecks()
-  updateJobsInfo()
-
-  setInterval(async () => {
-    await Promise.allSettled([
-        updateNodeInfo(),
-        updateHealthInfo(),
-        updateNodeChecks(),
-        updateJobsInfo(),
-      ]
-    )
-
-    if (state.shouldUpdateAllocation) {
-      await updateAllocationIssuesInfo()
+    async function updateNodeInfo() {
+        const _response = await requestCrate(queries.NODE_INFO)
+        const nodeInfo = await _response.json()
+        state.nodes = new CrateNodes(nodeInfo.rows, nodeInfo.rowcount)
     }
-  }, REFRESH_EVERY_MS);
 
-  return {
-    ...toRefs(state),
-  }
+    async function updateHealthInfo() {
+        const _response = await requestCrate(queries.HEALTH)
+        const healthInfo = await _response.json()
+        state.health = new CrateTableHealths(healthInfo.rows)
+
+        // If there is a bad health table, we start fetching allocation issues, otherwise
+        // we can stop fetching it.
+        state.shouldUpdateAllocation = !!state.health.hasBadHealth();
+    }
+
+    async function updateAllocationIssuesInfo() {
+        const _response = await requestCrate(queries.ALLOCATIONS)
+        const allocationInfo = await _response.json()
+        state.allocations = new AllocationIssues(allocationInfo.rows)
+    }
+
+    async function updateNodeChecks() {
+        const _response = await requestCrate(queries.NODE_CHECKS)
+        const nodeChecksInfo = await _response.json()
+        state.node_checks = new NodeChecks(nodeChecksInfo.rows)
+    }
+
+    async function updateJobsInfo() {
+        const _response = await requestCrate(queries.JOBS)
+        const jobs_info = await _response.json()
+        state.jobs = new Jobs(jobs_info.rows)
+    }
+
+    async function update_chart_load_data() {
+        // Updates the lists that will be used in the charts with the latest
+        // master node load (1,5,15) data.
+        const seconds_per_tick = (REFRESH_EVERY_MS / 1000)
+        const current_ticks = charts_store.load.load1.length
+        const max_interval_seconds = CHART_MAX_INTERVAL_S
+
+        if (seconds_per_tick * current_ticks >= max_interval_seconds) {
+            // We pop the first values so the interval is never bigger than CHART_MAX_INTERVAL_S
+            charts_store.load.load1.shift()
+            charts_store.load.load5.shift()
+            charts_store.load.load15.shift()
+        }
+
+        const now = new Date()
+        charts_store.load.load1.push(
+            {
+                y: state.nodes.getMasterNode().load.load1,
+                x: now
+            }
+        )
+        charts_store.load.load5.push(
+            {
+                y: state.nodes.getMasterNode().load.load5,
+                x: now
+            }
+        )
+        charts_store.load.load15.push(
+            {
+                y: state.nodes.getMasterNode().load.load15,
+                x: now
+            }
+        )
+    }
+
+    async function update_qps_data() {
+        const _response = await requestCrate(queries.QUERIES_PER_SECOND)
+        const qps = await _response.json()
+        state.query_stats = new QueryStats(qps.rows)
+    }
+
+    // We update them synchronously the first time we launch the site
+    //
+    // What happens if for some reason one fails and the others don't ?
+    updateNodeInfo()
+    updateHealthInfo()
+    updateNodeChecks()
+    updateJobsInfo()
+    update_qps_data()
+
+    setInterval(async () => {
+        // Be careful, this ignores exceptions.
+        await Promise.allSettled([
+                updateNodeInfo(),
+                updateHealthInfo(),
+                updateNodeChecks(),
+                updateJobsInfo(),
+                update_chart_load_data(),
+                update_qps_data()
+            ],
+        )
+        if (state.shouldUpdateAllocation) {
+            await updateAllocationIssuesInfo()
+        }
+    }, REFRESH_EVERY_MS);
+
+    return {
+        ...toRefs(state),
+    }
 })

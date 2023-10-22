@@ -1,5 +1,11 @@
 <template>
   <v-row>
+    <v-col>
+      <h1>Overview</h1>
+    </v-col>
+  </v-row>
+  <span v-if="false">
+    <v-row>
     <v-spacer></v-spacer>
     <v-col>
       <v-label class="pt-10"><h1>Welcome to CrateDB's alternative Panel (name pending)</h1>
@@ -23,14 +29,33 @@
             <v-divider></v-divider>
           </template>
         </v-list>
-
       </v-sheet>
     </v-col>
     <v-spacer></v-spacer>
   </v-row>
+</span>
+  <v-row>
+    <v-col>
+      <load-chart/>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col cols="6">
+      <qps-chart/>
+    </v-col>
+    <v-col cols="6">
+      <duration-chart/>
+    </v-col>
+  </v-row>
 </template>
 
 <script setup>
+import LoadChart from "@/components/charts/LoadChart.vue";
+import {useNodeInfoStore} from "@/store/nodeInfo";
+import QpsChart from "@/components/charts/QpsChart.vue";
+import DurationChart from "@/components/charts/DurationChart.vue";
+const info_store = useNodeInfoStore()
+
 const features = [
   {text: 'Customizable settings: theme, console sizes and master node url'},
   {
