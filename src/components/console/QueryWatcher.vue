@@ -6,9 +6,9 @@ const consoleStore = useConsoleStore()
 </script>
 
 <template>
-  <v-btn class="ml-2" size="x-large" @click="consoleStore.watch_query = !consoleStore.watch_query">
+  <v-btn class="ml-2" size="x-large" @click="consoleStore.live_update = !consoleStore.live_update">
     <template #default>
-      <v-switch v-model="consoleStore.watch_query" color="primary">
+      <v-switch v-model="consoleStore.live_update" color="primary">
         <template v-slot:label>
           <h4>Watch query</h4>
         </template>

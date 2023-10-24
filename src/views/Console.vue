@@ -14,7 +14,13 @@ const consoleStore = useConsoleStore()
 <template>
   <v-row>
     <v-col>
-      <h1>Console</h1>
+      <h1>Console
+        <v-chip v-if="consoleStore.live_update">
+          <v-progress-circular indeterminate size="15" color="red"></v-progress-circular>
+          <span class="ml-2">Live update</span>
+        </v-chip>
+      </h1>
+
     </v-col>
   </v-row>
   <v-row>

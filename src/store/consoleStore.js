@@ -24,7 +24,7 @@ export const useConsoleStore = defineStore('console', () => {
         response: {...default_console_response}, // The response from querying to CrateDB
         is_query_running: false,
         addQueryToHistory: true,
-        watch_query: false,
+        live_update: false,
         _watch_query_interval: null,
         show_raw_response: false,
         show_full_screen_response: false,
@@ -90,14 +90,15 @@ export const useConsoleStore = defineStore('console', () => {
                 json_response.error.message,
                 json_response.error_trace
             )
+            state.live_update = false
         }
         state.is_query_running = false
-        state.watch_query = false
+
     }
 
     watch(
-        () => state.watch_query, () => {
-            if (state.watch_query) {
+        () => state.live_update, () => {
+            if (state.live_update) {
                 state._watch_query_interval = setInterval(
                     async () => {
                         await query_from_console()
