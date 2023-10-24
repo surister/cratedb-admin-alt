@@ -20,11 +20,13 @@ export default {
   // It also gets system schema tables such as information_schema, pg_catalog and sys.
   // IMPORTANT: In this query 'schema' always has to go last for values unpacking order reasons, see tables.js
   TABLES: `
-    SELECT inf.table_name         as name,
+    SELECT DISTINCT
+           inf.table_name         as name,
            sha.records,
            sha.size_bytes,
            inf.number_of_replicas as replicas,
            inf.number_of_shards   as shards,
+           inf.table_type,
            inf.table_schema       as schema
     FROM (SELECT table_name,
                  schema_name,
@@ -36,7 +38,7 @@ export default {
                    schema_name) as sha RIGHT JOIN information_schema.tables inf
     ON inf.table_name = sha.table_name
     ORDER BY
-      inf.table_schema
+      shards
   `,
   // Gets the table SQL schema from the given %table and %schema
   COLUMNS: `

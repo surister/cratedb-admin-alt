@@ -47,12 +47,14 @@ class Schema {
 }
 
 class Table {
-    constructor(name, records, size_bytes, shards, replicas, schema) {
+    constructor(name, records, size_bytes, shards, replicas, table_type, schema) {
         this.name = name
         this.records = records
         this.size_bytes = size_bytes
         this.shards = shards
         this.replicas = replicas
-        this.schema = schema
+        this.table_type = table_type
+        this.schema = schema // Schema always last, see queries.js comment on the query
+
     }
 }
