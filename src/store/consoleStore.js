@@ -92,6 +92,7 @@ export const useConsoleStore = defineStore('console', () => {
             )
         }
         state.is_query_running = false
+        state.watch_query = false
     }
 
     watch(
