@@ -8,7 +8,7 @@ const consoleStore = useConsoleStore()
   <v-tooltip location="bottom" text="Stop running query">
     <template v-slot:activator="{ props }">
       <v-btn size="x-large" prepend-icon="mdi-cancel" v-bind="props" class="mx-2"
-             :disabled="!consoleStore.queryIsRunning" @click="consoleStore.cancelQuery()">Cancel
+             :disabled="!consoleStore.is_query_running" @click="consoleStore.cancelQuery()">Cancel
         query
       </v-btn>
     </template>
