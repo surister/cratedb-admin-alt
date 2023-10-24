@@ -39,8 +39,8 @@ const tables_info = use_tables_store()
                     v-bind="props"
                     :variant="'outlined'"
                     size="x-small"
-                    :color="schema.is_system ? 'pink' : 'blue'">
-                  {{ schema.is_system ? 'sys' : 'user' }}
+                    :color="schema.is_system ? 'pink' : table.table_type === 'VIEW' ? 'yellow' : 'blue'">
+                  {{ table.table_type === 'VIEW' ? 'view' : 'table' }}
                 </v-chip>
               </template>
             </v-tooltip>
