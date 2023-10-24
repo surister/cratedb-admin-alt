@@ -65,5 +65,8 @@ export default {
     GROUP BY 1, 2, 5
     ORDER BY
       ended_time ASC
+  `,
+  DROP_TABLE: `
+   DROP TABLE %schema_name.%table_name
   `
 }

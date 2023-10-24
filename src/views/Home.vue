@@ -51,10 +51,8 @@
 
 <script setup>
 import LoadChart from "@/components/charts/LoadChart.vue";
-import {useNodeInfoStore} from "@/store/nodeInfo";
 import QpsChart from "@/components/charts/QpsChart.vue";
 import DurationChart from "@/components/charts/DurationChart.vue";
-const info_store = useNodeInfoStore()
 
 const features = [
   {text: 'Customizable settings: theme, console sizes and master node url'},

@@ -1,9 +1,11 @@
 <template>
   <router-view/>
+  <snackbar/>
 </template>
 
 <script setup>
   //
+import Snackbar from "@/components/snackbars/Snackbar.vue";
 </script>
 
 <style>

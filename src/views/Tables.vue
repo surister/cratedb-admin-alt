@@ -13,7 +13,7 @@ tables_info.update_tables()
   <tables-drawer></tables-drawer>
   <table-card v-if="tables_info.current_open_table"></table-card>
 
-  <v-row  align-content="center" class="text-center fill-height" v-else>
+  <v-row align-content="center" class="text-center fill-height" v-else>
     <v-spacer></v-spacer>
     <v-col align-self="center" cols="6">
       <v-sheet class="pa-10">
@@ -21,7 +21,6 @@ tables_info.update_tables()
       </v-sheet>
     </v-col>
     <v-spacer></v-spacer>
-
   </v-row>
 
 </template>

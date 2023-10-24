@@ -40,9 +40,9 @@ class Schema {
         return s
     }
 
-    constructor(name, is_system_schema) {
+    constructor(name, is_system) {
         this.name = name
-        this.is_system_schema = is_system_schema
+        this.is_system = is_system
     }
 }
 

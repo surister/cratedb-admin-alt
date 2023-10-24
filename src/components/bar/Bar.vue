@@ -1,11 +1,11 @@
 <script setup>
 import VerticalDivider from "@/components/VerticalDivider.vue";
-import { useGlobalStore } from "@/store/globalStore";
+import { use_global_store } from "@/store/globalStore";
 
 import InfoGroup from "@/components/bar/info/InfoGroup.vue";
 import SupportButton from "@/components/bar/SupportButton.vue";
 
-const global_store = useGlobalStore()
+const global_store = use_global_store()
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const global_store = useGlobalStore()
       <support-button></support-button>
       <vertical-divider></vertical-divider>
       <v-btn icon="mdi-cog"
-             @click="global_store.settingsDrawerToggle = !global_store.settingsDrawerToggle"></v-btn>
+             @click="global_store.settings_drawer_toggle = !global_store.settings_drawer_toggle"></v-btn>
     </template>
   </v-app-bar>
 </template>

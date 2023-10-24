@@ -1,13 +1,12 @@
 <script setup>
-import { useGlobalStore } from "@/store/globalStore";
+import { use_global_store } from "@/store/globalStore";
 
 import ThemeToggle from "@/components/settings/ThemeToggle.vue";
 import ListItemLink from "@/components/settings/ListItemLink.vue";
 import ConsoleSettings from "@/components/settings/ConsoleSettings.vue";
 import GeneralSettings from "@/components/settings/GeneralSettings.vue";
 
-const global_store = useGlobalStore()
-
+const global_store = use_global_store()
 
 const drawerLinks = [
   {
@@ -46,7 +45,7 @@ const drawerLinks = [
 <template>
   <v-navigation-drawer
     width="350"
-    v-model="global_store.settingsDrawerToggle"
+    v-model="global_store.settings_drawer_toggle"
     temporary
     location="right">
 
@@ -55,7 +54,7 @@ const drawerLinks = [
         <v-btn
           icon="mdi-close"
           variant="flat"
-          @click="global_store.settingsDrawerToggle = false"
+          @click="global_store.settings_drawer_toggle = false"
         />
       </template>
     </v-toolbar>
@@ -80,7 +79,7 @@ const drawerLinks = [
         ></list-item-link>
       </v-list>
     </template>
-
+    <v-btn @click="global_store.show_successful_snackbar('Table deleted correctly')">Debug</v-btn>
   </v-navigation-drawer>
 
 </template>

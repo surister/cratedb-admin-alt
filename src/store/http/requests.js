@@ -1,9 +1,9 @@
 import {useStoredPreferencesStore} from "@/store/storedPreferences";
-import {useGlobalStore} from "@/store/globalStore";
+import {use_global_store} from "@/store/globalStore";
 
 export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= {}) {
   const storedPreferences = useStoredPreferencesStore()
-  const globalStore = useGlobalStore()
+  const globalStore = use_global_store()
 
   let url = storedPreferences.general.masterNodeUrl + '/_sql'
   let stmt = _stmt // https://airbnb.io/javascript/#functions--reassign-params

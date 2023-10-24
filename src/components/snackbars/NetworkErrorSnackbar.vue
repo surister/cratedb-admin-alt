@@ -1,9 +1,9 @@
 <script setup>
 import {useStoredPreferencesStore} from "@/store/storedPreferences";
-import {useGlobalStore} from "@/store/globalStore";
+import {use_global_store} from "@/store/globalStore";
 
 const storedPreferences = useStoredPreferencesStore()
-const globalStore = useGlobalStore()
+const globalStore = use_global_store()
 </script>
 
 <template>
