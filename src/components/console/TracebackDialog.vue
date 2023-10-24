@@ -16,7 +16,6 @@ const console_store = useConsoleStore()
             {{ console_store.response.errorTrace }}
           </v-code>
         </v-card-text>
-
         <v-card-actions>
           <v-spacer/>
           <v-btn

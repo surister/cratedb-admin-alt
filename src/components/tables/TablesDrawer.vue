@@ -1,6 +1,4 @@
 <script setup>
-
-
 import {human_file_size, human_numbers} from "@/store/utils";
 
 import {use_tables_store} from "@/store/tables";
