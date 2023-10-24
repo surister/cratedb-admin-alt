@@ -1,8 +1,9 @@
 <script setup>
 
-import {use_tables_store} from "@/store/tables";
+
 import {human_file_size, human_numbers} from "@/store/utils";
 
+import {use_tables_store} from "@/store/tables";
 
 const tables_info = use_tables_store()
 
@@ -29,9 +30,21 @@ const tables_info = use_tables_store()
                      :key="table.name"
                      v-for="table in schema.tables"
                      class="pl-4"
-                     @click="tables_info.current_open_table = table">
+                     @click="tables_info.current_open_table = table; tables_info.current_open_schema = schema">
           <template #title>
-            <strong>{{ table.name }} </strong>
+            <v-tooltip
+                :text="schema.is_system ? 'Belongs to CrateDB system schema.' : 'Created by user'">
+              <template v-slot:activator="{ props }">
+                <v-chip
+                    v-bind="props"
+                    :variant="'outlined'"
+                    size="x-small"
+                    :color="schema.is_system ? 'pink' : 'blue'">
+                  {{ schema.is_system ? 'sys' : 'user' }}
+                </v-chip>
+              </template>
+            </v-tooltip>
+            <span class="font-weight-bold ml-2">{{ table.name }}</span>
           </template>
           <template #subtitle>
             {{ table.records == null ? 'n/a' : human_numbers(table.records) }} records - Size
@@ -43,13 +56,12 @@ const tables_info = use_tables_store()
         </v-list-item>
         <template v-slot:activator="{ props }">
           <v-list-item
-            v-bind="props"
-            :title="schema.name"
-            :subtitle="`${schema.tables.length} tables - 304MB`">
+              v-bind="props"
+              :title="schema.name">
             <template #subtitle>
-              {{ schema.tables.length }} tables - Size: {{
+              {{ schema.tables.length }} tables <span v-if="!schema.is_system"> - Size: {{
                 human_file_size(schema.get_size_bytes())
-              }}
+              }}</span>
             </template>
           </v-list-item>
         </template>
