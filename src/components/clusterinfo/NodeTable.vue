@@ -48,11 +48,12 @@ const headers = adaptVTableHeader([
       <template v-slot:[`item.node_name`]="{ value }">
         <v-row class="">
           <v-col>
-            <v-tooltip :text="value.is_master ? 'Master node' : 'Not Master'">
+            <v-tooltip :text="value.is_master ? 'Master node' : 'Not master'">
               <template v-slot:activator="{ props }">
                 <v-btn v-bind="props"
                        variant="text"
                        :prepend-icon="value.is_master ? 'mdi-star-check': 'mdi-circle-double'"
+                       :color="value.is_master ? 'yellow': ''"
                        :ripple="false">{{ value.name }}
                 </v-btn>
               </template>
