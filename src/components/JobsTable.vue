@@ -1,7 +1,5 @@
 <script setup>
-const props = defineProps({
-  job_list: Array[Object]
-})
+
 </script>
 
 <template>

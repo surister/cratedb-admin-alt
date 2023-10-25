@@ -8,6 +8,31 @@ let rail = ref(true)
 const router = useRoute()
 
 let chevron_button = computed(()=> rail.value ? 'mdi-chevron-right': 'mdi-chevron-left')
+
+const routes = [
+  {
+    to: 'home',
+    icon: 'mdi-home-city',
+    value: 'home',
+    title: 'Home',
+    active_if_matches: '/'
+  },
+  {
+    to: 'console',
+    icon: 'mdi-console',
+    value: 'console',
+    title: 'Console',
+    active_if_matches: '/console'
+  },
+  {to: 'tables', icon: 'mdi-table', value: 'tables', title: 'Tables', active_if_matches: '/tables'},
+  {
+    to: 'cluster',
+    icon: 'mdi-checkerboard',
+    value: 'cluster',
+    title: 'Cluster',
+    active_if_matches: '/cluster'
+  }
+]
 </script>
 
 <template>
@@ -18,16 +43,15 @@ let chevron_button = computed(()=> rail.value ? 'mdi-chevron-right': 'mdi-chevro
   >
     <v-btn variant="text" class="ma-1" :icon="chevron_button" @click.stop="rail = !rail"></v-btn>
     <v-divider></v-divider>
-
     <v-list density="compact" nav>
-      <v-list-item prepend-icon="mdi-home-city" title="Overview" value="home" :to="{ name: 'home' }"
-                   :active="router.path == '/'" link></v-list-item>
-      <v-list-item prepend-icon="mdi-console" title="Console" value="console"
-                   :to="{ name: 'console'}" link></v-list-item>
-      <v-list-item prepend-icon="mdi-account-group-outline" title="Tables" :to="{ name : 'tables' }"
-                   value="tables"></v-list-item>
-      <v-list-item prepend-icon="mdi-checkerboard" title="Cluster" :to="{ name : 'cluster' }"
-                   value="cluster"></v-list-item>
+      <v-list-item
+        v-for="route in routes"
+        :key="route.value"
+        :prepend-icon="route.icon"
+        :title="route.title"
+        :value="route.value"
+        :to="{ name: route.to }"
+        :active="router.path === route.active_if_matches" link/>
     </v-list>
   </v-navigation-drawer>
 </template>
