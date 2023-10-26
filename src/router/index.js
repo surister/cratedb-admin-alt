@@ -29,6 +29,11 @@ const routes = [
         path: 'cluster',
         name: 'cluster',
         component: () => import('@/views/Cluster.vue')
+      },
+      {
+        path: 'users',
+        name: 'users',
+        component: () => import('@/views/Users.vue'),
       }
     ],
   },

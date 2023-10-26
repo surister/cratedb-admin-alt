@@ -31,6 +31,13 @@ const routes = [
     value: 'cluster',
     title: 'Cluster',
     active_if_matches: '/cluster'
+  },
+  {
+    to: 'users',
+    icon: 'mdi-account-group',
+    value: 'users',
+    title: 'Users',
+    active_if_matches: '/users'
   }
 ]
 </script>

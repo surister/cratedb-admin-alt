@@ -4,13 +4,14 @@ import {reactive, toRefs} from "vue";
 
 import {requestCrate} from "@/store/http/requests";
 import queries from "@/store/http/queries";
+import {use_chart_store} from "@/store/charts";
 import {CrateNodes} from "@/store/crate_api/node";
 import {CrateTableHealths} from "@/store/crate_api/health";
 import {AllocationIssues} from "@/store/crate_api/allocations";
 import {NodeChecks} from "@/store/crate_api/node_checks";
 import {Jobs} from "@/store/crate_api/jobs";
-import {use_chart_store} from "@/store/charts";
 import {QueryStats} from "@/store/crate_api/query_stats";
+import {Users} from "@/store/crate_api/users";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 const CHART_MAX_INTERVAL_S = 300 // 5 minutes in seconds.
@@ -65,6 +66,7 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
         node_checks: new NodeChecks([]),
         jobs: new Jobs([]),
         query_stats: new QueryStats([]),
+        users: new Users([]),
         shouldUpdateAllocation: false,
         nodeCount: '0'
     })
@@ -146,6 +148,13 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
         state.query_stats = new QueryStats(qps.rows)
     }
 
+    async function update_privileges(){
+        //TODO Move this, pending the store refactor
+        const _response = await requestCrate(queries.USERS)
+        const users = await _response.json()
+        state.users = new Users(users.rows)
+    }
+
     // We update them synchronously the first time we launch the site
     //
     // What happens if for some reason one fails and the others don't ?
@@ -154,7 +163,7 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
     updateNodeChecks()
     updateJobsInfo()
     update_qps_data()
-
+    update_privileges()
     setInterval(async () => {
         // Be careful, this ignores exceptions.
         await Promise.allSettled([
@@ -163,7 +172,8 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
                 updateNodeChecks(),
                 updateJobsInfo(),
                 update_chart_load_data(),
-                update_qps_data()
+                update_qps_data(),
+                update_privileges(),
             ],
         )
         if (state.shouldUpdateAllocation) {

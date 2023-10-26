@@ -70,5 +70,18 @@ export default {
   `,
   DROP_TABLE: `
    DROP TABLE %schema_name.%table_name
+  `,
+  USERS: `
+    SELECT usr.name,
+           usr.superuser,
+           priv.class,
+           priv.grantee,
+           priv.grantor,
+           priv.ident,
+           priv.state,
+           priv.type
+    FROM sys.users usr
+           LEFT JOIN sys.privileges priv ON usr.name = priv.grantee
+    ORDER BY usr.superuser DESC
   `
 }
