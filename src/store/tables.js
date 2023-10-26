@@ -77,6 +77,9 @@ export const use_tables_store = defineStore('tables', () => {
         }
     )
     return {
-        ...toRefs(state), update_tables, update_table_sample_data, drop_table
+        ...toRefs(state),
+        update_tables,
+        update_table_sample_data,
+        drop_table
     }
 })
