@@ -1,7 +1,9 @@
 <script setup>
 import {useNodeInfoStore} from "@/store/nodeInfo";
+import {use_users_store} from "@/store/users";
 
 const node_info_store = useNodeInfoStore()
+const users_store = use_users_store()
 </script>
 
 <template>
@@ -23,6 +25,7 @@ const node_info_store = useNodeInfoStore()
           v-for="user in node_info_store.users.users"
           :key="user.name"
           :title="user.name"
+          @click="users_store.current_open_user = user"
           link
       >
         <template #prepend>

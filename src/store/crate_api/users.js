@@ -44,6 +44,18 @@ class User {
     this.name = name
     this.is_superuser = is_superuser
   }
+
+  to_items(){
+    return this.privileges.map((privilege)=> {
+      return {
+        class_: privilege.class_,
+        grantor: privilege.grantor,
+        ident: privilege.ident,
+        state: privilege.state,
+        type: privilege.type
+      }
+    })
+  }
 }
 
 
