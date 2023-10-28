@@ -5,7 +5,7 @@ import {adaptVTableHeader, human_file_size} from "@/store/utils";
 import {useNodeInfoStore} from "@/store/nodeInfo";
 
 import TitledText from "@/components/shared/text/TitledText.vue";
-import JobsDialog from "@/components/clusterinfo/JobsDialog.vue";
+import JobsDialog from "@/components/cluster/JobsDialog.vue";
 
 
 let expanded = ref([])
