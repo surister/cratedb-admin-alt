@@ -39,7 +39,6 @@ const drawerLinks = [
   },
 
 ]
-
 </script>
 
 <template>
@@ -75,11 +74,10 @@ const drawerLinks = [
                         :preprend-icon="link.preprendIcon"
                         :link-title="link.linkTitle"
                         :link-to="link.linkTo"
-
         ></list-item-link>
       </v-list>
     </template>
-    <v-btn @click="global_store.show_successful_snackbar('Table deleted correctly')">Debug</v-btn>
+    <v-btn @click="">Debug</v-btn>
   </v-navigation-drawer>
 
 </template>

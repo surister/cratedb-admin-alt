@@ -13,7 +13,19 @@ export default {
     FROM SYS.HEALTH
     order by severity DESC
 `,
-  ALLOCATIONS: 'SELECT current_state, decisions, explanation, node_id, partition_ident, primary, shard_id, table_name, table_schema FROM SYS.ALLOCATIONS',
+  ALLOCATIONS: `
+    SELECT current_state,
+           decisions,
+           explanation,
+           node_id,
+           partition_ident,
+           primary,
+           shard_id,
+           table_name,
+           table_schema
+    FROM
+      SYS.ALLOCATIONS
+  `,
   NODE_CHECKS: 'SELECT id, node_id, severity, acknowledged, description FROM SYS.node_checks WHERE passed = false',
   JOBS: 'SELECT id, node, started, stmt, username FROM sys.jobs',
   // Gets the total amount of tables, user created tables get the rows of the primary
@@ -83,5 +95,8 @@ export default {
     FROM sys.users usr
            LEFT JOIN sys.privileges priv ON usr.name = priv.grantee
     ORDER BY usr.superuser DESC
+  `,
+  SHOW_CREATE: `
+  SHOW CREATE TABLE %table_name
   `
 }

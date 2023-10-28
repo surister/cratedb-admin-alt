@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import {reactive, toRefs, watch} from "vue";
+
 import {requestCrate} from "@/store/http/requests";
 import queries from "@/store/http/queries";
 import {Schemas} from "@/store/crate_api/tables";
@@ -13,6 +14,7 @@ export const use_tables_store = defineStore('tables', () => {
         current_open_table: null,
         current_open_schema: null, // We only need this to have a Schema reference.
         current_open_table_columns: null,
+        current_show_create_table: null,
         sample_data: null
     })
 
@@ -53,8 +55,18 @@ export const use_tables_store = defineStore('tables', () => {
         } else {
             global_store.show_error_snackbar(`Something went wrong`)
         }
-
     }
+
+    async function show_create_table(table_name) {
+        const response = await requestCrate(
+            queries.SHOW_CREATE,
+            null,
+            {'%table_name': table_name}
+        )
+        const data = await response.json()
+        state.current_show_create_table = data.rows[0][0]
+    }
+
     watch(
         () => state.current_open_table, async (value) => {
             if (value == null) {
@@ -80,6 +92,7 @@ export const use_tables_store = defineStore('tables', () => {
         ...toRefs(state),
         update_tables,
         update_table_sample_data,
-        drop_table
+        drop_table,
+        show_create_table
     }
 })
