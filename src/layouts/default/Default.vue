@@ -11,8 +11,8 @@
 <script setup>
   import DefaultView from './View.vue'
 
-  import Bar from "@/components/bar/Bar.vue";
-  import SettingsDrawer from "@/components/settings/SettingsDrawer.vue";
-  import NavigationDrawer from "@/components/leftdrawer/NavigationDrawer.vue";
-  import ConnectionAlert from "@/components/snackbars/NetworkErrorSnackbar.vue";
+  import Bar from "@/components/shared/bar/Bar.vue";
+  import SettingsDrawer from "@/components/shared/settings/SettingsDrawer.vue";
+  import NavigationDrawer from "@/components/shared/leftdrawer/NavigationDrawer.vue";
+  import ConnectionAlert from "@/components/shared/snackbars/NetworkErrorSnackbar.vue";
 </script>

@@ -10,7 +10,7 @@ const consoleStore = useConsoleStore()
     <template #default>
       <v-switch v-model="consoleStore.live_update" color="primary">
         <template v-slot:label>
-          <h4>Watch query</h4>
+          <h4>Live update</h4>
         </template>
       </v-switch>
     </template>

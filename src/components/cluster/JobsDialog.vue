@@ -2,7 +2,7 @@
 import {computed, ref, watch} from "vue";
 import {useNodeInfoStore} from "@/store/nodeInfo";
 import {adaptVTableHeader} from "@/store/utils";
-import VerticalDivider from "@/components/VerticalDivider.vue";
+import VerticalDivider from "@/components/shared/VerticalDivider.vue";
 
 let props = defineProps({
   is_open: Boolean,

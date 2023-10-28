@@ -1,9 +1,9 @@
 <script setup>
-import VerticalDivider from "@/components/VerticalDivider.vue";
+import VerticalDivider from "@/components/shared/VerticalDivider.vue";
 import { use_global_store } from "@/store/globalStore";
 
-import InfoGroup from "@/components/bar/info/InfoGroup.vue";
-import SupportButton from "@/components/bar/SupportButton.vue";
+import InfoGroup from "@/components/shared/bar/info/InfoGroup.vue";
+import SupportButton from "@/components/shared/bar/SupportButton.vue";
 
 const global_store = use_global_store()
 </script>

@@ -5,7 +5,7 @@
 
 <script setup>
   //
-import Snackbar from "@/components/snackbars/Snackbar.vue";
+import Snackbar from "@/components/shared/snackbars/Snackbar.vue";
 </script>
 
 <style>

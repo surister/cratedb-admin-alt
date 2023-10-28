@@ -50,9 +50,9 @@
 </template>
 
 <script setup>
-import LoadChart from "@/components/charts/LoadChart.vue";
-import QpsChart from "@/components/charts/QpsChart.vue";
-import DurationChart from "@/components/charts/DurationChart.vue";
+import LoadChart from "@/components/home/charts/LoadChart.vue";
+import QpsChart from "@/components/home/charts/QpsChart.vue";
+import DurationChart from "@/components/home/charts/DurationChart.vue";
 
 const features = [
   {text: 'Customizable settings: theme, console sizes and master node url'},

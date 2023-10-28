@@ -2,7 +2,7 @@
 import {useConsoleStore} from "@/store/consoleStore";
 import {adaptVTableHeader, adaptVTableItems, is_object} from "@/store/utils";
 
-import DialogText from "@/components/objectrepresentation/DialogText.vue";
+import DialogText from "@/components/shared/object_representation/DialogText.vue";
 import DownloadBtn from "@/components/console/table_response/DownloadBtn.vue";
 
 const consoleStore = useConsoleStore()
@@ -30,7 +30,7 @@ function color_objects(object) {
         :items-per-page="!consoleStore.show_full_screen_response ? 5: 10">
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Query data response [{{ consoleStore.response.data.row_count }} records]</v-toolbar-title>
+          <v-toolbar-title>Query data response: {{ consoleStore.response.data.row_count }} record(s)</v-toolbar-title>
           <v-btn @click="consoleStore.show_raw_response = !consoleStore.show_raw_response" text="View raw"/>
           <download-btn/>
           <v-btn v-if="!consoleStore.show_full_screen_response"

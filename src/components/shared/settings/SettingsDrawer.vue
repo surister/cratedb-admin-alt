@@ -1,10 +1,10 @@
 <script setup>
 import { use_global_store } from "@/store/globalStore";
 
-import ThemeToggle from "@/components/settings/ThemeToggle.vue";
-import ListItemLink from "@/components/settings/ListItemLink.vue";
-import ConsoleSettings from "@/components/settings/ConsoleSettings.vue";
-import GeneralSettings from "@/components/settings/GeneralSettings.vue";
+import ThemeToggle from "@/components/shared/settings/ThemeToggle.vue";
+import ListItemLink from "@/components/shared/settings/ListItemLink.vue";
+import ConsoleSettings from "@/components/shared/settings/ConsoleSettings.vue";
+import GeneralSettings from "@/components/shared/settings/GeneralSettings.vue";
 
 const global_store = use_global_store()
 

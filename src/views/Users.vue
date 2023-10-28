@@ -36,6 +36,7 @@ const headers = adaptVTableHeader([
       REVOKE statements on the superuser.
     </v-card-text>
     <v-data-table
+      title="Privileges"
       class="mt-5"
       :headers="headers"
       :items="users_store.current_open_user.to_items()"

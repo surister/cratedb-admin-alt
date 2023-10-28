@@ -1,9 +1,8 @@
 <script setup>
 
-import {adaptVTableHeader, adaptVTableItems, color_objects, is_object} from "@/store/utils";
+import {adaptVTableHeader, adaptVTableItems, color_objects} from "@/store/utils";
 import {use_tables_store} from "@/store/tables";
 import TableCardSchema from "@/components/tables/card/TableCardSchema.vue";
-import DialogText from "@/components/objectrepresentation/DialogText.vue";
 
 const tables_info = use_tables_store()
 

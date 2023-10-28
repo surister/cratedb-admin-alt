@@ -2,7 +2,7 @@
 import {useNodeInfoStore} from "@/store/nodeInfo";
 
 import {computed, ref} from "vue";
-import NodeChecksPopOver from "@/components/bar/info/nodechecks/NodeChecksPopOver.vue";
+import NodeChecksPopOver from "@/components/shared/bar/info/nodechecks/NodeChecksPopOver.vue";
 
 const nodeInfoStore = useNodeInfoStore()
 

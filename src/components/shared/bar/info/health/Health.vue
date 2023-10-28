@@ -1,5 +1,5 @@
 <script setup>
-import HealthInfoPopOver from "@/components/bar/info/health/HealthInfoPopOver.vue";
+import HealthInfoPopOver from "@/components/shared/bar/info/health/HealthInfoPopOver.vue";
 
 import {computed, ref} from "vue";
 import {useNodeInfoStore} from "@/store/nodeInfo";
