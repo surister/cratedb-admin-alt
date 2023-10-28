@@ -5,7 +5,6 @@ import {defineStore} from 'pinia'
 import {reactive, toRefs, watch} from 'vue';
 import {useTheme} from "vuetify";
 
-const localStorageKey = 'crateDB@storedPreferences'
 const defaultState = {
     theme: 'light',
     console: {
@@ -21,67 +20,46 @@ const defaultState = {
     }
 }
 export const useStoredPreferencesStore = defineStore('storedPreferences', () => {
-    const state = reactive(defaultState)
-    const theme = useTheme()
+        const state = reactive(defaultState)
+        const theme = useTheme()
 
-    function load() {
-      const stored = localStorage.getItem(localStorageKey)
-      const data = stored ? JSON.parse(stored) : {}
+        function deleteHistory(item) {
+            state.console.queryHistory.splice(state.console.queryHistory.findIndex(function (i) {
+                return i.id === item.id;
+            }), 1);
+        }
 
-      Object.assign(state, data)
+        function resetQueryHistoryState() {
+            state.console.queryHistory = []
+        }
 
-      // State initialized from stored Preferences at this point, do stuff below.
-      theme.global.name.value = state.theme
-    }
+        function addToQueryHistory(stmt) {
+            let lastIndex = 0
+            if (state.console.queryHistory.length !== 0) {
+                lastIndex = state.console.queryHistory.slice(-1)[0].id
+            }
 
-    function deleteHistory(item) {
-      state.console.queryHistory.splice(state.console.queryHistory.findIndex(function (i) {
-        return i.id === item.id;
-      }), 1);
-    }
+            if (state.console.addQueryToHistory) {
+                state.console.queryHistory.unshift(
+                    {id: lastIndex + 1, query: stmt}
+                )
+            }
+        }
 
-    function resetQueryHistoryState() {
-      state.console.queryHistory = []
-    }
-
-    function addToQueryHistory(stmt) {
-      let lastIndex = 0
-      if (state.console.queryHistory.length !== 0) {
-        lastIndex = state.console.queryHistory.slice(-1)[0].id
-      }
-
-      if (state.console.addQueryToHistory) {
-        state.console.queryHistory.unshift(
-          {id: lastIndex + 1, query: stmt}
+        watch(
+            () => state.theme, async (value) => {
+                theme.global.name.value = value
+            }
         )
-      }
+
+        return {
+            ...toRefs(state),
+            resetHistoryState: resetQueryHistoryState,
+            addToQueryHistory,
+            deleteHistory,
+        }
+    },
+    {
+        persist: true
     }
-
-    function save() {
-      if (state.theme !== theme.global.name.value) {
-        theme.global.name.value = state.theme
-      }
-      localStorage.setItem(localStorageKey, JSON.stringify(state, null, 2))
-    }
-
-    load()
-
-    // Whenever the state of any stored preferences changes, we store it.
-    watch(
-      state, () => {
-        console.log('Stored State changed')
-        console.log(state)
-        save()
-      }
-    )
-
-    return {
-      ...toRefs(state),
-      load,
-      save,
-      resetHistoryState: resetQueryHistoryState,
-      addToQueryHistory,
-      deleteHistory
-    }
-  }
 )

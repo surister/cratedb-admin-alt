@@ -23,7 +23,7 @@ export const use_console_store = defineStore('console', () => {
         content: '', // The current content of the console.
         response: {...default_console_response}, // The response from querying to CrateDB
         is_query_running: false,
-        addQueryToHistory: true,
+        add_query_to_history: true,
         live_update: false,
         _watch_query_interval: null,
         show_raw_response: false,
