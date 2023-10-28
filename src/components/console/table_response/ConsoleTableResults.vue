@@ -1,11 +1,11 @@
 <script setup>
-import {useConsoleStore} from "@/store/consoleStore";
+import {use_console_store} from "@/store/console_store";
 import {adaptVTableHeader, adaptVTableItems, is_object} from "@/store/utils";
 
 import DialogText from "@/components/shared/object_representation/DialogText.vue";
 import DownloadBtn from "@/components/console/table_response/DownloadBtn.vue";
 
-const consoleStore = useConsoleStore()
+const consoleStore = use_console_store()
 
 function color_objects(object) {
   switch (typeof object) {

@@ -1,7 +1,7 @@
 <script setup>
-import {useConsoleStore} from "@/store/consoleStore";
+import {use_console_store} from "@/store/console_store";
 
-const consoleStore = useConsoleStore()
+const consoleStore = use_console_store()
 
 </script>
 

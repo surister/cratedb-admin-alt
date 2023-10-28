@@ -18,7 +18,7 @@ const default_console_response = {
     }
 }
 
-export const useConsoleStore = defineStore('console', () => {
+export const use_console_store = defineStore('console', () => {
     const state = reactive({
         content: '', // The current content of the console.
         response: {...default_console_response}, // The response from querying to CrateDB

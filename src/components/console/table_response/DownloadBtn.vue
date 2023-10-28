@@ -2,7 +2,7 @@
 
 import {ref} from "vue";
 import {download} from "@/store/utils";
-import {useConsoleStore} from "@/store/consoleStore";
+import {use_console_store} from "@/store/console_store";
 
 const button = ref()
 
@@ -11,7 +11,7 @@ const items = [
   // {title: 'CSV', format: 'csv'},
   {title: 'JSON', format: 'json'}
 ]
-const console_store = useConsoleStore()
+const console_store = use_console_store()
 </script>
 
 <template>

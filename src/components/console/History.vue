@@ -1,15 +1,16 @@
 <script setup>
-import {useConsoleStore} from "@/store/consoleStore";
+import {use_console_store} from "@/store/console_store";
 import {useStoredPreferencesStore} from "@/store/storedPreferences";
 import {ref} from "vue";
-import {format} from "sql-formatter";
-import {format_sql} from "../../store/utils";
 
-const consoleStore = useConsoleStore()
-const storedPreferences = useStoredPreferencesStore()
+const console_store = use_console_store()
+const stored_preferences = useStoredPreferencesStore()
+
 let dialog = ref(false)
+
 const historyHeader = [
-  {title: 'Query', align: 'start', key: 'query'}, {title: 'Actions', key: 'actions'}
+  {title: 'Query', align: 'start', key: 'query'},
+  {title: 'Actions', key: 'actions'}
 ]
 </script>
 
@@ -19,7 +20,7 @@ const historyHeader = [
       items-per-page="5"
       item-key="query"
       :headers="historyHeader"
-      :items="storedPreferences.console.queryHistory">
+      :items="stored_preferences.console.queryHistory">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Query history</v-toolbar-title>
@@ -40,7 +41,7 @@ const historyHeader = [
                 <v-btn
                   color="red"
                   variant="text"
-                  @click="storedPreferences.resetHistoryState(); dialog = false"
+                  @click="stored_preferences.resetHistoryState(); dialog = false"
                 >
                   Delete
                 </v-btn>
@@ -57,7 +58,7 @@ const historyHeader = [
       <template v-slot:item="{ item }">
         <tr>
           <td v-ripple
-              @click="consoleStore.content = item.query"
+              @click="console_store.content = item.query"
               class="spec text-truncate text-no-wrap"
               style="max-width: 15vw; min-width: 15vw">
             <v-tooltip :text="item.query">
@@ -73,7 +74,7 @@ const historyHeader = [
           </td>
           <td>
             <v-btn flat icon="mdi-delete" size="small"
-                   @click="storedPreferences.deleteHistory(item)">
+                   @click="stored_preferences.deleteHistory(item)">
             </v-btn>
           </td>
         </tr>
