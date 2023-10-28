@@ -1,7 +1,21 @@
 <script setup>
 import {use_tables_store} from "@/store/tables";
+import {use_console_store} from "@/store/console_store";
+import {useRouter} from "vue-router";
 
 const table_store = use_tables_store()
+const console_store = use_console_store()
+
+const router = useRouter()
+
+async function f() {
+  const query = `SELECT * FROM "${table_store.current_open_table.schema}"."${table_store.current_open_table.name}"`
+  await router.push({
+    name: 'console',
+    query: {query: query}
+  }).then(() => console_store.content = query)
+
+}
 </script>
 
 <template>
@@ -14,9 +28,9 @@ const table_store = use_tables_store()
               @click="table_store.show_create_table(table_store.current_open_table.name)"
               v-bind="props"
               flat
-
           >show create
           </v-btn>
+          <v-btn flat class="ml-1" @click="f();">query table</v-btn>
         </template>
         <template v-slot:default="{ isActive }">
           <v-card>

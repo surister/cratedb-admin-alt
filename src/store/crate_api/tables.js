@@ -47,6 +47,11 @@ class Schema {
 }
 
 class Table {
+    get_select_all_query(){
+        return `
+        SELECT   FROM "${this.schema}"."${this.name}"
+        `
+    }
     constructor(name, records, size_bytes, shards, replicas, table_type, schema) {
         this.name = name
         this.records = records
@@ -55,6 +60,6 @@ class Table {
         this.replicas = replicas
         this.table_type = table_type
         this.schema = schema // Schema always last, see queries.js comment on the query
-
+        console.log(this.schema)
     }
 }
