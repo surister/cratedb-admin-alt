@@ -98,7 +98,7 @@ const headers = adaptVTableHeader([
         <p>Used: <strong>{{ human_file_size(value.disks[0].used) }} </strong></p>
         <p>Size: <strong>{{ human_file_size(value.disks[0].size) }} </strong></p>
       </template>
-      <template v-slot:[`item.actions`]="{ value, item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-tooltip text="View jobs">
           <template v-slot:activator="{ props }">
             <v-btn

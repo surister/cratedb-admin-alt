@@ -1,6 +1,8 @@
 import {useStoredPreferencesStore} from "@/store/storedPreferences";
 import {use_global_store} from "@/store/globalStore";
 
+export const ALT_ADMIN_UUID = '--d6e76c94-0569-4e65-a86a-59daa9f069e1-cratealtadmin'
+
 export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= {}) {
   const storedPreferences = useStoredPreferencesStore()
   const globalStore = use_global_store()
@@ -17,6 +19,10 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
       stmt = stmt.replace(entry[0], entry[1])
     });
   }
+
+  // We add a unique identifier in every query as a comment, so we can differentiate
+  // at least if a query was sent from the admin UI
+  stmt += ALT_ADMIN_UUID
 
   try {
     const request = await fetch(

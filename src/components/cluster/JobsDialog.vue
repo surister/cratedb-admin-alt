@@ -9,6 +9,7 @@ let props = defineProps({
   cluster_name: String
 })
 let _is_open = ref(props.is_open)
+
 watch(
   () => props.is_open, (prev) => {
     _is_open.value = prev
@@ -22,7 +23,7 @@ let jobs = computed(() => {
 })
 
 const table_headers = adaptVTableHeader([
-  'Id', 'Node name', 'Started', 'Stmt', 'User', 'Actions'
+  'Id', 'Created by admin ui','Node name', 'Started', 'Stmt', 'Username', 'Actions'
 ])
 </script>
 
@@ -45,14 +46,18 @@ const table_headers = adaptVTableHeader([
           <template v-slot:[`item.node_name`]="{ item }">
             {{ item.node.name }}
           </template>
-          <template v-slot:[`item.actions`]>
+          <template v-slot:[`item.created_by_admin_ui`]="{ item }">
+            <v-icon :icon="item.is_from_admin_ui() ? 'mdi-check': 'mdi-cross'"></v-icon>
+          </template>
+          <template v-slot:[`item.actions`]="{ item }">
             <v-tooltip text="Kill job">
               <template v-slot:activator="{ props }">
                 <v-btn
-                  v-bind="props"
-                  variant="text"
-                  color="red"
-                  icon="mdi-close-circle"
+                    :disabled="item.is_from_admin_ui()"
+                    v-bind="props"
+                    variant="text"
+                    color="red"
+                    icon="mdi-close-circle"
                 ></v-btn>
               </template>
             </v-tooltip>
@@ -62,8 +67,8 @@ const table_headers = adaptVTableHeader([
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          text="Close"
-          @click="$emit('update:is_open', false)"
+            text="Close"
+            @click="$emit('update:is_open', false)"
         ></v-btn>
       </v-card-actions>
     </v-card>

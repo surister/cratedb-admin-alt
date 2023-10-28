@@ -1,3 +1,6 @@
+import {ALT_ADMIN_UUID} from "@/store/http/requests";
+
+
 export class Jobs {
   jobs = []
 
@@ -5,17 +8,6 @@ export class Jobs {
     return this.jobs.filter((job)=> job.node.name === node_name)
   }
 
-  toVDataItems(){
-    return this.jobs.map((job) =>{
-      return {
-        id: job.id,
-        node_name: job.node.name,
-        started: job.started,
-        stmt: job.stmt,
-        user: job.username,
-      }
-    })
-  }
   constructor(data) {
     for (const job_data of data) {
       const new_job = new Job(...job_data)
@@ -25,11 +17,18 @@ export class Jobs {
 }
 
 class Job {
+  is_from_admin_ui(){
+    return this._raw_stmt.includes(ALT_ADMIN_UUID)
+  }
+
+
   constructor(id, node, started, stmt, username) {
+    this._raw_stmt = stmt
+    this.stmt = stmt.replace(ALT_ADMIN_UUID, '')
+
     this.id = id
     this.node = node
     this.started = started
-    this.stmt = stmt
     this.username = username
   }
 }
