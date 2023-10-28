@@ -5,6 +5,7 @@ import {requestCrate} from "@/store/http/requests";
 import Queries from "@/store/http/queries";
 
 import {format_sql} from "@/store/utils";
+import {useRoute, useRouter} from "vue-router";
 
 
 const default_console_response = {
@@ -29,6 +30,8 @@ export const use_console_store = defineStore('console', () => {
         show_raw_response: false,
         show_full_screen_response: false,
     })
+    const router = useRouter()
+    const route = useRoute()
 
     async function format_query_content() {
         state.content = format_sql(state.content)
@@ -96,13 +99,30 @@ export const use_console_store = defineStore('console', () => {
 
     }
 
+
+    if (route.query.query != null) {
+        state.content = route.query.query
+    }
+
+    // Syncs the content of the console with the url query, it could have also been done
+    // via subscribing the @update event in the console component, but I think
+    // it's easier to maintain if every event is on the same place.
+    watch(
+        () => state.content, async () => {
+            await router.replace({path: route.path, query: {query: state.content}})
+        }
+    )
+
+    // Whenever live_update is true, every 5000ms, we re-submit the query this enables
+    // our 'live' update feature.
+    const LIVE_UPDATE_EVERY_MS = 5000
     watch(
         () => state.live_update, () => {
             if (state.live_update) {
                 state._watch_query_interval = setInterval(
                     async () => {
                         await query_from_console()
-                    }, 5000
+                    }, LIVE_UPDATE_EVERY_MS
                 )
             } else {
                 clearInterval(state._watch_query_interval)
