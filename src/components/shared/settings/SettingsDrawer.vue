@@ -5,6 +5,7 @@ import ThemeToggle from "@/components/shared/settings/ThemeToggle.vue";
 import ListItemLink from "@/components/shared/settings/ListItemLink.vue";
 import ConsoleSettings from "@/components/shared/settings/ConsoleSettings.vue";
 import GeneralSettings from "@/components/shared/settings/GeneralSettings.vue";
+import {use_log_store} from "@/store/log";
 
 const global_store = use_global_store()
 
@@ -39,6 +40,7 @@ const drawerLinks = [
   },
 
 ]
+const log_store = use_log_store()
 </script>
 
 <template>
@@ -77,7 +79,7 @@ const drawerLinks = [
         ></list-item-link>
       </v-list>
     </template>
-    <v-btn @click="">Debug</v-btn>
+    <v-btn @click="log_store.log(log_store.ACTIONS.CREATE_TABLE)">Debug</v-btn>
   </v-navigation-drawer>
 
 </template>

@@ -38,6 +38,13 @@ const routes = [
     value: 'users',
     title: 'Users',
     active_if_matches: '/users'
+  },
+  {
+    to: 'logs',
+    icon: 'mdi-note-search',
+    value: 'logs',
+    title: 'Logs',
+    active_if_matches: '/logs'
   }
 ]
 </script>
