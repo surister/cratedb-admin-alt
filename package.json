@@ -13,6 +13,7 @@
     "ace-builds": "^1.28.0",
     "chart.js": "^4.4.0",
     "core-js": "^3.29.0",
+    "dexie": "^3.2.4",
     "pinia": "^2.0.0",
     "pinia-plugin-persistedstate": "^3.2.0",
     "roboto-fontface": "*",
