@@ -6,16 +6,25 @@ const consoleStore = use_console_store()
 </script>
 
 <template>
-  <v-btn class="ml-2" size="x-large" @click="consoleStore.live_update = !consoleStore.live_update">
-    <template #default>
-      <v-switch v-model="consoleStore.live_update" color="primary">
-        <template v-slot:label>
-          <h4>Live update</h4>
+  <v-tooltip text="If active, will re-submit the query automatically every 5s" location="bottom">
+    <template v-slot:activator="{ props }">
+      <v-btn v-bind="props" class="ml-2" size="x-large"
+             @click="consoleStore.live_update = !consoleStore.live_update">
+        <template #default>
+          <v-switch v-model="consoleStore.live_update" color="primary">
+            <template v-slot:label>
+              <h4>Live update</h4>
+            </template>
+          </v-switch>
         </template>
-      </v-switch>
+        <template #append></template>
+      </v-btn>
     </template>
-  </v-btn>
-  <v-btn class="ml-1" icon="mdi-information" variant="text"/>
+  </v-tooltip>
+
+
+
+
 </template>
 
 <style scoped>
