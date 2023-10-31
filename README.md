@@ -1,11 +1,11 @@
 # CrateDB Alt panel
 
-### Current version 0.0.3
+### Current version 0.0.7
 
 ![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/overview.png)
-![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/console_v2.png)
+![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/console.png)
 ![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/tables.png)
-
+![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/cluster.png)
 You can see more screenshots in `/screenshots`
 ## Project setup
 

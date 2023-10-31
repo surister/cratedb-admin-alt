@@ -22,7 +22,9 @@ const users_store = use_users_store()
       </v-list-item>
       <v-divider/>
       <v-list-item
+
           v-for="user in node_info_store.users.users"
+          :value="user.name"
           :key="user.name"
           :title="user.name"
           @click="users_store.current_open_user = user"

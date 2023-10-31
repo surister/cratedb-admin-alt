@@ -4,7 +4,7 @@ import {human_file_size, human_numbers} from "@/store/utils";
 import {use_tables_store} from "@/store/tables";
 
 const tables_info = use_tables_store()
-await tables_info.update_tables()
+await tables_info.update_tables() // This is allowed, it converts the whole component into a Suspensable.
 </script>
 
 <template>
