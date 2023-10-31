@@ -1,9 +1,9 @@
 <script setup>
-import AceConsole from "@/components/console/AceConsole.vue";
+import AceConsole from "@/components/console/ConsoleEditor.vue";
 import ConsoleResponse from "@/components/console/ConsoleResponse.vue";
-import History from "@/components/console/History.vue";
-import ConsoleTableResults from "@/components/console/table_response/ConsoleTableResults.vue";
-import ConsoleActions from "@/components/console/actions/ConsoleActions.vue";
+import History from "@/components/console/ConsoleHistory.vue";
+import ConsoleTableResults from "@/components/console/ConsoleTableResults.vue";
+import ConsoleActions from "@/components/console/ConsoleActions.vue";
 
 import {use_console_store} from "@/store/console_store";
 

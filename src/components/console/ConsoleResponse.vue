@@ -1,6 +1,6 @@
 <script setup>
 import {use_console_store} from "@/store/console_store";
-import TracebackDialog from "@/components/console/TracebackDialog.vue";
+import TracebackDialog from "@/components/console/ConsoleResponseTracebackDialog.vue";
 
 const console_store = use_console_store()
 

@@ -3,7 +3,7 @@ import {use_console_store} from "@/store/console_store";
 import {adaptVTableHeader, adaptVTableItems, is_object} from "@/store/utils";
 
 import DialogText from "@/components/shared/object_representation/DialogText.vue";
-import DownloadBtn from "@/components/console/table_response/DownloadBtn.vue";
+import DownloadBtn from "@/components/console/ConsoleResponseDownloadBtn.vue";
 
 const consoleStore = use_console_store()
 

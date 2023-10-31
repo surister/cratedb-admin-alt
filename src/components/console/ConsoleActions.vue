@@ -1,10 +1,10 @@
 <script setup>
-import QueryWatcher from "@/components/console/QueryWatcher.vue";
-import SubmitBtn from "@/components/console/actions/SubmitBtn.vue";
+import QueryWatcher from "@/components/console/ConsoleActionsLiveUpdateBtn.vue";
+import SubmitBtn from "@/components/console/ConsoleActionsSubmitBtn.vue";
 
-import CancelQueryBtn from "@/components/console/actions/CancelQueryBtn.vue";
-import QueryHistorySwitch from "@/components/console/actions/QueryHistorySwitch.vue";
-import FormatQueryBtn from "@/components/console/actions/FormatQueryBtn.vue";
+import CancelQueryBtn from "@/components/console/ConsoleActionsCancelQueryBtn.vue";
+import QueryHistorySwitch from "@/components/console/ConsoleActionsHistorySwitch.vue";
+import FormatQueryBtn from "@/components/console/ConsoleActionsFormatQueryBtn.vue";
 </script>
 
 <template>

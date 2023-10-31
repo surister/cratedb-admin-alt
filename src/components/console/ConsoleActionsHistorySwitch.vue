@@ -14,8 +14,6 @@ const storedPreferences = useStoredPreferencesStore()
       </v-switch>
     </template>
   </v-btn>
-
-
 </template>
 
 <style scoped>
