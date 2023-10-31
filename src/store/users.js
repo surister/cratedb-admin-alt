@@ -21,7 +21,6 @@ export const use_users_store = defineStore('users', () => {
                 '%ident': ident,
                 '%to': state.current_open_user.name
             })
-        const data = await _response.json()
 
         if (_response.ok) {
             const real_index = state.current_open_user.privileges.findIndex((el) => el.id === id)

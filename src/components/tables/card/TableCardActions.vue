@@ -34,9 +34,17 @@ async function f() {
         </template>
         <template v-slot:default="{ isActive }">
           <v-card>
+            <v-toolbar>
+              <v-toolbar-title><h2 class="font-weight-bold ml-4">
+            <span class="text-blue-accent-1">{{
+                table_store.current_open_table.schema
+              }}</span>.{{ table_store.current_open_table.name }}
+              </h2></v-toolbar-title>
+            </v-toolbar>
             <v-card-text>
               <pre>{{ table_store.current_show_create_table }}</pre>
             </v-card-text>
+            <v-divider></v-divider>
             <v-card-actions>
               <v-spacer/>
               <v-btn
