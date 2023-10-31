@@ -24,9 +24,9 @@ const tables_info = use_tables_store()
       <v-divider/>
       <v-list-group fluid v-for="schema in tables_info.schemas.schemas" :key="schema">
         <v-divider/>
-        <v-list-item :value="table.name"
-                     :key="table.name"
-                     v-for="table in schema.tables"
+        <v-list-item :value="schema.name + i"
+                     :key="schema.name + i"
+                     v-for="(table, i) in schema.tables"
                      class="pl-4"
                      @click="tables_info.current_open_table = table; tables_info.current_open_schema = schema">
           <template #title>
