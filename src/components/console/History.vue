@@ -10,8 +10,10 @@ let dialog = ref(false)
 
 const historyHeader = [
   {title: 'Query', align: 'start', key: 'query'},
-  {title: 'Actions', key: 'actions'}
+  {title: 'Actions', key: 'actions', sortable: false}
 ]
+const search = ref(false)
+let search_text = ref('')
 </script>
 
 <template>
@@ -20,12 +22,20 @@ const historyHeader = [
       items-per-page="5"
       item-key="query"
       :headers="historyHeader"
-      :items="stored_preferences.console.queryHistory">
+      :items="stored_preferences.console.queryHistory"
+      :search="search_text"
+    >
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Query history</v-toolbar-title>
-          <v-spacer></v-spacer>
           <v-divider class="mx-4" inset vertical></v-divider>
+          <v-scale-transition>
+            <v-text-field v-model="search_text" variant="underlined" v-if="search" autofocus="true"></v-text-field>
+          </v-scale-transition>
+
+          <v-btn flat icon="mdi-text-box-search" :color="search ? 'blue': ''"
+                 @click="search = !search"/>
+
           <v-tooltip location="bottom" text="Delete query history">
             <template v-slot:activator="{ props }">
               <v-btn @click="dialog = true" v-bind="props" icon="mdi-delete-sweep"/>
@@ -60,7 +70,7 @@ const historyHeader = [
           <td v-ripple
               @click="console_store.content = item.query"
               class="spec text-truncate text-no-wrap"
-              style="max-width: 15vw; min-width: 15vw">
+              style="max-width: 17vw; min-width: 15vw">
             <v-tooltip :text="item.query">
               <template #default>
                 <pre>{{ item.query }}</pre>
