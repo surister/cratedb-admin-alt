@@ -8,6 +8,7 @@ const headers = adaptVTableHeader([
   'Id',
   'Date',
   'User',
+  'Context',
   'Type',
   'Danger'
 ],
@@ -15,7 +16,6 @@ const headers = adaptVTableHeader([
   false,
   ['danger', 'type', 'user']
 )
-console.log(JSON.stringify(headers))
 
 function danger_level_color(level) {
   switch (level) {
