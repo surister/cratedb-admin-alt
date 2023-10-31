@@ -47,11 +47,6 @@ class Schema {
 }
 
 class Table {
-    get_select_all_query(){
-        return `
-        SELECT   FROM "${this.schema}"."${this.name}"
-        `
-    }
     constructor(name, records, size_bytes, shards, replicas, table_type, schema) {
         this.name = name
         this.records = records

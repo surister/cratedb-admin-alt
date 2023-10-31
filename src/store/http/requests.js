@@ -16,7 +16,7 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
 
   if (stmtReplacedParams) {
     Object.entries(stmtReplacedParams).map(entry => {
-      stmt = stmt.replace(entry[0], entry[1])
+      stmt = stmt.replace(entry[0], entry[1] != null ? entry[1]: '')
     });
   }
 
@@ -44,5 +44,4 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
     globalStore.show_network_connection_snackbar = true
     globalStore.network_connection_attemps += 1
   }
-
 }

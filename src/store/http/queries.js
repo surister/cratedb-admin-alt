@@ -94,9 +94,8 @@ export default {
            priv.type
     FROM sys.users usr
            LEFT JOIN sys.privileges priv ON usr.name = priv.grantee
-    ORDER BY usr.superuser DESC
+    ORDER BY usr.superuser DESC , usr.name asc
   `,
-  SHOW_CREATE: `
-  SHOW CREATE TABLE %table_name
-  `
+  SHOW_CREATE: 'SHOW CREATE TABLE %table_name',
+  REVOKE: 'REVOKE %permission ON %type %ident FROM %to '
 }

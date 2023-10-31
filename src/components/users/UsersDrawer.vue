@@ -7,7 +7,7 @@ const users_store = use_users_store()
 </script>
 
 <template>
-  <v-navigation-drawer>
+  <v-navigation-drawer permanent>
     <v-list>
       <v-list-item>
         <v-row no-gutters>
@@ -31,7 +31,7 @@ const users_store = use_users_store()
         <template #prepend>
           <v-icon
               :color="user.is_superuser ? 'pink': ''"
-              :icon="user.is_superuser ? 'mdi-star': 'mdi-account'"/>
+              :icon="user.is_superuser ? 'mdi-shield-crown': 'mdi-account'"/>
         </template>
       </v-list-item>
     </v-list>
