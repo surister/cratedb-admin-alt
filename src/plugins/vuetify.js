@@ -16,6 +16,7 @@ import {
   VDataTableServer,
   VDataTableVirtual,
 } from "vuetify/labs/VDataTable";
+import {VSkeletonLoader} from "vuetify/labs/components";
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
@@ -23,6 +24,7 @@ export default createVuetify({
     VDataTable,
     VDataTableServer,
     VDataTableVirtual,
+    VSkeletonLoader
   },
   theme: {
     themes: {

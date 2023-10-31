@@ -12,6 +12,7 @@ import {NodeChecks} from "@/store/crate_api/node_checks";
 import {Jobs} from "@/store/crate_api/jobs";
 import {QueryStats} from "@/store/crate_api/query_stats";
 import {Users} from "@/store/crate_api/users";
+import {use_tables_store} from "@/store/tables";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 const CHART_MAX_INTERVAL_S = 300 // 5 minutes in seconds.

@@ -16,7 +16,6 @@ onBeforeMount(async ()=>{
   <h1>Tables</h1>
   <tables-drawer/>
   <table-card v-if="tables_info.current_open_table"/>
-
   <v-row align-content="center" class="text-center fill-height" v-else>
     <v-spacer/>
     <v-col align-self="center" cols="6">
@@ -26,7 +25,6 @@ onBeforeMount(async ()=>{
     </v-col>
     <v-spacer/>
   </v-row>
-
 </template>
 
 <style scoped>

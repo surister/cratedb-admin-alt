@@ -79,7 +79,7 @@ const log_store = use_log_store()
         ></list-item-link>
       </v-list>
     </template>
-    <v-btn @click="log_store.log(log_store.ACTIONS.CREATE_TABLE)">Debug</v-btn>
+    <v-btn @click="log_store.log(log_store.ACTIONS.CREATE_TABLE, 'doc.asdfoap1')">Debug</v-btn>
   </v-navigation-drawer>
 
 </template>
