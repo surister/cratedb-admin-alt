@@ -22,6 +22,11 @@ export const use_log_store = defineStore('log', () => {
       level: 3,
       description: 'A table was dropped',
       key: 'DROP TABLE'
+    },
+    REVOKED_PERMISSION: {
+      level: 2,
+      description: 'A permission was revoked',
+      key: 'REVOKED_PERMISSION'
     }
   }
 

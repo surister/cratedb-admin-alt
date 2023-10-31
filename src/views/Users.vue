@@ -93,7 +93,7 @@ const privileges_type = [
                 icon="mdi-eye-remove"
                 flat
                 @click="users_store.revoke_permission(
-                    item.type, item.class_, item.ident, users_store.current_open_user.name, item.id
+                    item
                 )"></v-btn>
           </template>
         </v-tooltip>
