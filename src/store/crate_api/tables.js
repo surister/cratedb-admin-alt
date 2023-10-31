@@ -60,6 +60,5 @@ class Table {
         this.replicas = replicas
         this.table_type = table_type
         this.schema = schema // Schema always last, see queries.js comment on the query
-        console.log(this.schema)
     }
 }

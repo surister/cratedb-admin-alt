@@ -6,6 +6,7 @@ import queries from "@/store/http/queries";
 import {Schemas} from "@/store/crate_api/tables";
 import {Columns} from "@/store/crate_api/columns";
 import {use_global_store} from "@/store/globalStore";
+import {use_log_store} from "@/store/log";
 
 export const use_tables_store = defineStore('tables', () => {
     const state = reactive({
@@ -17,6 +18,8 @@ export const use_tables_store = defineStore('tables', () => {
         current_show_create_table: null,
         sample_data: null
     })
+    const log_store = use_log_store()
+    const global_store = use_global_store()
 
     async function update_tables() {
         const _response = await requestCrate(queries.TABLES)
@@ -35,10 +38,10 @@ export const use_tables_store = defineStore('tables', () => {
     }
 
     async function update_table_sample_data() {
-             const _response = await requestCrate(queries.SAMPLE_DATA, null, {
-                 '%table_name': state.current_open_table.name,
-                 '%table_schema': state.current_open_table.schema
-             })
+        const _response = await requestCrate(queries.SAMPLE_DATA, null, {
+            '%table_name': state.current_open_table.name,
+            '%table_schema': state.current_open_table.schema
+        })
         const data = await _response.json()
         state.sample_data = data
     }
@@ -47,11 +50,17 @@ export const use_tables_store = defineStore('tables', () => {
         const _response = await requestCrate(queries.DROP_TABLE,
             null,
             {'%schema_name': state.current_open_table.schema, '%table_name': state.current_open_table.name})
-        const global_store = use_global_store()
+
         if (_response.ok){
-            await update_tables()
-            global_store.show_successful_snackbar(`Table ${state.current_open_table.name} deleted correctly`)
-            state.current_open_table = null
+            const _table_fqd = state.current_open_table.schema + '.' + state.current_open_table.name
+
+            // TODO
+            await update_tables() // Perhaps we can locally delete the data instead of forcing a request + re-drawn.
+            //
+
+            global_store.show_successful_snackbar(`Table ${_table_fqd} deleted correctly`)
+            state.current_open_table = null // Redraws the card, in this case, removing it.
+            await log_store.log(log_store.ACTIONS.DROP_TABLE, _table_fqd)
         } else {
             global_store.show_error_snackbar(`Something went wrong`)
         }
@@ -74,7 +83,7 @@ export const use_tables_store = defineStore('tables', () => {
                 // state.current_open_table is 'doc.table_test', we DROP the table, we set
                 // state.current_open_table to null, resetting the entire view, closing the table card
                 // and updating the left drawer, in that situation, we do not want this to be called
-                // since there is no table to get the columns for nor the need.
+                // since there is no table to get the columns for, nor the need.
                 return
             }
             await update_table_columns_information(value.name, value.schema)
