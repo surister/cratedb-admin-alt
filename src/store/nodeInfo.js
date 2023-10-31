@@ -109,10 +109,19 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
 
     async function update_chart_load_data() {
         // Updates the lists that will be used in the charts with the latest
-        // master node load (1,5,15) data.
+        // master node load 1, 5 and 15 data.
+
         const seconds_per_tick = (REFRESH_EVERY_MS / 1000)
         const current_ticks = charts_store.load.load1.length
         const max_interval_seconds = CHART_MAX_INTERVAL_S
+
+        const {load1, load5, load15} = state.nodes.getMasterNode().load
+
+        if ([load1, load5, load15].some((val)=> val === 'load')){
+          // If for some reason any load value is 'load' which is the default value
+          // we do nothing.
+          return
+        }
 
         if (seconds_per_tick * current_ticks >= max_interval_seconds) {
             // We pop the first values so the interval is never bigger than CHART_MAX_INTERVAL_S
@@ -124,19 +133,19 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
         const now = new Date()
         charts_store.load.load1.push(
             {
-                y: state.nodes.getMasterNode().load.load1,
+                y: load1,
                 x: now
             }
         )
         charts_store.load.load5.push(
             {
-                y: state.nodes.getMasterNode().load.load5,
+                y: load5,
                 x: now
             }
         )
         charts_store.load.load15.push(
             {
-                y: state.nodes.getMasterNode().load.load15,
+                y: load15,
                 x: now
             }
         )
