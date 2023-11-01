@@ -27,6 +27,11 @@ export const use_log_store = defineStore('log', () => {
       level: 2,
       description: 'A permission was revoked',
       key: 'REVOKED_PERMISSION'
+    },
+    USER_DELETED: {
+      level: 2,
+      description: 'A user was deleted',
+      key: 'USER_DELETED'
     }
   }
 

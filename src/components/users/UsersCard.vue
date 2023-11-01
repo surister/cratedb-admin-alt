@@ -1,7 +1,9 @@
 <script setup>
 import UsersCardPrivilegesLegend from "@/components/users/UsersCardPrivilegesLegend.vue";
-import {use_users_store} from "@/store/users";
 import UsersCardPrivilegesTable from "@/components/users/UsersCardPrivilegesTable.vue";
+import UsersCardActions from "@/components/users/UsersCardActions.vue";
+
+import {use_users_store} from "@/store/users";
 
 const users_store = use_users_store()
 </script>
@@ -22,7 +24,15 @@ const users_store = use_users_store()
       The superuser has access to the whole cluster. It is not possible to perform GRANT, DENY or
       REVOKE statements on the superuser.
     </v-card-text>
+
     <users-card-privileges-legend class="px-4" v-if="!users_store.current_open_user.is_superuser"/>
+    <v-divider></v-divider>
+    <v-row class="py-4">
+      <v-col>
+        <users-card-actions/>
+      </v-col>
+    </v-row>
+    <v-divider></v-divider>
     <users-card-privileges-table/>
   </v-card>
 </template>

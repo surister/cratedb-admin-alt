@@ -97,5 +97,6 @@ export default {
     ORDER BY usr.superuser DESC , usr.name asc
   `,
   SHOW_CREATE: 'SHOW CREATE TABLE %table_name',
-  REVOKE: 'REVOKE %permission ON %type %ident FROM %to '
+  REVOKE: 'REVOKE %permission ON %type %ident FROM %to',
+  DROP_USER: 'DROP USER %user_name'
 }
