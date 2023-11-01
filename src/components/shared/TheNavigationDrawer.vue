@@ -24,7 +24,13 @@ const routes = [
     title: 'Console',
     active_if_matches: '/console'
   },
-  {to: 'tables', icon: 'mdi-table', value: 'tables', title: 'Tables', active_if_matches: '/tables'},
+  {
+    to: 'tables',
+    icon: 'mdi-table',
+    value: 'tables',
+    title: 'Tables',
+    active_if_matches: '/tables'
+  },
   {
     to: 'cluster',
     icon: 'mdi-checkerboard',

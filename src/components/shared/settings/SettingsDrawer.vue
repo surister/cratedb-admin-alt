@@ -1,20 +1,21 @@
 <script setup>
-import { use_global_store } from "@/store/globalStore";
-
 import ThemeToggle from "@/components/shared/settings/ThemeToggle.vue";
 import ListItemLink from "@/components/shared/settings/ListItemLink.vue";
 import ConsoleSettings from "@/components/shared/settings/ConsoleSettings.vue";
 import GeneralSettings from "@/components/shared/settings/GeneralSettings.vue";
+
+import {use_global_store} from "@/store/globalStore";
 import {use_log_store} from "@/store/log";
 
 const global_store = use_global_store()
+const log_store = use_log_store()
 
 const drawerLinks = [
   {
     title: 'Current release',
     appendIcon: 'mdi-open-in-new',
     preprendIcon: 'mdi-link-variant',
-    linkTitle: 'v0.0.1',
+    linkTitle: import.meta.env.VITE_ADMIN_UI_VERSION,
     linkTo: ''
   },
   {
@@ -38,9 +39,7 @@ const drawerLinks = [
     linkTitle: 'Blog',
     linkTo: 'https://cratedb.com/blog'
   },
-
 ]
-const log_store = use_log_store()
 </script>
 
 <template>
@@ -79,6 +78,7 @@ const log_store = use_log_store()
         ></list-item-link>
       </v-list>
     </template>
+
     <v-btn @click="log_store.log(log_store.ACTIONS.CREATE_TABLE, 'doc.asdfoap1')">Debug</v-btn>
   </v-navigation-drawer>
 

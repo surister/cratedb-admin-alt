@@ -11,7 +11,6 @@ import NodeChecks from "@/components/shared/bar/info/nodechecks/NodeChecks.vue";
   <health class="mx-2"></health>
   <node-checks class="mx-2"></node-checks>
   <system-load class="mx-2"></system-load>
-
 </template>
 
 <style scoped>

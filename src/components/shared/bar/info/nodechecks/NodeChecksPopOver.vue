@@ -25,7 +25,6 @@ const props = defineProps(
             node_check.severity
           }}
         </v-chip>
-
         <p style="max-width: 400px" class="pt-2"><strong>Reason:</strong> {{
             node_check.description
           }}</p>

@@ -22,7 +22,6 @@ const users_store = use_users_store()
       </v-list-item>
       <v-divider/>
       <v-list-item
-
           v-for="user in node_info_store.users.users"
           :value="user.name"
           :key="user.name"

@@ -7,7 +7,6 @@ import {useNodeInfoStore} from "@/store/nodeInfo";
 import TitledText from "@/components/shared/text/TitledText.vue";
 import JobsDialog from "@/components/cluster/JobsDialog.vue";
 
-
 let expanded = ref([])
 let nodeStore = useNodeInfoStore();
 let jobs_dialog = ref(false)
