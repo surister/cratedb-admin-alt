@@ -12,7 +12,6 @@ import {NodeChecks} from "@/store/crate_api/node_checks";
 import {Jobs} from "@/store/crate_api/jobs";
 import {QueryStats} from "@/store/crate_api/query_stats";
 import {Users} from "@/store/crate_api/users";
-import {use_tables_store} from "@/store/tables";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 const CHART_MAX_INTERVAL_S = 300 // 5 minutes in seconds.
@@ -69,7 +68,8 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
         query_stats: new QueryStats([]),
         users: new Users([]),
         shouldUpdateAllocation: false,
-        nodeCount: '0'
+        nodeCount: '0',
+        current_user: ''
     })
 
     const charts_store = use_chart_store()
@@ -164,7 +164,11 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
         const users = await _response.json()
         state.users = new Users(users.rows)
     }
-
+    async function update_current_user() {
+        const _response = await requestCrate(queries.CURRENT_USER)
+        const data = await _response.json()
+        state.current_user = data.rows[0][0]
+    }
     // We update them synchronously the first time we launch the site
     //
     // What happens if for some reason one fails and the others don't ?
@@ -174,6 +178,7 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
     updateJobsInfo()
     update_qps_data()
     update_privileges()
+    update_current_user()
     setInterval(async () => {
         // Be careful, this ignores exceptions.
         await Promise.allSettled([

@@ -4,8 +4,10 @@ import { use_global_store } from "@/store/globalStore";
 
 import InfoGroup from "@/components/shared/bar/info/InfoGroup.vue";
 import SupportButton from "@/components/shared/bar/SupportButton.vue";
+import {useNodeInfoStore} from "@/store/nodeInfo";
 
 const global_store = use_global_store()
+const info_store = useNodeInfoStore()
 const admin_ui_version = import.meta.env.VITE_ADMIN_UI_VERSION
 </script>
 
@@ -20,7 +22,7 @@ const admin_ui_version = import.meta.env.VITE_ADMIN_UI_VERSION
       <vertical-divider></vertical-divider>
       <info-group></info-group>
       <vertical-divider></vertical-divider>
-      <v-btn variant="flat">Crate</v-btn>
+      <v-btn variant="flat">{{ info_store.current_user }}</v-btn>
       <support-button></support-button>
       <vertical-divider></vertical-divider>
       <v-btn

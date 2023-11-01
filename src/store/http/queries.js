@@ -98,5 +98,6 @@ export default {
   `,
   SHOW_CREATE: 'SHOW CREATE TABLE %table_name',
   REVOKE: 'REVOKE %permission ON %type %ident FROM %to',
-  DROP_USER: 'DROP USER %user_name'
+  DROP_USER: 'DROP USER %user_name',
+  CURRENT_USER: 'SELECT current_user'
 }
