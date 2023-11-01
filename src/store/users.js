@@ -51,8 +51,26 @@ export const use_users_store = defineStore('users', () => {
     }
   }
 
+  async function create_user(username, password){
+    const _response = await requestCrate(
+        queries.CREATE_USER,
+        null,
+        {
+          '%username': username,
+          '%password': password
+        })
+    if (_response.ok) {
+      global_store.show_successful_snackbar('Successfully created user')
+      await log_store.log(log_store.ACTIONS.USER_CREATED, username)
+    } else {
+      const data = await _response.json()
+      const err_message = data.error.message
+      global_store.show_error_snackbar(err_message)
+    }
+  }
   return {
     ...toRefs(state),
+    create_user,
     drop_user,
     revoke_permission
   }

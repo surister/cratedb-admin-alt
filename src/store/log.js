@@ -32,6 +32,11 @@ export const use_log_store = defineStore('log', () => {
       level: 2,
       description: 'A user was deleted',
       key: 'USER_DELETED'
+    },
+    USER_CREATED: {
+      level: 1,
+      description: 'A user was created',
+      key: 'USER_CREATED'
     }
   }
 

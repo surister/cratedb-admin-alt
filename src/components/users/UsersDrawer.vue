@@ -1,6 +1,7 @@
 <script setup>
 import {useNodeInfoStore} from "@/store/nodeInfo";
 import {use_users_store} from "@/store/users";
+import UsersDrawerAddUserBtn from "@/components/users/UsersDrawerAddUserBtn.vue";
 
 const node_info_store = useNodeInfoStore()
 const users_store = use_users_store()
@@ -14,9 +15,10 @@ const users_store = use_users_store()
           <v-col align-self="center">
             <v-label>Users</v-label>
           </v-col>
+          <v-spacer></v-spacer>
           <v-spacer/>
           <v-col>
-            <v-btn icon="mdi-cog" flat v-show="false"></v-btn>
+          <users-drawer-add-user-btn/>
           </v-col>
         </v-row>
       </v-list-item>
