@@ -8,7 +8,8 @@ const users_store = use_users_store()
 
 <template>
   <button-with-confirm-dialog
-    btn-text="DELETE"
+    text="DELETE"
+    :disabled="users_store.current_open_user.is_superuser"
     dialog-title="Are you sure you want to delete the user?"
     dialog-action-confirm-button-text="YES, DELETE"
     @click="users_store.drop_user()"

@@ -4,8 +4,13 @@ const props = defineProps({
     type: Number,
     default: 600,
   },
-  btnText: {
+  text: {
     type: String,
+  },
+  disabled: {
+    required: false,
+    type: Boolean,
+    default: false,
   },
   dialogTitle: {
     type: String,
@@ -13,11 +18,7 @@ const props = defineProps({
   dialogText: {
     type: String,
   },
-  dialogActionConfirmDisabled: {
-    required: false,
-    type: Boolean,
-    default: false,
-  },
+
   dialogActionConfirmButtonText: {
     type: String,
   },
@@ -29,12 +30,12 @@ const emit = defineEmits(['click'])
 <template>
   <v-dialog max-width="600">
     <template v-slot:activator="{ props }">
-      <v-btn :disabled="dialogActionConfirmDisabled"
+      <v-btn :disabled="disabled"
              color="red-lighten-1"
              v-bind="props"
              class="ml-1"
              text
-      >{{ btnText }}
+      >{{ text }}
       </v-btn>
     </template>
 
