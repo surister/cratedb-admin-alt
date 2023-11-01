@@ -1,6 +1,13 @@
 <script setup>
 const privileges_type = [
   {
+    acronym: 'AL',
+    name: 'Administration Language',
+    allows: [
+      'CREATE USER', 'DROP USER', 'SET GLOBAL'
+    ]
+  },
+  {
     acronym: 'DQL',
     color: '',
     name: 'Data Query Language',
@@ -22,7 +29,8 @@ const privileges_type = [
       'CREATE REPOSITORY', 'DROP REPOSITORY', 'CREATE SNAPSHOT',
       'DROP SNAPSHOT', 'RESTORE SNAPSHOT', 'ALTER TABLE'
     ],
-  }
+  },
+
 ]
 </script>
 
