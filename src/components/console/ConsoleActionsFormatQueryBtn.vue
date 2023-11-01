@@ -5,7 +5,7 @@ const console_store = use_console_store()
 </script>
 
 <template>
-<v-btn size="x-large" class="ml-1" @click="console_store.format_query_content()">Format</v-btn>
+<v-btn size="x-large" class="ml-2" @click="console_store.format_query_content()">Format</v-btn>
 </template>
 
 <style scoped>
