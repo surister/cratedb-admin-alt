@@ -44,12 +44,6 @@ const console_store = use_console_store()
   </v-row>
 
   <!--  Dialogs -->
-  <v-dialog v-model="console_store.show_raw_response" max-width="800px">
-    <v-code class="overflow-y-auto" tag="pre">
-      {{ console_store.response.data.rows }}
-    </v-code>
-  </v-dialog>
-
   <v-dialog v-model="console_store.show_full_screen_response">
     <console-table-results v-if="console_store.show_full_screen_response"/>
   </v-dialog>

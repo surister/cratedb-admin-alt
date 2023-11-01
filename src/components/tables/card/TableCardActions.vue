@@ -14,7 +14,6 @@ async function f() {
     name: 'console',
     query: {query: query}
   }).then(() => console_store.content = query)
-
 }
 </script>
 

@@ -55,8 +55,11 @@ export const use_tables_store = defineStore('tables', () => {
             const _table_fqd = state.current_open_table.schema + '.' + state.current_open_table.name
 
             // TODO
-            await update_tables() // Perhaps we can locally delete the data instead of forcing a request + re-drawn.
-            //
+            await update_tables()
+            // Perhaps we can locally delete the data instead of forcing a request + re-drawn.
+            // this costs a few milliseconds delay when deleting a table, it is not a 'problem'
+            // but it is noticeable, should be fixed to ensure max smoothness.
+            // We do it correctly in drop user and table privileges for reference.
 
             global_store.show_successful_snackbar(`Table ${_table_fqd} deleted correctly`)
             state.current_open_table = null // Redraws the card, in this case, removing it.

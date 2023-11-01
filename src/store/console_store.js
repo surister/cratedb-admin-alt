@@ -27,7 +27,6 @@ export const use_console_store = defineStore('console', () => {
         add_query_to_history: true,
         live_update: false,
         _watch_query_interval: null,
-        show_raw_response: false,
         show_full_screen_response: false,
     })
     const router = useRouter()

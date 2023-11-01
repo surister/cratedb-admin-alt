@@ -3,7 +3,8 @@ import {use_console_store} from "@/store/console_store";
 import {adaptVTableHeader, adaptVTableItems, is_object} from "@/store/utils";
 
 import DialogText from "@/components/shared/object_representation/DialogText.vue";
-import DownloadBtn from "@/components/console/ConsoleResponseDownloadBtn.vue";
+import ConsoleTableResultsToolbarActions
+  from "@/components/console/ConsoleTableResultsToolbarActions.vue";
 
 const consoleStore = use_console_store()
 
@@ -30,12 +31,10 @@ function color_objects(object) {
         :items-per-page="!consoleStore.show_full_screen_response ? 5: 10">
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Query data response: {{ consoleStore.response.data.row_count }} record(s)</v-toolbar-title>
-          <v-btn @click="consoleStore.show_raw_response = !consoleStore.show_raw_response" text="View raw"/>
-          <download-btn/>
-          <v-btn v-if="!consoleStore.show_full_screen_response"
-                 icon="mdi-fullscreen"
-                 @click="consoleStore.show_full_screen_response = !consoleStore.show_full_screen_response"/>
+          <v-toolbar-title>Query data response: {{ consoleStore.response.data.row_count }}
+            record(s)
+          </v-toolbar-title>
+          <console-table-results-toolbar-actions/>
         </v-toolbar>
       </template>
       <template v-slot:item="{ item }">
