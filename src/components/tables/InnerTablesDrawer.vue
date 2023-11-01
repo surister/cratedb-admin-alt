@@ -2,17 +2,40 @@
 import {human_file_size, human_numbers} from "@/store/utils";
 
 import {use_tables_store} from "@/store/tables";
+import {ref} from "vue";
 
 const tables_info = use_tables_store()
 await tables_info.update_tables() // This is allowed, it converts the whole component into a Suspensable.
+
+const filter = ref(null)
+const filtered_tables = (tables) => tables.filter((table) => {
+  if (filter.value == null || !props.showSearch) {
+    return true
+  }
+  const regex = `^.*${filter.value}`
+  const res = table.name.match(regex)
+  return res != null
+})
+
+const props = defineProps({
+  showSearch: {
+    type: Boolean,
+    default: false
+  }
+})
 </script>
 
 <template>
-  <v-list-group ref="shit" fluid v-for="schema in tables_info.schemas.schemas" :key="schema">
+  <v-expand-transition>
+    <v-text-field v-model="filter" clearable placeholder="Search table.." :focused="true"
+                  v-if="showSearch"></v-text-field>
+  </v-expand-transition>
+
+  <v-list-group fluid v-for="schema in tables_info.schemas.schemas" :key="schema">
     <v-divider/>
     <v-list-item :value="schema.name + i"
                  :key="schema.name + i"
-                 v-for="(table, i) in schema.tables"
+                 v-for="(table, i) in filtered_tables(schema.tables)"
                  class="pl-4"
                  @click="tables_info.current_open_table = table; tables_info.current_open_schema = schema">
       <template #title>

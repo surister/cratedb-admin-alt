@@ -1,8 +1,8 @@
 <script setup>
-
-
 import InnerTablesDrawer from "@/components/tables/InnerTablesDrawer.vue";
-import {inRange} from "eslint-plugin-vue/lib/utils";
+import {ref} from "vue";
+
+const show_search = ref(false)
 </script>
 
 <template>
@@ -12,24 +12,25 @@ import {inRange} from "eslint-plugin-vue/lib/utils";
         <v-row no-gutters>
           <v-col align-self="center">
             <v-label>Tables</v-label>
+
           </v-col>
           <v-spacer></v-spacer>
+
           <v-col>
-            <v-btn icon="mdi-cog" flat v-show="false"></v-btn>
+            <v-btn class="ml-10" icon="mdi-text-search" @click="show_search = !show_search" flat/>
           </v-col>
         </v-row>
       </v-list-item>
       <v-divider/>
 
-        <Suspense>
-          <inner-tables-drawer/>
-          <template #fallback>
+      <Suspense>
+        <inner-tables-drawer :show-search="show_search"/>
+        <template #fallback>
             <span>
-              <v-skeleton-loader type="list-item-two-line" v-for="_ in 3"/>
+              <v-skeleton-loader type="list-item-two-line" v-for="_ in 3" :key="_"/>
             </span>
-
-          </template>
-        </Suspense>
+        </template>
+      </Suspense>
 
     </v-list>
   </v-navigation-drawer>
