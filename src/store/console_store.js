@@ -26,7 +26,7 @@ export const use_console_store = defineStore('console', () => {
         is_query_running: false,
         add_query_to_history: true,
         live_update: false,
-        _watch_query_interval: null,
+        _live_update_interval: null,
         show_full_screen_response: false,
     })
     const router = useRouter()
@@ -80,6 +80,7 @@ export const use_console_store = defineStore('console', () => {
             {},
             true)
         const json_response = await _response.json()
+
         if (_response.ok) {
             await set_console_response_to_success(
                 'success',
@@ -119,16 +120,17 @@ export const use_console_store = defineStore('console', () => {
     // Whenever live_update is true, every 5000ms, we re-submit the query this enables
     // our 'live' update feature.
     const LIVE_UPDATE_EVERY_MS = 5000
+
     watch(
         () => state.live_update, () => {
             if (state.live_update) {
-                state._watch_query_interval = setInterval(
+                state._live_update_interval = setInterval(
                     async () => {
                         await query_from_console()
                     }, LIVE_UPDATE_EVERY_MS
                 )
             } else {
-                clearInterval(state._watch_query_interval)
+                clearInterval(state._live_update_interval)
             }
         }
     )

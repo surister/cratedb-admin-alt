@@ -1,5 +1,6 @@
 import {useStoredPreferencesStore} from "@/store/storedPreferences";
 import {use_global_store} from "@/store/globalStore";
+import {use_log_store} from "@/store/log";
 
 export const ALT_ADMIN_UUID = '--d6e76c94-0569-4e65-a86a-59daa9f069e1-adminui'
 export const ALT_ADMIN_UUID_CONSOLE = '--d6e76c94-0569-4e65-a86a-59daa9f069e1-console'
@@ -7,6 +8,7 @@ export const ALT_ADMIN_UUID_CONSOLE = '--d6e76c94-0569-4e65-a86a-59daa9f069e1-co
 export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= {}, is_from_console = false) {
   const storedPreferences = useStoredPreferencesStore()
   const globalStore = use_global_store()
+  const log_store = use_log_store()
 
   let url = storedPreferences.general.masterNodeUrl + '/_sql'
   let stmt = _stmt // https://airbnb.io/javascript/#functions--reassign-params
@@ -27,6 +29,10 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
     stmt += ALT_ADMIN_UUID_CONSOLE
   } else {
     stmt += ALT_ADMIN_UUID
+  }
+
+  if (is_from_console) {
+    await log_store.log_stmt_if_needed(stmt)
   }
 
   try {

@@ -7,9 +7,9 @@ export const use_log_store = defineStore('log', () => {
 
   const db = new Dexie('log_db')
   db.version(1).stores(
-    {
-      logs: '++id, date, user, context, type, danger'
-    }
+      {
+        logs: '++id, date, user, context, type, danger'
+      }
   )
 
   const ACTIONS = {
@@ -45,23 +45,32 @@ export const use_log_store = defineStore('log', () => {
     }
   }
 
+  async function log_stmt_if_needed(stmt) {
+    for (const [_, action] of Object.entries(ACTIONS)) {
+      if (stmt.includes(action.stmt)) {
+          await log(action, stmt)
+      }
+    }
+  }
+
   // TODO User is currently hardcoded, at some point
   // when we have the ability to log different users,
   // we should fix this.
-  async function log(action, context, user='crate') {
-      await db.logs.add({
-        date: new Date(),
-        user: user,
-        type: action.key,
-        context: context,
-        danger: action.level
-      })
+  async function log(action, context, user = 'crate') {
+    await db.logs.add({
+      date: new Date(),
+      user: user,
+      type: action.key,
+      context: context,
+      danger: action.level
+    })
   }
 
   return {
     ...toRefs(state),
     db,
     ACTIONS,
-    log
+    log,
+    log_stmt_if_needed
   }
 })
