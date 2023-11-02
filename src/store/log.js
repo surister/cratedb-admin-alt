@@ -16,27 +16,32 @@ export const use_log_store = defineStore('log', () => {
     CREATE_TABLE: {
       level: 1,
       description: 'A table was created',
-      key: 'CRATE_TABLE'
+      key: 'CRATE_TABLE',
+      stmt: 'CREATE TABLE',
     },
     DROP_TABLE: {
       level: 3,
       description: 'A table was dropped',
-      key: 'DROP TABLE'
+      key: 'DROP_TABLE',
+      stmt: 'DROP TABLE'
     },
     REVOKED_PERMISSION: {
       level: 2,
       description: 'A permission was revoked',
-      key: 'REVOKED_PERMISSION'
+      key: 'REVOKED_PERMISSION',
+      stmt: 'REVOKE'
     },
     USER_DELETED: {
       level: 2,
       description: 'A user was deleted',
-      key: 'USER_DELETED'
+      key: 'USER_DELETED',
+      stmt: 'DROP USER'
     },
     USER_CREATED: {
       level: 1,
       description: 'A user was created',
-      key: 'USER_CREATED'
+      key: 'USER_CREATED',
+      stmt: 'CREATE USER'
     }
   }
 

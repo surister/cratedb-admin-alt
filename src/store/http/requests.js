@@ -1,9 +1,10 @@
 import {useStoredPreferencesStore} from "@/store/storedPreferences";
 import {use_global_store} from "@/store/globalStore";
 
-export const ALT_ADMIN_UUID = '--d6e76c94-0569-4e65-a86a-59daa9f069e1-cratealtadmin'
+export const ALT_ADMIN_UUID = '--d6e76c94-0569-4e65-a86a-59daa9f069e1-adminui'
+export const ALT_ADMIN_UUID_CONSOLE = '--d6e76c94-0569-4e65-a86a-59daa9f069e1-console'
 
-export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= {}) {
+export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= {}, is_from_console = false) {
   const storedPreferences = useStoredPreferencesStore()
   const globalStore = use_global_store()
 
@@ -21,8 +22,12 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
   }
 
   // We add a unique identifier in every query as a comment, so we can differentiate
-  // at least if a query was sent from the admin UI
-  stmt += ALT_ADMIN_UUID
+  // if a given query in a CrateDB is from the Admin UI or Admin UI Console
+  if (is_from_console) {
+    stmt += ALT_ADMIN_UUID_CONSOLE
+  } else {
+    stmt += ALT_ADMIN_UUID
+  }
 
   try {
     const request = await fetch(
@@ -38,6 +43,7 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
     );
     globalStore.show_network_connection_snackbar = false
     globalStore.network_connection_attemps = 0
+    console.log(request.ok)
     return request
 
   } catch (err) {

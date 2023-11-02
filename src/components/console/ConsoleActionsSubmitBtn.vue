@@ -13,7 +13,9 @@ function do_query() {
 </script>
 
 <template>
-  <v-btn :loading="consoleStore.is_query_running" size="x-large" @click="do_query"
+  <v-btn :loading="consoleStore.is_query_running"
+         size="x-large"
+         @click="do_query"
          :disabled="consoleStore.content.length === 0">Submit
   </v-btn>
 </template>

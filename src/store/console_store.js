@@ -74,7 +74,11 @@ export const use_console_store = defineStore('console', () => {
     async function query_from_console() {
         state.is_query_running = true
 
-        const _response = await requestCrate(state.content, 'error_trace=true')
+        const _response = await requestCrate(
+            state.content,
+            'error_trace=true',
+            {},
+            true)
         const json_response = await _response.json()
         if (_response.ok) {
             await set_console_response_to_success(

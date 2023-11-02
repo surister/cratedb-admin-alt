@@ -102,3 +102,8 @@ export default {
   CURRENT_USER: 'SELECT current_user',
   CREATE_USER: "CREATE USER %username WITH (password='%password')"
 }
+
+function proxify(object){
+
+
+}
