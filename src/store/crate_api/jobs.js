@@ -4,7 +4,7 @@ import {ALT_ADMIN_UUID} from "@/store/http/requests";
 export class Jobs {
   jobs = []
 
-  get_job_by_node(node_name){
+  get_jobs_by_node(node_name){
     return this.jobs.filter((job)=> job.node.name === node_name)
   }
 
@@ -25,7 +25,6 @@ class Job {
   constructor(id, node, started, stmt, username) {
     this._raw_stmt = stmt
     this.stmt = stmt.replace(ALT_ADMIN_UUID, '')
-
     this.id = id
     this.node = node
     this.started = started
