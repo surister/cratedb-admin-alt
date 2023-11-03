@@ -2,7 +2,7 @@
 import {use_console_store} from "@/store/console_store";
 import {adaptVTableHeader, adaptVTableItems, is_object} from "@/store/utils";
 
-import DialogText from "@/components/shared/object_representation/DialogText.vue";
+import { JsonTreeView } from "json-tree-view-vue3";
 import ConsoleTableResultsToolbarActions
   from "@/components/console/ConsoleTableResultsToolbarActions.vue";
 
@@ -41,7 +41,7 @@ function color_objects(object) {
         <tr>
           <td v-for="(it, index) in item" :key="index">
             <template v-if="is_object(it) || Array.isArray(it)">
-              <dialog-text :object="it"></dialog-text>
+              <json-tree-view class="my-1" colorScheme="dark" rootKey="Object" maxDepth="0" :data="JSON.stringify(it)"></json-tree-view>
             </template>
             <template v-else>
               <span :style="{color: color_objects(it)}">{{ it }} </span>
