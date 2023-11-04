@@ -14,6 +14,7 @@ export class QueryStats {
         if (!this.stats.hasOwnProperty(type)) {
             // Paint data and subsequently this function might get call while empty
             // before the http request has been done or answered.
+            //
             // While there is no data, we do not know what 'TYPE' exists, as this.stats is '{}'
             // So if we do this.stats[type] as this.stats is an empty dict it will throw an exception
             // we handle this by just assigning the temporal var 'data' to an empty list, milliseconds
@@ -47,7 +48,6 @@ export class QueryStats {
             if (!this.stats.hasOwnProperty(type)) {
                 this.stats[type] = []
             }
-
             this.stats[type].push(datum)
         }
     }

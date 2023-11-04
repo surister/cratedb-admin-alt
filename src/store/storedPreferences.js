@@ -8,39 +8,39 @@ import {useTheme} from "vuetify";
 const defaultState = {
     theme: 'light',
     console: {
-        fontSize: 25,
-        minLines: 10,
-        maxLines: 20,
-        queryLimit: 100,
-        addQueryToHistory: true,
-        queryHistory: []
+        font_size: 25,
+        min_lines: 10,
+        max_lines: 20,
+        query_limit: 100,
+        add_query_to_history: true,
+        query_history: []
     },
     general: {
-        masterNodeUrl: 'http://localhost:4201'
+        master_node_url: 'http://localhost:4201'
     }
 }
-export const useStoredPreferencesStore = defineStore('storedPreferences', () => {
+export const use_stored_preferences_store = defineStore('stored_preferences', () => {
         const state = reactive(defaultState)
         const theme = useTheme()
 
-        function deleteHistory(item) {
-            state.console.queryHistory.splice(state.console.queryHistory.findIndex(function (i) {
+        function delete_from_history(item) {
+            state.console.query_history.splice(state.console.query_history.findIndex(function (i) {
                 return i.id === item.id;
             }), 1);
         }
 
-        function resetQueryHistoryState() {
-            state.console.queryHistory = []
+        function reset_query_history() {
+            state.console.query_history = []
         }
 
-        function addToQueryHistory(stmt) {
+        function add_to_history(stmt) {
             let lastIndex = 0
-            if (state.console.queryHistory.length !== 0) {
-                lastIndex = state.console.queryHistory.slice(-1)[0].id
+            if (state.console.query_history.length !== 0) {
+                lastIndex = state.console.query_history.slice(-1)[0].id
             }
 
-            if (state.console.addQueryToHistory) {
-                state.console.queryHistory.unshift(
+            if (state.console.add_query_to_history) {
+                state.console.query_history.unshift(
                     {id: lastIndex + 1, query: stmt}
                 )
             }
@@ -54,9 +54,9 @@ export const useStoredPreferencesStore = defineStore('storedPreferences', () => 
 
         return {
             ...toRefs(state),
-            resetHistoryState: resetQueryHistoryState,
-            addToQueryHistory,
-            deleteHistory,
+            reset_query_history,
+            add_to_history,
+            delete_from_history,
         }
     },
     {

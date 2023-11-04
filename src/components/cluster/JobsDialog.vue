@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref, watch} from "vue";
-import {useNodeInfoStore} from "@/store/nodeInfo";
+import {use_node_info_store} from "@/store/node_info";
 import {adaptVTableHeader} from "@/store/utils";
 import VerticalDivider from "@/components/shared/VerticalDivider.vue";
 
@@ -17,7 +17,7 @@ watch(
   }
 )
 
-const node_info_store = useNodeInfoStore()
+const node_info_store = use_node_info_store()
 
 let jobs = computed(() => {
   let _jobs = node_info_store.jobs.get_jobs_by_node(props.cluster_name)

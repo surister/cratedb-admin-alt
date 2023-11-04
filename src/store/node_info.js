@@ -2,7 +2,7 @@
 import {defineStore} from "pinia";
 import {reactive, toRefs} from "vue";
 
-import {requestCrate} from "@/store/http/requests";
+import {request_crate} from "@/store/http/requests";
 import queries from "@/store/http/queries";
 import {use_chart_store} from "@/store/charts";
 import {CrateNodes} from "@/store/crate_api/node";
@@ -58,7 +58,7 @@ const emptyNodeResult = [
   {version: "version"}, // version
   {} // os info
 ]
-export const useNodeInfoStore = defineStore('nodeInfo', () => {
+export const use_node_info_store = defineStore('node_info', () => {
     const state = reactive({
         nodes: new CrateNodes([emptyNodeResult,], 1),
         health: new CrateTableHealths([]),
@@ -67,45 +67,45 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
         jobs: new Jobs([]),
         query_stats: new QueryStats([]),
         users: new Users([]),
-        shouldUpdateAllocation: false,
-        nodeCount: '0',
+        should_update_allocation: false,
+        node_count: '0',
         current_user: ''
     })
 
     const charts_store = use_chart_store()
 
-    async function updateNodeInfo() {
-        const _response = await requestCrate(queries.NODE_INFO)
-        const nodeInfo = await _response.json()
-        state.nodes = new CrateNodes(nodeInfo.rows, nodeInfo.rowcount)
+    async function update_node_info() {
+        const _response = await request_crate(queries.NODE_INFO)
+        const data = await _response.json()
+        state.nodes = new CrateNodes(data.rows, data.rowcount)
     }
 
-    async function updateHealthInfo() {
-        const _response = await requestCrate(queries.HEALTH)
-        const healthInfo = await _response.json()
-        state.health = new CrateTableHealths(healthInfo.rows)
+    async function update_health_info() {
+        const _response = await request_crate(queries.HEALTH)
+        const data = await _response.json()
+        state.health = new CrateTableHealths(data.rows)
 
         // If there is a bad health table, we start fetching allocation issues, otherwise
         // we can stop fetching it.
-        state.shouldUpdateAllocation = !!state.health.hasBadHealth();
+        state.should_update_allocation = !!state.health.has_bad_health();
     }
 
-    async function updateAllocationIssuesInfo() {
-        const _response = await requestCrate(queries.ALLOCATIONS)
-        const allocationInfo = await _response.json()
-        state.allocations = new AllocationIssues(allocationInfo.rows)
+    async function update_allocations_info() {
+        const _response = await request_crate(queries.ALLOCATIONS)
+        const data = await _response.json()
+        state.allocations = new AllocationIssues(data.rows)
     }
 
-    async function updateNodeChecks() {
-        const _response = await requestCrate(queries.NODE_CHECKS)
-        const nodeChecksInfo = await _response.json()
-        state.node_checks = new NodeChecks(nodeChecksInfo.rows)
+    async function update_node_checks() {
+        const _response = await request_crate(queries.NODE_CHECKS)
+        const data = await _response.json()
+        state.node_checks = new NodeChecks(data.rows)
     }
 
-    async function updateJobsInfo() {
-        const _response = await requestCrate(queries.JOBS)
-        const jobs_info = await _response.json()
-        state.jobs = new Jobs(jobs_info.rows)
+    async function update_jobs_info() {
+        const _response = await request_crate(queries.JOBS)
+        const data = await _response.json()
+        state.jobs = new Jobs(data.rows)
     }
 
     async function update_chart_load_data() {
@@ -153,46 +153,46 @@ export const useNodeInfoStore = defineStore('nodeInfo', () => {
     }
 
     async function update_qps_data() {
-        const _response = await requestCrate(queries.QUERIES_PER_SECOND)
-        const qps = await _response.json()
-        state.query_stats = new QueryStats(qps.rows)
+        const _response = await request_crate(queries.QUERIES_PER_SECOND)
+        const data = await _response.json()
+        state.query_stats = new QueryStats(data.rows)
     }
 
     async function update_privileges(){
         //TODO Move this, pending the store refactor
-        const _response = await requestCrate(queries.USERS)
-        const users = await _response.json()
-        state.users = new Users(users.rows)
+        const _response = await request_crate(queries.USERS)
+        const data = await _response.json()
+        state.users = new Users(data.rows)
     }
     async function update_current_user() {
-        const _response = await requestCrate(queries.CURRENT_USER)
+        const _response = await request_crate(queries.CURRENT_USER)
         const data = await _response.json()
         state.current_user = data.rows[0][0]
     }
     // We update them synchronously the first time we launch the site
     //
     // What happens if for some reason one fails and the others don't ?
-    updateNodeInfo()
-    updateHealthInfo()
-    updateNodeChecks()
-    updateJobsInfo()
+    update_node_info()
+    update_health_info()
+    update_node_checks()
+    update_jobs_info()
     update_qps_data()
     update_privileges()
     update_current_user()
     setInterval(async () => {
         // Be careful, this ignores exceptions.
         await Promise.allSettled([
-                updateNodeInfo(),
-                updateHealthInfo(),
-                updateNodeChecks(),
-                updateJobsInfo(),
+                update_node_info(),
+                update_health_info(),
+                update_node_checks(),
+                update_jobs_info(),
                 update_chart_load_data(),
                 update_qps_data(),
                 update_privileges(),
             ],
         )
-        if (state.shouldUpdateAllocation) {
-            await updateAllocationIssuesInfo()
+        if (state.should_update_allocation) {
+            await update_allocations_info()
         }
     }, REFRESH_EVERY_MS);
 

@@ -1,7 +1,7 @@
 <script setup>
-import {useNodeInfoStore} from "@/store/nodeInfo";
+import {use_node_info_store} from "@/store/node_info";
 
-const nodeStore = useNodeInfoStore()
+const nodeStore = use_node_info_store()
 
 </script>
 

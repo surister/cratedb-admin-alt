@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {reactive, toRefs, watch} from "vue";
-import {requestCrate} from "@/store/http/requests";
+import {request_crate} from "@/store/http/requests";
 
 import Queries from "@/store/http/queries";
 
@@ -12,7 +12,7 @@ const default_console_response = {
     type: '',
     title: '',
     subtitle: '',
-    errorTrace: '',
+    error_trace: '',
     data: {
         headers: [],
         rows: [],
@@ -40,7 +40,7 @@ export const use_console_store = defineStore('console', () => {
         state.response.type = type
         state.response.title = title
         state.response.subtitle = subtitle
-        state.response.errorTrace = error_trace
+        state.response.error_trace = error_trace
     }
 
     async function set_console_response_to_success(type, title, subtitle, rows, headers, row_count) {
@@ -57,11 +57,17 @@ export const use_console_store = defineStore('console', () => {
     }
 
     async function cancel_current_running_query() {
-        const _jobs_response = await requestCrate(Queries.GET_JOB_BY_STMT, null, {'%stmt': state.content})
+        const _jobs_response = await request_crate(
+            Queries.GET_JOB_BY_STMT,
+            null,
+            {'%stmt': state.content})
         const jobs = await _jobs_response.json()
         const target_job = jobs.rows[0][0]
 
-        const _kill_response = await requestCrate(Queries.KILL, null, {'%id': target_job})
+        const _kill_response = await request_crate(
+            Queries.KILL,
+            null,
+            {'%id': target_job})
         const kill_json_response = await _kill_response.json()
 
         if (_kill_response.ok) {
@@ -74,7 +80,7 @@ export const use_console_store = defineStore('console', () => {
     async function query_from_console() {
         state.is_query_running = true
 
-        const _response = await requestCrate(
+        const _response = await request_crate(
             state.content,
             'error_trace=true',
             {},
@@ -137,9 +143,9 @@ export const use_console_store = defineStore('console', () => {
 
     return {
         ...toRefs(state),
-        queryFromConsole: query_from_console,
-        cancelQuery: cancel_current_running_query,
-        setConsoleResponseToEmpty: set_console_response_to_empty,
+        query_from_console,
+        cancel_current_running_query,
+        set_console_response_to_empty,
         format_query_content
     }
 })

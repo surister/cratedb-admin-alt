@@ -1,10 +1,10 @@
 import {defineStore} from "pinia";
 import {reactive, toRefs} from "vue";
-import {requestCrate} from "@/store/http/requests";
+import {request_crate} from "@/store/http/requests";
 
 import queries from "@/store/http/queries";
 
-import {use_global_store} from "@/store/globalStore";
+import {use_global_store} from "@/store/global_store";
 import {use_log_store} from "@/store/log";
 
 export const use_users_store = defineStore('users', () => {
@@ -16,7 +16,7 @@ export const use_users_store = defineStore('users', () => {
 
   async function revoke_permission(permission) {
     const {type, class_, ident, id} = permission
-    const _response = await requestCrate(queries.REVOKE, null,
+    const _response = await request_crate(queries.REVOKE, null,
       {
         '%permission': type,
         '%type': class_,
@@ -25,8 +25,10 @@ export const use_users_store = defineStore('users', () => {
       })
 
     if (_response.ok) {
-      const real_index = state.current_open_user.privileges.findIndex((el) => el.id === id)
-      state.current_open_user.privileges.splice(real_index, 1)
+      // We locally remove the privilege, so it updates automatically the row in the permissions table.
+      const table_index = state.current_open_user.privileges.findIndex((el) => el.id === id)
+      state.current_open_user.privileges.splice(table_index, 1)
+
       global_store.show_successful_snackbar('Permission revoked successfully')
       await log_store.log(log_store.ACTIONS.REVOKED_PERMISSION, JSON.stringify(permission))
 
@@ -36,7 +38,7 @@ export const use_users_store = defineStore('users', () => {
   }
 
   async function drop_user() {
-    const _response = await requestCrate(
+    const _response = await request_crate(
       queries.DROP_USER,
       null,
       {'%user_name': state.current_open_user.name}
@@ -52,7 +54,7 @@ export const use_users_store = defineStore('users', () => {
   }
 
   async function create_user(username, password){
-    const _response = await requestCrate(
+    const _response = await request_crate(
         queries.CREATE_USER,
         null,
         {

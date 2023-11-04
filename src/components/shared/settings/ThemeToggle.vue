@@ -1,7 +1,7 @@
 <script setup>
-import {useStoredPreferencesStore} from "@/store/storedPreferences";
+import {use_stored_preferences_store} from "@/store/storedPreferences";
 
-const preferences = useStoredPreferencesStore()
+const preferences = use_stored_preferences_store()
 
 </script>
 

@@ -13,7 +13,7 @@ const console_store = use_console_store()
       <v-card title="Crate DB server traceback">
         <v-card-text>
           <v-code>
-            {{ console_store.response.errorTrace }}
+            {{ console_store.response.error_trace }}
           </v-code>
         </v-card-text>
         <v-card-actions>

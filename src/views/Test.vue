@@ -1,7 +1,12 @@
 <script setup>
 
 import {computed, reactive} from "vue";
-import {de} from "vuetify/locale";
+import CollapsibleText from "@/components/shared/object_representation/CollapsibleText.vue";
+import BetterCollapsibleText
+  from "@/components/shared/object_representation/BetterCollapsibleText.vue";
+
+import { JsonTreeView } from "json-tree-view-vue3";
+
 
 const headers =  [
           {
@@ -65,7 +70,6 @@ function is_filtered(key, element) {
   return false
 }
 
-
 let data = computed(() => {
   return desserts.filter((el)=>{
     for (const key of Object.keys(active_filters)) {
@@ -78,10 +82,32 @@ let data = computed(() => {
     return true
   })
 })
+
+const obj = {
+  "files": {
+    "recovered": 0,
+    "used": 1,
+    "percent": 100,
+    "reused": 1
+  },
+  "stage": "DONE",
+  "type": "EXISTING_STORE",
+  "total_time": 40,
+  "size": {
+    "recovered": 0,
+    "used": 208,
+    "percent": 100,
+    "reused": 208
+  }
+}
+
+const other_obj = { "name": "cratedb02", "id": "72tKTcieRuGb2pGKo542Fg" }
+
+
 </script>
 
 <template>
-  {{  active_filters }}
+  {{ active_filters }}
   <v-data-table
     :headers="headers"
     :items="data"
@@ -92,7 +118,7 @@ let data = computed(() => {
       <tr>
         <template v-for="column in columns" :key="column.key">
           <td>
-            <span class="mr-2 cursor-pointer">{{column.title }}</span>
+            <span class="mr-2 cursor-pointer">{{ column.title }}</span>
             <v-menu
               :close-on-content-click="false"
               transition="scale-transition"
@@ -107,7 +133,8 @@ let data = computed(() => {
                 >
                   <template v-slot:prepend="{ isActive }">
                     <v-list-item-action start>
-                      <v-checkbox-btn :model-value="!is_filtered(column.key, item[column.key])" @click="add_or_remove_filter(column.key, item[column.key])"></v-checkbox-btn>
+                      <v-checkbox-btn :model-value="!is_filtered(column.key, item[column.key])"
+                                      @click="add_or_remove_filter(column.key, item[column.key])"></v-checkbox-btn>
                     </v-list-item-action>
                   </template>
                   <v-list-item-title>{{ item[column.key] }}</v-list-item-title>
@@ -119,7 +146,29 @@ let data = computed(() => {
       </tr>
     </template>
   </v-data-table>
+
+  <v-row no-gutters>
+    <v-col cols="1" class="" style="max-width: 1vh;">fsdf</v-col>
+    <v-col>
+      <details>
+        <details class="ml-4">
+          <p class="ml-4">Sex</p>
+        </details>
+      </details>
+    </v-col>
+    <v-spacer></v-spacer>
+  </v-row>
+  Hello
+  <br>
+  <h1>sa</h1>
+  <collapsible-text :object="obj"></collapsible-text>
+  <better-collapsible-text :object="obj"></better-collapsible-text>
+  <json-tree-view :data="JSON.stringify( other_obj)"></json-tree-view>
+
 </template>
+
+
+
 
 <style scoped>
 

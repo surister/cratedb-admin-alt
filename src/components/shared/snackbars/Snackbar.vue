@@ -1,5 +1,5 @@
 <script setup>
-import {use_global_store} from "@/store/globalStore";
+import {use_global_store} from "@/store/global_store";
 const global_store = use_global_store()
 </script>
 

@@ -2,13 +2,13 @@
 
 import {ref} from "vue";
 import {adaptVTableHeader, human_file_size} from "@/store/utils";
-import {useNodeInfoStore} from "@/store/nodeInfo";
+import {use_node_info_store} from "@/store/node_info";
 
 import TitledText from "@/components/shared/text/TitledText.vue";
 import JobsDialog from "@/components/cluster/JobsDialog.vue";
 
 let expanded = ref([])
-let nodeStore = useNodeInfoStore();
+let nodeStore = use_node_info_store();
 let jobs_dialog = ref(false)
 let jobs_cluster = ref('')
 const headers = adaptVTableHeader([

@@ -1,8 +1,8 @@
 <script setup>
-import {useStoredPreferencesStore} from "@/store/storedPreferences";
-import {use_global_store} from "@/store/globalStore";
+import {use_stored_preferences_store} from "@/store/storedPreferences";
+import {use_global_store} from "@/store/global_store";
 
-const storedPreferences = useStoredPreferencesStore()
+const storedPreferences = use_stored_preferences_store()
 const globalStore = use_global_store()
 </script>
 
@@ -23,9 +23,9 @@ const globalStore = use_global_store()
       <v-icon icon="mdi-wifi-strength-alert-outline"/>
       <span class="pl-2">Possible network issue</span>
     </v-label>
-    <p class="pt-2">Could not connect to <strong>'{{ storedPreferences.general.masterNodeUrl }}'</strong>
+    <p class="pt-2">Could not connect to <strong>'{{ storedPreferences.general.master_node_url }}'</strong>
       will try again in 5s.</p>
-    <p> Tried {{ globalStore.network_connection_attemps || 1 }} time(s)</p>
+    <p> Tried {{ globalStore.network_connection_attempts || 1 }} time(s)</p>
   </v-snackbar>
 </template>
 

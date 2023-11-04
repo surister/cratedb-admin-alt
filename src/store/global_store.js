@@ -3,11 +3,11 @@
 import {defineStore} from 'pinia'
 import {reactive, toRefs} from 'vue';
 
-export const use_global_store = defineStore('settings', () => {
+export const use_global_store = defineStore('global_store', () => {
     const state = reactive({
         settings_drawer_toggle: false,
         show_network_connection_snackbar: false,
-        network_connection_attemps: 1,
+        network_connection_attempts: 1,
 
         // Snackbar for all other custom notifications
         show_snackbar: false,

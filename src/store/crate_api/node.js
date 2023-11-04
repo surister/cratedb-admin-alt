@@ -1,37 +1,37 @@
 export class CrateNodes {
-  // The purpose of this class is to create the different Node(s) from the HTTP json response  and
-  // to offer some utilities such as filtering of nodes.
   nodes = []
-  nodeCount = 0
+  // TODO See if we use CrateNodes.node_count, I think it might make no sense to have it stored here as well
+  // since we already store the node count within the node_info_store
+  node_count = 0
 
-  constructor(data, nodeCount) {
-    if (nodeCount === 0) {
+  constructor(data, node_count) {
+    if (node_count === 0) {
       return
     }
 
-    this.nodeCount = nodeCount
+    this.node_count = node_count
 
     let master = true
 
-    for (const rawNodeData of data) {
+    for (const datum of data) {
       // The indexes that we assign the data to, is related to the query we use, be careful if you change the
       // query order, indexes will change and break.
-      let newNode = new Node(
+      let new_node = new Node(
         master,
-        rawNodeData[0],
+        datum[0],
         {
-          load1: rawNodeData[1][1],
-          load5: rawNodeData[1][5],
-          load15: rawNodeData[1][15],
+          load1: datum[1][1],
+          load5: datum[1][5],
+          load15: datum[1][15],
         },
-        rawNodeData[2],
-        rawNodeData[3],
-        rawNodeData[4],
-        rawNodeData[5],
-        rawNodeData[6]
+        datum[2],
+        datum[3],
+        datum[4],
+        datum[5],
+        datum[6]
       )
 
-      this.nodes.push(newNode)
+      this.nodes.push(new_node)
 
       if (master) {
         // We use this to pass true to isMaster to the first node
@@ -41,16 +41,16 @@ export class CrateNodes {
     }
   }
 
-  getMasterNode() {
+  get_master_node() {
     // Master always comes first in the API response.
     return this.nodes[0]
   }
 
-  hasNodes() {
-    return this.nodes.length != 0
+  has_nodes() {
+    return this.nodes.length !== 0
   }
 
-  toVDataItems() {
+  to_table_format() {
     return this.nodes.map((node) => {
       return {
         node_name: {

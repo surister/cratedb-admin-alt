@@ -10,7 +10,7 @@
 export class Columns {
   columns = []
 
-    toVDataItems() {
+    to_table_format() {
         return this.columns.map((column) => {
             return {
                 ordinal_position: column.ordinal_position,

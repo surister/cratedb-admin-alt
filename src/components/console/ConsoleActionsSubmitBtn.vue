@@ -1,22 +1,22 @@
 <script setup>
 
 import {use_console_store} from "@/store/console_store";
-import {useStoredPreferencesStore} from "@/store/storedPreferences";
+import {use_stored_preferences_store} from "@/store/storedPreferences";
 
-const consoleStore = use_console_store()
-const storedPreferences = useStoredPreferencesStore()
+const console_store = use_console_store()
+const stored_preferences = use_stored_preferences_store()
 
 function do_query() {
-  consoleStore.queryFromConsole()
-  storedPreferences.addToQueryHistory(consoleStore.content)
+  console_store.query_from_console()
+  stored_preferences.add_to_history(console_store.content)
 }
 </script>
 
 <template>
-  <v-btn :loading="consoleStore.is_query_running"
+  <v-btn :loading="console_store.is_query_running"
          size="x-large"
          @click="do_query"
-         :disabled="consoleStore.content.length === 0">Submit
+         :disabled="console_store.content.length === 0">Submit
   </v-btn>
 </template>
 

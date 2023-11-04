@@ -14,10 +14,10 @@
 
   // Utilities
   import { computed } from 'vue'
-  import {useStoredPreferencesStore} from "@/store/storedPreferences";
+  import {use_stored_preferences_store} from "@/store/storedPreferences";
 
   const theme = useTheme()
-  const storedPreferences = useStoredPreferencesStore()
+  const storedPreferences = use_stored_preferences_store()
   const icon = computed(() => theme.global.name.value === 'dark'
     ? 'mdi-weather-night'
     : 'mdi-weather-sunny'

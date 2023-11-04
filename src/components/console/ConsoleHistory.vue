@@ -1,10 +1,10 @@
 <script setup>
 import {use_console_store} from "@/store/console_store";
-import {useStoredPreferencesStore} from "@/store/storedPreferences";
+import {use_stored_preferences_store} from "@/store/storedPreferences";
 import {ref} from "vue";
 
 const console_store = use_console_store()
-const stored_preferences = useStoredPreferencesStore()
+const stored_preferences = use_stored_preferences_store()
 
 let dialog = ref(false)
 
@@ -22,18 +22,22 @@ let search_text = ref('')
       items-per-page="5"
       item-key="query"
       :headers="historyHeader"
-      :items="stored_preferences.console.queryHistory"
-      :search="search_text"
-    >
+      :items="stored_preferences.console.query_history"
+      :search="search_text">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Query history</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-scale-transition>
-            <v-text-field v-model="search_text" variant="underlined" v-if="search" autofocus="true"></v-text-field>
+            <v-text-field v-model="search_text"
+                          variant="underlined"
+                          v-if="search"
+                          autofocus></v-text-field>
           </v-scale-transition>
 
-          <v-btn flat icon="mdi-text-box-search" :color="search ? 'blue': ''"
+          <v-btn flat
+                 icon="mdi-text-box-search"
+                 :color="search ? 'blue': ''"
                  @click="search = !search"/>
 
           <v-tooltip location="bottom" text="Delete query history">
@@ -41,7 +45,8 @@ let search_text = ref('')
               <v-btn @click="dialog = true" v-bind="props" icon="mdi-delete-sweep"/>
             </template>
           </v-tooltip>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog"
+                    max-width="500px">
             <v-card>
               <v-card-text>
                 <p>Are you sure you want to delete the entire query history?</p>
@@ -51,8 +56,7 @@ let search_text = ref('')
                 <v-btn
                   color="red"
                   variant="text"
-                  @click="stored_preferences.resetHistoryState(); dialog = false"
-                >
+                  @click="stored_preferences.reset_query_history(); dialog = false">
                   Delete
                 </v-btn>
                 <v-btn
@@ -83,9 +87,9 @@ let search_text = ref('')
             </v-tooltip>
           </td>
           <td>
-            <v-btn flat icon="mdi-delete" size="small"
-                   @click="stored_preferences.deleteHistory(item)">
-            </v-btn>
+            <v-btn flat icon="mdi-delete"
+                   size="small"
+                   @click="stored_preferences.delete_from_history(item)"/>
           </td>
         </tr>
       </template>

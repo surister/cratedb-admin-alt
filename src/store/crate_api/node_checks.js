@@ -1,7 +1,7 @@
 export class NodeChecks {
   node_checks = []
 
-  isEmpty(){
+  is_empty(){
     return this.node_checks.length === 0
   }
 

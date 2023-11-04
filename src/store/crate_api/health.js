@@ -1,53 +1,43 @@
 export class CrateTableHealths {
-  tableHealths = []
+  table_healths = []
 
   constructor(data) {
-    for (const rawHealthData of data) {
+    for (const datum of data) {
       let newTableHealth = new tableHealth(
-        rawHealthData[0],
-        rawHealthData[1],
-        rawHealthData[2],
-        rawHealthData[3],
-        rawHealthData[4],
-        rawHealthData[5],
-        rawHealthData[6]
+          ...datum
       )
-      this.tableHealths.push(newTableHealth)
+      this.table_healths.push(newTableHealth)
     }
   }
 
-  isEmpty(){
-    return this.tableHealths.length === 0
+  is_empty(){
+    return this.table_healths.length === 0
   }
 
-  hasBadHealth(){
-    return this.getBadHealths().length !== 0
+  has_bad_health(){
+    return this.get_bad_healths().length !== 0
   }
-  getBadHealths() {
-    return this.tableHealths.filter((tbl) => tbl.severity !== 1)
+  get_bad_healths() {
+    return this.table_healths.filter((tbl) => tbl.severity !== 1)
   }
 
-  getHealthLevel() {
+  get_current_health_level() {
     // Gets the current 'max' health level, priority goes as: red > yellow > green
     // https://cratedb.com/docs/crate/reference/en/5.4/admin/system-information.html#health
     // We can just return the first one since the query that produces the data is ordered by severity
-    // Meaning that the highest severity will decide the 'health' marker.
-    if (this.isEmpty()){
-      return {health: 'UNKNOWN'}
-    }
-
-    return this.tableHealths[0]
+    // Meaning that the highest severity will decide the 'health'.
+    return this.is_empty() ? 'UNKNOWN' : this.table_healths[0].health
   }
 }
 
 class tableHealth {
-  constructor(health, missingShards, partitionIndents, severity, tableName, tableSchema, underReplicatedShards) {
+  constructor(health, missing_shards, partition_indents, severity, table_name, table_schema, under_replicated_shards) {
     this.health = health
-    this.missingShards = missingShards
-    this.partitionIndents = partitionIndents
+    this.missing_shards = missing_shards
+    this.partition_indents = partition_indents
     this.severity = severity
-    this.tableName = tableName
-    this.tableSchema = tableSchema
-    this.underReplicatedShards = underReplicatedShards
+    this.table_name = table_name
+    this.table_schema = table_schema
+    this.under_replicated_shards = under_replicated_shards
   }
 }

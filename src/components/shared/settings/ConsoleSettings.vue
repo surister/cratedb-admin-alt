@@ -1,7 +1,7 @@
 <script setup>
-import {useStoredPreferencesStore} from "@/store/storedPreferences";
+import {use_stored_preferences_store} from "@/store/storedPreferences";
 
-const storedPreferences = useStoredPreferencesStore()
+const storedPreferences = use_stored_preferences_store()
 </script>
 
 <template>
@@ -10,25 +10,25 @@ const storedPreferences = useStoredPreferencesStore()
         <v-col>
           <v-text-field
             label="Font size"
-            v-model:model-value="storedPreferences.console.fontSize"
+            v-model:model-value="storedPreferences.console.font_size"
             suffix="px">
           </v-text-field>
           <v-text-field
             label="Min lines"
-            v-model:model-value="storedPreferences.console.minLines"
+            v-model:model-value="storedPreferences.console.min_lines"
             suffix="lines">
           </v-text-field>
         </v-col>
         <v-col>
           <v-text-field
             label="Query limit"
-            v-model:model-value="storedPreferences.console.queryLimit"
+            v-model:model-value="storedPreferences.console.query_limit"
             model-value="100"
             suffix="rows"
           ></v-text-field>
           <v-text-field
             label="Max lines"
-            v-model:model-value="storedPreferences.console.maxLines"
+            v-model:model-value="storedPreferences.console.max_lines"
             suffix="lines">
           </v-text-field>
         </v-col>

@@ -1,13 +1,13 @@
 <script setup>
 import VerticalDivider from "@/components/shared/VerticalDivider.vue";
-import { use_global_store } from "@/store/globalStore";
+import { use_global_store } from "@/store/global_store";
 
 import InfoGroup from "@/components/shared/bar/info/InfoGroup.vue";
 import SupportButton from "@/components/shared/bar/SupportButton.vue";
-import {useNodeInfoStore} from "@/store/nodeInfo";
+import {use_node_info_store} from "@/store/node_info";
 
 const global_store = use_global_store()
-const info_store = useNodeInfoStore()
+const info_store = use_node_info_store()
 const admin_ui_version = import.meta.env.VITE_ADMIN_UI_VERSION
 </script>
 

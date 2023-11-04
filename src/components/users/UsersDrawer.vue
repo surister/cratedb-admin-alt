@@ -1,9 +1,9 @@
 <script setup>
-import {useNodeInfoStore} from "@/store/nodeInfo";
+import {use_node_info_store} from "@/store/node_info";
 import {use_users_store} from "@/store/users";
 import UsersDrawerAddUserBtn from "@/components/users/UsersDrawerAddUserBtn.vue";
 
-const node_info_store = useNodeInfoStore()
+const node_info_store = use_node_info_store()
 const users_store = use_users_store()
 </script>
 

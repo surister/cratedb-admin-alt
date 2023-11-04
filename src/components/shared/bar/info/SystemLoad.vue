@@ -1,7 +1,7 @@
 <script setup>
-import {useNodeInfoStore} from "@/store/nodeInfo";
+import {use_node_info_store} from "@/store/node_info";
 
-const nodeInfoStore = useNodeInfoStore()
+const node_info_store = use_node_info_store()
 </script>
 
 <template>
@@ -9,10 +9,10 @@ const nodeInfoStore = useNodeInfoStore()
   <v-label class="pr-2">System Load</v-label>
     <v-chip label>
       <p class="font-weight-bold" style="font-size: 17px">
-        <template v-if="nodeInfoStore.nodes.hasNodes()">
-          {{ nodeInfoStore.nodes.getMasterNode().load.load1 }} /
-          {{ nodeInfoStore.nodes.getMasterNode().load.load5 }} /
-          {{ nodeInfoStore.nodes.getMasterNode().load.load15 }}
+        <template v-if="node_info_store.nodes.has_nodes()">
+          {{ node_info_store.nodes.get_master_node().load.load1 }} /
+          {{ node_info_store.nodes.get_master_node().load.load5 }} /
+          {{ node_info_store.nodes.get_master_node().load.load15 }}
         </template>
         <template v-else>
           load/load/load

@@ -74,19 +74,4 @@ class Privilege {
         this.state = state
         this.type = type
     }
-
-    get_revoke_stmt() {
-        let stmt = queries.REVOKE
-
-        const stmt_replace = {
-            '%permission': this.type,
-            '%type': this.class_,
-            '%ident': this.ident,
-            '%to': this.grantee
-        }
-
-        Object.entries(stmt_replace).map(entry => {
-            stmt = stmt.replace(entry[0], entry[1])
-        });
-    }
 }

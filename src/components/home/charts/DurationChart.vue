@@ -2,9 +2,9 @@
 
 import VueApexCharts from "vue3-apexcharts";
 import {computed} from "vue";
-import {useNodeInfoStore} from "@/store/nodeInfo";
+import {use_node_info_store} from "@/store/node_info";
 
-const node_info_store = useNodeInfoStore()
+const node_info_store = use_node_info_store()
 
 let chart_config = {
     chart: {

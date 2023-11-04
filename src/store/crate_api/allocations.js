@@ -1,7 +1,7 @@
 export class AllocationIssues{
   issues = []
 
-  getBadHealthByTable(table_name) {
+  get_issues_by_table(table_name) {
       return this.issues.filter((issue) => issue.table_name === table_name)
   }
   constructor(data) {
@@ -9,19 +9,11 @@ export class AllocationIssues{
       return
     }
 
-    for (const rawAllocationIssueData of data) {
-      const newAllocationIssue = new AllocationIssue(
-        rawAllocationIssueData[0],
-        rawAllocationIssueData[1],
-        rawAllocationIssueData[2],
-        rawAllocationIssueData[3],
-        rawAllocationIssueData[4],
-        rawAllocationIssueData[5],
-        rawAllocationIssueData[6],
-        rawAllocationIssueData[7],
-        rawAllocationIssueData[8]
+    for (const datum of data) {
+      const new_issue = new AllocationIssue(
+          ...datum
       )
-      this.issues.push(newAllocationIssue)
+      this.issues.push(new_issue)
     }
   }
 }

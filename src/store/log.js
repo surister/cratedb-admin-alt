@@ -6,6 +6,7 @@ export const use_log_store = defineStore('log', () => {
   const state = reactive({})
 
   const db = new Dexie('log_db')
+
   db.version(1).stores(
       {
         logs: '++id, date, user, context, type, danger'
