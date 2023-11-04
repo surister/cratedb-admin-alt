@@ -61,7 +61,7 @@ async function f() {
       </v-dialog>
       <button-with-confirm-dialog
         :disabled="table_store.current_open_schema.is_system"
-        max-width="600"
+        :max-width="600"
         text="Drop table"
         dialog-title="Are you sure you want to drop the table?"
         dialog-action-confirm-button-text="YES, DROP"

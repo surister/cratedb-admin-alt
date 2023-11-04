@@ -111,17 +111,16 @@ export const use_node_info_store = defineStore('node_info', () => {
     async function update_chart_load_data() {
         // Updates the lists that will be used in the charts with the latest
         // master node load 1, 5 and 15 data.
-
         const seconds_per_tick = (REFRESH_EVERY_MS / 1000)
         const current_ticks = charts_store.load.load1.length
         const max_interval_seconds = CHART_MAX_INTERVAL_S
 
-        const {load1, load5, load15} = state.nodes.getMasterNode().load
+        const {load1, load5, load15} = state.nodes.get_master_node().load
 
-        if ([load1, load5, load15].some((val)=> val === 'load')){
-          // If for some reason any load value is 'load' which is the default value
-          // we do nothing.
-          return
+        if ([load1, load5, load15].some((val) => val === 'load')) {
+            // If for some reason any load value is 'load' which is the default value
+            // we do nothing.
+            return
         }
 
         if (seconds_per_tick * current_ticks >= max_interval_seconds) {
@@ -158,27 +157,29 @@ export const use_node_info_store = defineStore('node_info', () => {
         state.query_stats = new QueryStats(data.rows)
     }
 
-    async function update_privileges(){
+    async function update_privileges() {
         //TODO Move this, pending the store refactor
         const _response = await request_crate(queries.USERS)
         const data = await _response.json()
         state.users = new Users(data.rows)
     }
+
     async function update_current_user() {
         const _response = await request_crate(queries.CURRENT_USER)
         const data = await _response.json()
         state.current_user = data.rows[0][0]
     }
-    // We update them synchronously the first time we launch the site
-    //
-    // What happens if for some reason one fails and the others don't ?
-    update_node_info()
-    update_health_info()
-    update_node_checks()
-    update_jobs_info()
-    update_qps_data()
-    update_privileges()
-    update_current_user()
+
+    Promise.allSettled([
+        update_node_info(),
+        update_health_info(),
+        update_node_checks(),
+        update_jobs_info(),
+        update_qps_data(),
+        update_privileges(),
+        update_current_user(),
+    ])
+
     setInterval(async () => {
         // Be careful, this ignores exceptions.
         await Promise.allSettled([

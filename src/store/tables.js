@@ -6,7 +6,7 @@ import queries from "@/store/http/queries";
 import {Schemas} from "@/store/crate_api/tables";
 import {Columns} from "@/store/crate_api/columns";
 import {use_global_store} from "@/store/global_store";
-import {use_log_store} from "@/store/log";0.0
+import {use_log_store} from "@/store/log";
 
 export const use_tables_store = defineStore('tables', () => {
     const state = reactive({

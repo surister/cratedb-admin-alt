@@ -13,8 +13,8 @@ const stored_preferences = use_stored_preferences_store()
         <VAceEditor v-model:value="console_store.content"
                     lang="sql"
                     :style="{ 'font-size': stored_preferences.console.font_size + 'px' }"
-                    :min-lines="stored_preferences.console.min_lines"
-                    :max-lines="stored_preferences.console.max_lines"/>
+                    :min-lines="Number.parseInt(stored_preferences.console.min_lines)"
+                    :max-lines="Number.parseInt(stored_preferences.console.max_lines)"/>
       </v-card>
 </template>
 
