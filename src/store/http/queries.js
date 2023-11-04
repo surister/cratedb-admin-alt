@@ -65,7 +65,7 @@ export default {
     `,
   SAMPLE_DATA: `
     SELECT *
-    FROM %table_schema.%table_name
+    FROM "%table_schema"."%table_name"
     LIMIT 100
     `,
   QUERIES_PER_SECOND: `

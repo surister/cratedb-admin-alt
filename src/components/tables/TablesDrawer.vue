@@ -1,6 +1,7 @@
 <script setup>
 import InnerTablesDrawer from "@/components/tables/InnerTablesDrawer.vue";
 import {ref} from "vue";
+import InnerTablesDrawerAddTable from "@/components/tables/card/InnerTablesDrawerAddTable.vue";
 
 const show_search = ref(false)
 </script>
@@ -9,18 +10,15 @@ const show_search = ref(false)
   <v-navigation-drawer permanent>
     <v-list>
       <v-list-item>
+
         <v-row no-gutters>
-          <v-col align-self="center">
-            <v-label>Tables</v-label>
-
-          </v-col>
+          <v-label>Tables</v-label>
           <v-spacer></v-spacer>
-
-          <v-col>
-            <v-btn class="ml-10" icon="mdi-text-search" @click="show_search = !show_search" flat/>
-          </v-col>
+          <inner-tables-drawer-add-table/>
+          <v-btn class="" icon="mdi-table-search" @click="show_search = !show_search" flat/>
         </v-row>
       </v-list-item>
+
       <v-divider/>
 
       <Suspense>

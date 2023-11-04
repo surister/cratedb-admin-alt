@@ -36,7 +36,6 @@ const props = defineProps({
     <v-list-item :value="schema.name + i"
                  :key="schema.name + i"
                  v-for="(table, i) in filtered_tables(schema.tables)"
-                 class="pl-4"
                  @click="tables_info.current_open_table = table; tables_info.current_open_schema = schema">
       <template #title>
         <v-tooltip

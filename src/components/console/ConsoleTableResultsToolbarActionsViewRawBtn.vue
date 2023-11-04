@@ -5,7 +5,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <v-dialog width="500">
+  <v-dialog min-width="500" max-width="800">
     <template v-slot:activator="{ props }">
       <v-btn v-bind="props" text="View raw"></v-btn>
     </template>

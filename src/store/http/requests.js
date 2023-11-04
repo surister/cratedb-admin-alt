@@ -49,7 +49,6 @@ export async function requestCrate(_stmt, queryParams = '', stmtReplacedParams= 
     );
     globalStore.show_network_connection_snackbar = false
     globalStore.network_connection_attemps = 0
-    console.log(request.ok)
     return request
 
   } catch (err) {
