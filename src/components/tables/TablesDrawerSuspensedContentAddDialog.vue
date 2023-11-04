@@ -72,9 +72,7 @@ const generate_sql = computed(() => {
 </script>
 
 <template>
-
   <v-dialog max-width="800">
-
     <template v-slot:activator="{ props }">
       <v-btn v-bind="props" icon="mdi-table-plus" flat/>
     </template>

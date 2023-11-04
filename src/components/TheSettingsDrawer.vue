@@ -1,8 +1,8 @@
 <script setup>
-import ThemeToggle from "@/components/shared/settings/ThemeToggle.vue";
-import ListItemLink from "@/components/shared/settings/ListItemLink.vue";
-import ConsoleSettings from "@/components/shared/settings/ConsoleSettings.vue";
-import GeneralSettings from "@/components/shared/settings/GeneralSettings.vue";
+import ThemeToggle from "@/components/TheSettingsDrawerThemeToggle.vue";
+import ListItemLink from "@/components/shared/ListItemLink.vue";
+import ConsoleSettings from "@/components/TheSettingsDrawerConsoleSettings.vue";
+import GeneralSettings from "@/components/TheSettingsDrawerGeneralSettings.vue";
 
 import {use_global_store} from "@/store/global_store";
 import {use_log_store} from "@/store/log";

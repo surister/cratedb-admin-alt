@@ -1,8 +1,8 @@
 <script setup>
-
-import {adaptVTableHeader, adaptVTableItems, color_objects} from "@/store/utils";
+import {adaptVTableHeader} from "@/store/utils";
 import {use_tables_store} from "@/store/tables";
-import TableCardSchema from "@/components/tables/card/TableCardSchema.vue";
+import TableCardSchema from "@/components/tables/TablesCardTabsSchema.vue";
+import TablesCardTabsSample from "@/components/tables/TablesCardTabsSample.vue";
 
 const tables_info = use_tables_store()
 
@@ -24,21 +24,11 @@ const table_columns_table_headers = adaptVTableHeader(
         <table-card-schema
             v-if="tables_info.current_open_table_columns != null"
             :headers="table_columns_table_headers"
-            :items="tables_info.current_open_table_columns.toVDataItems()"
+            :items="tables_info.current_open_table_columns.to_table_format()"
         ></table-card-schema>
       </v-window-item>
       <v-window-item value="two">
-        <v-data-table v-if="tables_info.sample_data != null"
-                      :headers="adaptVTableHeader(tables_info.sample_data.cols)"
-                      :items="adaptVTableItems(tables_info.sample_data.rows, tables_info.sample_data.cols)">
-          <template v-slot:item="{ item }">
-            <tr>
-              <td v-for="it, index in item" :key="index">
-                <span :style="{color: color_objects(it)}">{{ it }}</span>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
+        <tables-card-tabs-sample/>
       </v-window-item>
     </v-window>
   </v-card-text>

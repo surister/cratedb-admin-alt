@@ -1,5 +1,5 @@
 <script setup>
-import ButtonWithConfirmDialog from "@/components/shared/ButtonWithConfirmDialog.vue";
+import ButtonWithConfirmDialog from "@/components/shared/buttons/ButtonWithConfirmDialog.vue";
 
 import {use_users_store} from "@/store/users";
 

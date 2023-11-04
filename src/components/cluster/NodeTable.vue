@@ -1,5 +1,4 @@
 <script setup>
-
 import {ref} from "vue";
 import {adaptVTableHeader, human_file_size} from "@/store/utils";
 import {use_node_info_store} from "@/store/node_info";
@@ -8,7 +7,7 @@ import TitledText from "@/components/shared/text/TitledText.vue";
 import JobsDialog from "@/components/cluster/JobsDialog.vue";
 
 let expanded = ref([])
-let nodeStore = use_node_info_store();
+let node_info_store = use_node_info_store();
 let jobs_dialog = ref(false)
 let jobs_cluster = ref('')
 const headers = adaptVTableHeader([
@@ -29,7 +28,7 @@ const headers = adaptVTableHeader([
     <v-data-table
       v-model:expanded="expanded"
       :headers="headers"
-      :items="nodeStore.nodes.toVDataItems()"
+      :items="node_info_store.nodes.to_table_format()"
       item-value="name"
       class="elevation-1 overflow-visible">
       <template v-slot:top>

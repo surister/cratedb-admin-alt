@@ -2,7 +2,7 @@
 import {adaptVTableHeader} from "@/store/utils";
 import {use_log_store} from "@/store/log";
 import {computed, reactive, ref} from "vue";
-import ViewTitle from "@/components/shared/ViewTitle.vue";
+import ViewTitle from "@/components/shared/text/ViewTitle.vue";
 
 const headers = adaptVTableHeader([
   'Id',

@@ -1,5 +1,5 @@
 <script setup>
-import TablesColumnText from "@/components/tables/card/TableColumnText.vue";
+import TablesColumnText from "@/components/tables/TablesCardHeaderColumnText.vue";
 import {use_tables_store} from "@/store/tables";
 import {human_file_size} from "@/store/utils";
 

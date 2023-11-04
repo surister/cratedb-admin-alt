@@ -7,7 +7,7 @@ let rail = ref(true)
 
 const router = useRoute()
 
-let chevron_button = computed(()=> rail.value ? 'mdi-chevron-right': 'mdi-chevron-left')
+let chevron_button = computed(() => rail.value ? 'mdi-chevron-right' : 'mdi-chevron-left')
 
 const routes = [
   {
@@ -59,10 +59,9 @@ const routes = [
   <v-navigation-drawer
     v-model="drawer"
     :rail="rail"
-    permanent
-  >
+    permanent>
     <v-btn variant="text" class="ma-1" :icon="chevron_button" @click.stop="rail = !rail"></v-btn>
-    <v-divider></v-divider>
+    <v-divider/>
     <v-list density="compact" nav>
       <v-list-item
         v-for="route in routes"

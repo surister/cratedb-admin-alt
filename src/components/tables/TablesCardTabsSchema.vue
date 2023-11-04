@@ -1,7 +1,7 @@
 <script setup>
 
 import {color_objects, is_object} from "@/store/utils";
-import DialogText from "@/components/shared/object_representation/DialogText.vue";
+import DialogText from "@/components/shared/text/DialogText.vue";
 import {ref} from "vue";
 
 

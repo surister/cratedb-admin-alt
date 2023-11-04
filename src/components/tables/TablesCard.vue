@@ -1,7 +1,7 @@
 <script setup>
-import TablesCardHeader from "@/components/tables/card/TableCardHeader.vue";
-import TablesCardActions from "@/components/tables/card/TableCardActions.vue";
-import TableCardTabs from "@/components/tables/card/TableCardTabs.vue";
+import TablesCardHeader from "@/components/tables/TablesCardHeader.vue";
+import TablesCardActions from "@/components/tables/TablesCardsActions.vue";
+import TableCardTabs from "@/components/tables/TablesCardTabs.vue";
 
 </script>
 

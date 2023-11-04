@@ -1,7 +1,7 @@
 <script setup>
-import InnerTablesDrawer from "@/components/tables/InnerTablesDrawer.vue";
 import {ref} from "vue";
-import InnerTablesDrawerAddTable from "@/components/tables/card/InnerTablesDrawerAddTable.vue";
+import InnerTablesDrawerAddTable from "@/components/tables/TablesDrawerSuspensedContentAddDialog.vue";
+import TablesDrawerSuspensedContent from "@/components/tables/TablesDrawerSuspensedContent.vue";
 
 const show_search = ref(false)
 </script>
@@ -22,7 +22,7 @@ const show_search = ref(false)
       <v-divider/>
 
       <Suspense>
-        <inner-tables-drawer :show-search="show_search"/>
+        <TablesDrawerSuspensedContent :show-search="show_search"/>
         <template #fallback>
             <span>
               <v-skeleton-loader type="list-item-two-line" v-for="_ in 3" :key="_"/>

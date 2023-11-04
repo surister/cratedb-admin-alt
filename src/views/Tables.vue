@@ -1,6 +1,6 @@
 <script setup>
 import TablesDrawer from "@/components/tables/TablesDrawer.vue";
-import TableCard from "@/components/tables/card/TableCard.vue";
+import TableCard from "@/components/tables/TablesCard.vue";
 
 import {use_tables_store} from "@/store/tables";
 import {onBeforeMount} from "vue";
