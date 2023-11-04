@@ -4,7 +4,7 @@ import {adaptVTableHeader, human_file_size} from "@/store/utils";
 import {use_node_info_store} from "@/store/node_info";
 
 import TitledText from "@/components/shared/text/TitledText.vue";
-import JobsDialog from "@/components/cluster/JobsDialog.vue";
+import JobsDialog from "@/components/cluster/NodeTableJobsDialog.vue";
 
 let expanded = ref([])
 let node_info_store = use_node_info_store();
@@ -25,12 +25,11 @@ const headers = adaptVTableHeader([
 
 <template>
   <v-card>
-    <v-data-table
-      v-model:expanded="expanded"
-      :headers="headers"
-      :items="node_info_store.nodes.to_table_format()"
-      item-value="name"
-      class="elevation-1 overflow-visible">
+    <v-data-table v-model:expanded="expanded"
+                  :headers="headers"
+                  :items="node_info_store.nodes.to_table_format()"
+                  item-value="name"
+                  class="overflow-visible">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Nodes</v-toolbar-title>
@@ -109,7 +108,8 @@ const headers = adaptVTableHeader([
         </v-tooltip>
       </template>
     </v-data-table>
-    <jobs-dialog v-model:is_open="jobs_dialog" :cluster_name="jobs_cluster"></jobs-dialog>
+    <jobs-dialog v-model:is_open="jobs_dialog"
+                 :cluster_name="jobs_cluster"/>
   </v-card>
 </template>
 
