@@ -8,9 +8,8 @@ const nodeStore = use_node_info_store()
 <template>
   <v-chip size="large" prepend-icon="mdi-resistor-nodes">
     <span class="font-weight-bold">
-          Nodes: {{ nodeStore.nodes.nodeCount }}
+          Nodes: {{ nodeStore.nodes.node_count }}
     </span>
-
   </v-chip>
 </template>
 
