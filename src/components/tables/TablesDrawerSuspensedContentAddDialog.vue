@@ -15,7 +15,8 @@ const columns = ref([])
 
 const table_options = ref({
   name: 'table',
-  columns: columns
+  columns: columns,
+  if_not_exists: true
 })
 
 function change_context_group(group) {
@@ -53,8 +54,17 @@ function remove_element() {
 const generate_sql = computed(() => {
   // We handcraft the SQL from the options that we get input, perhaps there is a library
   // that does it from its own API, and we just need to adapt our input to that API?
+  // Is it even worth it to introduce a new dependency to avoid  5 lines of ifs?
+  let stmt_create = "CREATE TABLE"
+
+  if (table_options.value.if_not_exists) {
+    stmt_create += ' IF NOT EXISTS'
+  }
+
   let schema = table_options.value.schema ? `"${table_options.value.schema}".` : ''
-  let stmt_create = `CREATE TABLE ${schema}"${table_options.value.name}"`
+  stmt_create += ` ${schema}"${table_options.value.name}"`
+
+
 
   let stmt_columns = '('
   for (const column of table_options.value.columns) {
@@ -99,7 +109,8 @@ const data_types = [
     <template v-slot:default="{ isActive }">
       <v-card>
         <v-toolbar>
-          <v-toolbar-title>Create table: <span class="text-h5 font-weight-bold">{{ table_options.name }}</span>
+          <v-toolbar-title>Create table: <span
+            class="text-h5 font-weight-bold">{{ table_options.name }}</span>
           </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -107,10 +118,9 @@ const data_types = [
             <v-col>
               <v-row>
                 <v-col>
-                  <v-btn-toggle
-                    density="comfortable"
-                    divided
-                    variant="outlined">
+                  <v-btn-toggle density="comfortable"
+                                divided
+                                variant="outlined">
                     <v-btn icon="mdi-plus"
                            @click="add_new_element"
                            :active="false"
@@ -126,12 +136,11 @@ const data_types = [
                 <v-col>
                   <v-list>
                     <v-list-item prepend-icon="mdi-table"
-                                 link
                                  :active="current_group === GROUPS.NAME"
                                  title="Table name"
                                  active-color="blue"
                                  @click="change_context_group(GROUPS.NAME)"
-                    />
+                                 link/>
                     <v-list-group fluid>
                       <template v-slot:activator="{ props }">
                         <v-list-item
@@ -159,7 +168,11 @@ const data_types = [
                             {{ column.type }}
                           </v-chip>
                         </template>
-                        <template #title><span class="ml-2">{{ column.name }}</span></template>
+                        <template #title>
+                          <span class="ml-2">
+                            {{ column.name }}
+                          </span>
+                        </template>
                       </v-list-item>
 
                     </v-list-group>
@@ -169,14 +182,25 @@ const data_types = [
             </v-col>
             <v-col cols="8">
               <template v-if="current_group === GROUPS.NAME">
-                        <v-label>Table options</v-label>
-                <v-text-field class="mt-6"
-                              density="compact"
-                              label="Schema"
-                              v-model="table_options.schema"/>
-                <v-text-field density="compact"
-                              label="Table name"
-                              v-model="table_options.name"/>
+                <v-label>Table options</v-label>
+                <v-row align="end">
+                  <v-col>
+                    <v-text-field class="mt-6"
+                                  density="compact"
+                                  label="Schema"
+                                  v-model="table_options.schema"/>
+                  </v-col>
+                  <v-col>
+                    <v-text-field density="compact"
+                                  label="Table name"
+                                  v-model="table_options.name"/>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-checkbox-btn label="IF NOT EXISTS" v-model="table_options.if_not_exists"></v-checkbox-btn>
+                  </v-col>
+                </v-row>
               </template>
               <template v-if="current_column != null">
                 <v-label>Column options</v-label>
@@ -200,7 +224,9 @@ const data_types = [
           </v-row>
           <v-row>
             <v-divider/>
-            <v-col><v-code class="mt-6" tag="pre">{{ generate_sql }}</v-code></v-col>
+            <v-col>
+              <v-code class="mt-6" tag="pre">{{ generate_sql }}</v-code>
+            </v-col>
           </v-row>
         </v-card-text>
 
@@ -208,7 +234,7 @@ const data_types = [
           <v-spacer/>
           <v-btn text="Create"
                  color="primary"
-                 @click="table_store.create_table(generate_sql)"></v-btn>
+                 @click="table_store.create_table(generate_sql)"/>
           <v-btn
             text="Close"
             @click="isActive.value = false"/>
