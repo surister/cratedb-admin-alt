@@ -1,6 +1,6 @@
 <template>
   <v-divider
-    class="mx-2 my-auto mr-5 ml-5"
+    class="my-auto mr-1 ml-4"
     inset
     vertical
     style="height: 16px;"

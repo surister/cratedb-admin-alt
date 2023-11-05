@@ -28,6 +28,7 @@ export const use_console_store = defineStore('console', () => {
         live_update: false,
         _live_update_interval: null,
         show_full_screen_response: false,
+        object_representation_mode: true,
     })
     const router = useRouter()
     const route = useRoute()

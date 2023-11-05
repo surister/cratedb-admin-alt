@@ -2,9 +2,10 @@
 import {computed} from "vue";
 
 const props = defineProps({
-  object: Object,
+  data: String,
+  length: [Number, String],
 })
-const object_name = computed(()=>`Object[${Object.entries(props.object).length}]`)
+const object_name = computed(()=>`Object[${props.length}]`)
 </script>
 
 <template>
@@ -16,7 +17,7 @@ const object_name = computed(()=>`Object[${Object.entries(props.object).length}]
       <v-card :title="object_name">
         <v-card-text>
           <v-code class="overflow-y-auto" tag="pre">
-            {{ object }}
+            {{ JSON.parse(data) }}
           </v-code>
         </v-card-text>
         <v-card-actions>
