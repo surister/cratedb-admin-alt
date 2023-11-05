@@ -64,13 +64,23 @@ const generate_sql = computed(() => {
   let schema = table_options.value.schema ? `"${table_options.value.schema}".` : ''
   stmt_create += ` ${schema}"${table_options.value.name}"`
 
-
-
   let stmt_columns = '('
+
   for (const column of table_options.value.columns) {
-    let stmt_nullable = column.nullable ? ' NOT NULL' : ''
     let comma_after_col = column.id === table_options.value.columns.length - 1 ? '' : ','
-    let _stmt = `${column.name} ${column.type}${stmt_nullable}${comma_after_col}`
+
+    let _stmt = `${column.name} ${column.type}`
+
+    if(column.default != null){
+      _stmt += ` DEFAULT '${column.default}'`
+    }
+
+    if (column.nullable){
+      _stmt += ' NOT NULL'
+    }
+
+    _stmt += comma_after_col
+
     stmt_columns += _stmt
   }
   stmt_columns += ')'
@@ -198,24 +208,42 @@ const data_types = [
                 </v-row>
                 <v-row>
                   <v-col>
-                    <v-checkbox-btn label="IF NOT EXISTS" v-model="table_options.if_not_exists"></v-checkbox-btn>
+                    <v-checkbox-btn label="IF NOT EXISTS"
+                                    density="compact"
+                                    v-model="table_options.if_not_exists"></v-checkbox-btn>
                   </v-col>
                 </v-row>
               </template>
               <template v-if="current_column != null">
                 <v-label>Column options</v-label>
-                <v-text-field class="mt-6"
-                              density="compact"
-                              label="Name"
-                              v-model="current_column.name"/>
-                <v-select
-                  density="compact"
-                  label="Data type"
-                  :items="data_types"
-                  v-model="current_column.type"/>
-                <v-checkbox density="compact"
-                            label="Nullable"
-                            v-model="current_column.nullable"/>
+                <v-row align="end">
+                  <v-col>
+                    <v-text-field class="mt-6"
+                                  density="compact"
+                                  label="Name"
+                                  v-model="current_column.name"/>
+                  </v-col>
+                  <v-col>
+                    <v-select
+                      density="compact"
+                      label="Data type"
+                      :items="data_types"
+                      v-model="current_column.type"/>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+
+                    <v-text-field density="compact"
+                                  label="Default value"
+                                  v-model="current_column.default"/>
+                  </v-col>
+                  <v-col>
+                    <v-checkbox density="compact"
+                                label="Nullable"
+                                v-model="current_column.nullable"/>
+                  </v-col>
+                </v-row>
               </template>
             </v-col>
           </v-row>
