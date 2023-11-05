@@ -12,6 +12,7 @@ import {NodeChecks} from "@/store/crate_api/node_checks";
 import {Jobs} from "@/store/crate_api/jobs";
 import {QueryStats} from "@/store/crate_api/query_stats";
 import {Users} from "@/store/crate_api/users";
+import {use_tables_store} from "@/store/tables";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 const CHART_MAX_INTERVAL_S = 300 // 5 minutes in seconds.
@@ -73,7 +74,7 @@ export const use_node_info_store = defineStore('node_info', () => {
     })
 
     const charts_store = use_chart_store()
-
+    const tables_store = use_tables_store()
     async function update_node_info() {
         const _response = await request_crate(queries.NODE_INFO)
         const data = await _response.json()
@@ -178,6 +179,7 @@ export const use_node_info_store = defineStore('node_info', () => {
         update_qps_data(),
         update_privileges(),
         update_current_user(),
+        tables_store.update_tables()
     ])
 
     setInterval(async () => {

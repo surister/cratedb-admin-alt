@@ -70,8 +70,19 @@ export const use_users_store = defineStore('users', () => {
       global_store.show_error_snackbar(err_message)
     }
   }
+
+  async function add_privilege(stmt){
+    const _response = await request_crate(stmt)
+    if (_response.ok) {
+      global_store.show_successful_snackbar('Ok')
+    } else {
+      const error = await _response.json()
+      global_store.show_error_snackbar(error.message)
+    }
+  }
   return {
     ...toRefs(state),
+    add_privilege,
     create_user,
     drop_user,
     revoke_permission
