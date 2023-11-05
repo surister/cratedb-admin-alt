@@ -68,6 +68,25 @@ const generate_sql = computed(() => {
   return format_sql(stmt_create + stmt_columns)
 })
 
+const data_types = [
+  'BOOLEAN',
+  'TEXT',
+  'SMALLINT',
+  'INTEGER',
+  'BIGINT',
+  'REAL',
+  'DOUBLE PRECISION',
+  'NUMERIC',
+  'TIMESTAMP WITH TIME ZONE',
+  'TIMESTAMP WITHOUT TIME ZONE',
+  'DATE',
+  'TIME',
+  'IP',
+  'OBJECT',
+  'ARRAY',
+  'GEO_POINT',
+  'GEO_SHAPE'
+]
 
 </script>
 
@@ -168,7 +187,7 @@ const generate_sql = computed(() => {
                 <v-select
                   density="compact"
                   label="Data type"
-                  :items="['text', 'int']"
+                  :items="data_types"
                   v-model="current_column.type"/>
                 <v-checkbox density="compact"
                             label="Nullable"
