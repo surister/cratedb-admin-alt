@@ -6,8 +6,8 @@ const users_store = use_users_store()
 const required = (value) => !!value || 'Required'
 const dialog = ref(false)
 const visible = ref(false)
-const name = ref('')
-const password = ref('')
+const name = ref(null)
+const password = ref(null)
 </script>
 
 <template>

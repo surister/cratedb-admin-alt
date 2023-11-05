@@ -100,7 +100,8 @@ export default {
   REVOKE: 'REVOKE %permission ON %type %ident FROM %to',
   DROP_USER: 'DROP USER %user_name',
   CURRENT_USER: 'SELECT current_user',
-  CREATE_USER: "CREATE USER %username WITH (password='%password')"
+  CREATE_USER: "CREATE USER %username WITH (password='%password')",
+  CREATE_USER_WITHOUT_PASSWORD: "CREATE USER %username"
 }
 
 function proxify(object){
