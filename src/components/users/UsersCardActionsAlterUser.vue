@@ -24,7 +24,7 @@ const password = ref('')
             v-model="dialog">
     <v-card>
       <v-toolbar>
-        <v-toolbar-title :text=title></v-toolbar-title>
+        <v-toolbar-title :text=title />
       </v-toolbar>
       <v-card-text>
         <v-banner icon="mdi-information">
@@ -37,8 +37,7 @@ const password = ref('')
           <v-col>
             <v-container>
               <v-label>Name</v-label>
-              <v-text-field
-                            variant="outlined"
+              <v-text-field variant="outlined"
                             :disabled="true"/>
               <v-label>Password</v-label>
               <v-text-field v-model="password"

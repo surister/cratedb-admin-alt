@@ -75,6 +75,10 @@ const generate_sql = computed(() => {
       _stmt += ` DEFAULT '${column.default}'`
     }
 
+    if (column.primary_key != null){
+      _stmt += ` PRIMARY KEY`
+    }
+
     if (column.nullable){
       _stmt += ' NOT NULL'
     }
@@ -238,6 +242,9 @@ const data_types = [
                                   v-model="current_column.default"/>
                   </v-col>
                   <v-col>
+                    <v-checkbox density="compact"
+                                label="Primary key"
+                                v-model="current_column.primary_key"/>
                     <v-checkbox density="compact"
                                 label="Nullable"
                                 v-model="current_column.nullable"/>

@@ -16,7 +16,7 @@ const tables_info = use_tables_store()
               }}</span>.{{ tables_info.current_open_table.name }}
         </h2>
       </v-col>
-      <v-spacer></v-spacer>
+      <v-spacer/>
 
     </v-row>
     <v-row class="pt-1">
@@ -26,7 +26,7 @@ const tables_info = use_tables_store()
       <tables-column-text title="Total size" :value="human_file_size(tables_info.current_open_table.size_bytes)"/>
     </v-row>
     <v-row>
-      <tables-column-text title="Underreplicated shards"/>
+      <tables-column-text title="Under-replicated shards"/>
     </v-row>
 
 </template>
