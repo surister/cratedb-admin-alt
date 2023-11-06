@@ -16,7 +16,8 @@ export const use_tables_store = defineStore('tables', () => {
         current_open_schema: null, // We only need this to have a Schema reference.
         current_open_table_columns: null,
         current_show_create_table: null,
-        sample_data: null
+        sample_data: null,
+        response_from_create_table: {}
     })
     const log_store = use_log_store()
     const global_store = use_global_store()
@@ -77,9 +78,17 @@ export const use_tables_store = defineStore('tables', () => {
         const _response = await request_crate(sql)
 
         if (_response.ok) {
-            global_store.show_successful_snackbar('Table created')
+            state.response_from_create_table = {
+                type: 'success',
+                title: 'Created successfully'
+            }
         } else {
-            global_store.show_error_snackbar('Something went wrong')
+            const data = await _response.json()
+            state.response_from_create_table = {
+                type: 'error',
+                title: 'Error',
+                subtitle: data.error.message
+            }
         }
     }
 

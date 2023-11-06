@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import InnerTablesDrawerAddTable from "@/components/tables/TablesDrawerSuspensedContentAddDialog.vue";
+import InnerTablesDrawerAddTable from "@/components/tables/TablesDrawerSuspensedContentAddTable.vue";
 import TablesDrawerSuspensedContent from "@/components/tables/TablesDrawerSuspensedContent.vue";
 
 const show_search = ref(false)

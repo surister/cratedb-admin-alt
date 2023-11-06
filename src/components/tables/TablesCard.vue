@@ -2,7 +2,6 @@
 import TablesCardHeader from "@/components/tables/TablesCardHeader.vue";
 import TablesCardActions from "@/components/tables/TablesCardsActions.vue";
 import TableCardTabs from "@/components/tables/TablesCardTabs.vue";
-
 </script>
 
 <template>

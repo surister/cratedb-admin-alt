@@ -120,7 +120,7 @@ const data_types = [
       <v-card>
         <v-toolbar>
           <v-toolbar-title>Create table: <span
-            class="text-h5 font-weight-bold">{{ table_options.name }}</span>
+              class="text-h5 font-weight-bold">{{ table_options.name }}</span>
           </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -154,22 +154,22 @@ const data_types = [
                     <v-list-group fluid>
                       <template v-slot:activator="{ props }">
                         <v-list-item
-                          v-bind="props"
-                          @click="change_context_group(GROUPS.COLUMNS)"
-                          :active="current_group === GROUPS.COLUMNS"
-                          active-color="blue"
-                          title="Columns"
-                          prepend-icon="mdi-table-column"
-                          link/>
+                            v-bind="props"
+                            @click="change_context_group(GROUPS.COLUMNS)"
+                            :active="current_group === GROUPS.COLUMNS"
+                            active-color="blue"
+                            title="Columns"
+                            prepend-icon="mdi-table-column"
+                            link/>
                       </template>
 
                       <v-list-item
-                        @click="current_column = column; current_group = GROUPS.COLUMNS"
-                        :active="current_column != null && current_column.id === column.id"
-                        v-for="(column, i) in columns"
-                        :key="i"
-                        :value="i"
-                        class="ml-6">
+                          @click="current_column = column; current_group = GROUPS.COLUMNS"
+                          :active="current_column != null && current_column.id === column.id"
+                          v-for="(column, i) in columns"
+                          :key="i"
+                          :value="i"
+                          class="ml-6">
                         <template #prepend>
                           <v-chip variant="outlined"
                                   v-if="column.type"
@@ -225,15 +225,14 @@ const data_types = [
                   </v-col>
                   <v-col>
                     <v-select
-                      density="compact"
-                      label="Data type"
-                      :items="data_types"
-                      v-model="current_column.type"/>
+                        density="compact"
+                        label="Data type"
+                        :items="data_types"
+                        v-model="current_column.type"/>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col>
-
                     <v-text-field density="compact"
                                   label="Default value"
                                   v-model="current_column.default"/>
@@ -258,12 +257,13 @@ const data_types = [
           </v-row>
           <v-row>
             <v-col>
-              <v-alert closable
-                       title="Alert title"
-                       text="..."
-                       type="error"
-                       variant="tonal"
-              ></v-alert>
+              <template v-if="table_store.response_from_create_table.type">
+                <v-alert closable
+                         :title="table_store.response_from_create_table.title"
+                         :text="table_store.response_from_create_table.subtitle"
+                         :type="table_store.response_from_create_table.type"
+                         variant="tonal"/>
+              </template>
             </v-col>
           </v-row>
 
@@ -276,8 +276,8 @@ const data_types = [
                  color="primary"
                  @click="table_store.create_table(generate_sql)"/>
           <v-btn
-            text="Close"
-            @click="isActive.value = false"/>
+              text="Close"
+              @click="isActive.value = false"/>
         </v-card-actions>
       </v-card>
     </template>
