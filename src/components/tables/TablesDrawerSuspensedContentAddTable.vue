@@ -148,7 +148,7 @@ const data_types = [
                     <v-list-item prepend-icon="mdi-table"
                                  :active="current_group === GROUPS.NAME"
                                  title="Table name"
-                                 active-color="blue"
+                                 color="blue"
                                  @click="change_context_group(GROUPS.NAME)"
                                  link/>
                     <v-list-group fluid>
@@ -157,7 +157,7 @@ const data_types = [
                             v-bind="props"
                             @click="change_context_group(GROUPS.COLUMNS)"
                             :active="current_group === GROUPS.COLUMNS"
-                            active-color="blue"
+                            color="blue"
                             title="Columns"
                             prepend-icon="mdi-table-column"
                             link/>
@@ -257,7 +257,7 @@ const data_types = [
           </v-row>
           <v-row>
             <v-col>
-              <template v-if="table_store.response_from_create_table.type">
+              <template v-if="table_store.response_from_create_table.type != null">
                 <v-alert closable
                          :title="table_store.response_from_create_table.title"
                          :text="table_store.response_from_create_table.subtitle"
