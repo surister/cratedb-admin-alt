@@ -34,7 +34,12 @@ export const use_console_store = defineStore('console', () => {
         show_full_screen_response: false,
         object_representation_mode: true,
     })
-    const current_console = computed(() => state.consoles[state.current_console_index])
+    const current_console = computed(() => {
+        if (state.current_console_index >= state.consoles.length){
+            state.current_console_index -=1
+        }
+        return state.consoles[state.current_console_index]
+    })
     const router = useRouter()
     const route = useRoute()
 
