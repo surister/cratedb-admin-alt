@@ -46,21 +46,21 @@ export const use_users_store = defineStore('users', () => {
 
     if (_response.ok) {
       global_store.show_successful_snackbar('User deleted correctly')
-      log_store.log(log_store.ACTIONS.USER_DELETED, state.current_open_user.name)
+      await log_store.log(log_store.ACTIONS.USER_DELETED, state.current_open_user.name)
       state.current_open_user = null
     } else {
       global_store.show_error_snackbar("Something went wrong, could not delete user!")
     }
   }
 
-  async function create_user(username, password){
+  async function create_user(username, password) {
     const _response = await request_crate(
-        password != null && password !== '' ? queries.CREATE_USER : queries.CREATE_USER_WITHOUT_PASSWORD,
-        null,
-        {
-          '%username': username,
-          '%password': password
-        })
+      password != null && password !== '' ? queries.CREATE_USER : queries.CREATE_USER_WITHOUT_PASSWORD,
+      null,
+      {
+        '%username': username,
+        '%password': password
+      })
     if (_response.ok) {
       global_store.show_successful_snackbar('Successfully created user')
       await log_store.log(log_store.ACTIONS.USER_CREATED, username)
@@ -71,7 +71,20 @@ export const use_users_store = defineStore('users', () => {
     }
   }
 
-  async function add_privilege(stmt){
+  async function alter_user(new_password) {
+    const _response = await request_crate(queries.ALTER_USER, null, {
+      '%username': state.current_open_user.name,
+      '%password': new_password
+    })
+
+    if (_response.ok) {
+      await global_store.show_successful_snackbar('Altered correctly!')
+    }else {
+      await global_store.show_error_snackbar('Something went wrong')
+    }
+  }
+
+  async function add_privilege(stmt) {
     const _response = await request_crate(stmt)
     if (_response.ok) {
       global_store.show_successful_snackbar('Ok')
@@ -80,10 +93,12 @@ export const use_users_store = defineStore('users', () => {
       global_store.show_error_snackbar(error.message)
     }
   }
+
   return {
     ...toRefs(state),
     add_privilege,
     create_user,
+    alter_user,
     drop_user,
     revoke_permission
   }

@@ -1,7 +1,8 @@
 <script setup>
 import {use_node_info_store} from "@/store/node_info";
 import {use_users_store} from "@/store/users";
-import UsersDrawerAddUserBtn from "@/components/users/UsersDrawerAddUserDialog.vue";
+import UsersDrawerAddUserBtn from "@/components/users/UsersDrawerAddUser.vue";
+import UsersCardActionsAlterUser from "@/components/users/UsersCardActionsAlterUser.vue";
 
 const node_info_store = use_node_info_store()
 const users_store = use_users_store()
@@ -29,12 +30,10 @@ const users_store = use_users_store()
           :key="user.name"
           :title="user.name"
           @click="users_store.current_open_user = user"
-          link
-      >
+          link>
         <template #prepend>
-          <v-icon
-              :color="user.is_superuser ? 'pink': ''"
-              :icon="user.is_superuser ? 'mdi-shield-crown': 'mdi-account'"/>
+          <v-icon :color="user.is_superuser ? 'pink': ''"
+                  :icon="user.is_superuser ? 'mdi-shield-crown': 'mdi-account'"/>
         </template>
       </v-list-item>
     </v-list>

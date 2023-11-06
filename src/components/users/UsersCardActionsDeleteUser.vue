@@ -17,8 +17,7 @@ const users_store = use_users_store()
     <template #card-text>
       <v-card-text>
         This operation
-        <v-label style="color: red">cannot be reverted</v-label>
-        , the user will be lost.
+        <v-label style="color: red">cannot be reverted</v-label>, the user will be lost.
       </v-card-text>
     </template>
   </button-with-confirm-dialog>
