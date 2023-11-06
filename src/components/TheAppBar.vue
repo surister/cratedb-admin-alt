@@ -12,7 +12,7 @@ const admin_ui_version = import.meta.env.VITE_ADMIN_UI_VERSION
 </script>
 
 <template>
-  <v-app-bar :elevation="2">
+  <v-app-bar :elevation="1" density="comfortable">
     <template v-slot:prepend>
       <span class="ml-10 text-h4 font-weight-bold">CrateDB Alternative panel</span>
       <v-chip color="orange" class="mb-4" variant="text">{{ admin_ui_version }}</v-chip>

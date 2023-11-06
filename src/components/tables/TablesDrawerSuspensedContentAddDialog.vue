@@ -256,7 +256,19 @@ const data_types = [
               <v-code class="mt-6" tag="pre">{{ generate_sql }}</v-code>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col>
+              <v-alert closable
+                       title="Alert title"
+                       text="..."
+                       type="error"
+                       variant="tonal"
+              ></v-alert>
+            </v-col>
+          </v-row>
+
         </v-card-text>
+
 
         <v-card-actions>
           <v-spacer/>

@@ -5,14 +5,17 @@ const storedPreferences = use_stored_preferences_store()
 </script>
 
 <template>
-  <v-btn size="x-large" @click="storedPreferences.console.add_query_to_history = !storedPreferences.console.add_query_to_history ">
+  <v-btn @click="storedPreferences.console.add_query_to_history = !storedPreferences.console.add_query_to_history"
+        variant="tonal">
     <template #default>
-      <v-switch v-model="storedPreferences.console.add_query_to_history" color="primary">
-        <template v-slot:label>
-          <h4>Add query to history</h4>
-        </template>
+      <v-switch density="compact"
+                hide-details
+                flat
+                v-model="storedPreferences.console.add_query_to_history"
+                color="primary">
       </v-switch>
     </template>
+    <template #append><span class="ml-1">Add query to history</span></template>
   </v-btn>
 </template>
 

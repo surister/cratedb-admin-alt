@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {reactive, toRefs, watch} from "vue";
+import {computed, reactive, toRefs, watch} from "vue";
 import {request_crate} from "@/store/http/requests";
 
 import Queries from "@/store/http/queries";
@@ -21,6 +21,10 @@ const default_console_response = {
 
 export const use_console_store = defineStore('console', () => {
     const state = reactive({
+        consoles: [
+            {content: '', name: 'default'}
+        ],
+        current_console_index: 0,
         content: '', // The current content of the console.
         response: {...default_console_response}, // The response from querying to CrateDB
         is_query_running: false,
@@ -30,6 +34,7 @@ export const use_console_store = defineStore('console', () => {
         show_full_screen_response: false,
         object_representation_mode: true,
     })
+    const current_console = computed(() => state.consoles[state.current_console_index])
     const router = useRouter()
     const route = useRoute()
 
@@ -79,10 +84,10 @@ export const use_console_store = defineStore('console', () => {
     }
 
     async function query_from_console() {
-        state.is_query_running = true
+        current_console.value.is_query_running = true
 
         const _response = await request_crate(
-            state.content,
+            current_console.value.content,
             'error_trace=true',
             {},
             true)
@@ -106,21 +111,21 @@ export const use_console_store = defineStore('console', () => {
             )
             state.live_update = false
         }
-        state.is_query_running = false
+        current_console.value.is_query_running = false
 
     }
 
 
     if (route.query.query != null) {
-        state.content = route.query.query
+        current_console.value.content = route.query.query
     }
 
     // Syncs the content of the console with the url query, it could have also been done
     // via subscribing the @update event in the console component, but I think
     // it's easier to maintain if every event is on the same place.
     watch(
-        () => state.content, async () => {
-            await router.replace({path: route.path, query: {query: state.content}})
+        () => current_console.value.content, async () => {
+            await router.replace({path: route.path, query: {query: current_console.value.content}})
         }
     )
 
@@ -144,6 +149,7 @@ export const use_console_store = defineStore('console', () => {
 
     return {
         ...toRefs(state),
+        current_console,
         query_from_console,
         cancel_current_running_query,
         set_console_response_to_empty,

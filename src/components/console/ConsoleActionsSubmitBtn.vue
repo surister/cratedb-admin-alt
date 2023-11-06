@@ -14,10 +14,12 @@ function do_query() {
 
 <template>
   <v-btn :loading="console_store.is_query_running"
-         size="x-large"
          @click="do_query"
-         :disabled="console_store.content.length === 0">Submit
-  </v-btn>
+         :disabled="console_store.current_console.content.length === 0"
+         variant="outlined"
+         color="success"
+         prepend-icon="mdi-play"
+         text="run"/>
 </template>
 
 <style scoped>

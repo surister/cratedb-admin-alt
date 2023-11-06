@@ -5,7 +5,11 @@ const console_store = use_console_store()
 </script>
 
 <template>
-<v-btn size="x-large" class="ml-2" @click="console_store.format_query_content()">Format</v-btn>
+  <v-btn class="ml-2"
+         prepend-icon="mdi-format-text-rotation-down-vertical"
+         @click="console_store.format_query_content()"
+         variant="tonal"
+         text="format"/>
 </template>
 
 <style scoped>

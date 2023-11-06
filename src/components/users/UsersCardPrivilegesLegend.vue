@@ -41,9 +41,11 @@ const privileges_type = [
         <v-chip variant="elevated"><strong>{{ privilege.acronym }}</strong>
         </v-chip>
         {{ privilege.name }}, allows to execute:
-        <v-chip class="mr-1 my-2" size="small" v-for="action in privilege.allows">{{
-            action
-          }}
+        <v-chip class="mr-1 my-2"
+                size="small"
+                v-for="(action, i) in privilege.allows"
+                :key="i">
+          {{ action }}
         </v-chip>
       </template>
     </p>

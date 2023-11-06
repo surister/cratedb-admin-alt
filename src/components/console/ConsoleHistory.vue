@@ -19,11 +19,11 @@ let search_text = ref('')
 <template>
   <v-card>
     <v-data-table
-      items-per-page="5"
-      item-key="query"
-      :headers="historyHeader"
-      :items="stored_preferences.console.query_history"
-      :search="search_text">
+        items-per-page="5"
+        item-key="query"
+        :headers="historyHeader"
+        :items="stored_preferences.console.query_history"
+        :search="search_text">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Query history</v-toolbar-title>
@@ -54,14 +54,14 @@ let search_text = ref('')
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
-                  color="red"
-                  variant="text"
-                  @click="stored_preferences.reset_query_history(); dialog = false">
+                    color="red"
+                    variant="text"
+                    @click="stored_preferences.reset_query_history(); dialog = false">
                   Delete
                 </v-btn>
                 <v-btn
-                  variant="text"
-                  @click="dialog = false">
+                    variant="text"
+                    @click="dialog = false">
                   Cancel
                 </v-btn>
               </v-card-actions>
@@ -72,7 +72,7 @@ let search_text = ref('')
       <template v-slot:item="{ item }">
         <tr>
           <td v-ripple
-              @click="console_store.content = item.query"
+              @click="console_store.current_console.content = item.query"
               class="spec text-truncate text-no-wrap"
               style="max-width: 17vw; min-width: 15vw">
             <v-tooltip :text="item.query">
