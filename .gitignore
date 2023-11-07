@@ -21,6 +21,8 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-internal.md
+dev/internal.md
 package-lock.json
 *.sh
+
+dev
