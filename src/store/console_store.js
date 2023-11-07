@@ -25,7 +25,6 @@ export const use_console_store = defineStore('console', () => {
             {content: '', name: 'default'}
         ],
         current_console_index: 0,
-        content: '', // The current content of the console.
         response: {...default_console_response}, // The response from querying to CrateDB
         is_query_running: false,
         add_query_to_history: true,
@@ -33,6 +32,7 @@ export const use_console_store = defineStore('console', () => {
         _live_update_interval: null,
         show_full_screen_response: false,
         object_representation_mode: true,
+        history_drawer: true,
     })
     const current_console = computed(() => {
         if (state.current_console_index >= state.consoles.length){
@@ -44,7 +44,7 @@ export const use_console_store = defineStore('console', () => {
     const route = useRoute()
 
     async function format_query_content() {
-        state.content = format_sql(state.content)
+        current_console.value.content = format_sql(current_console.value.content)
     }
 
     async function set_console_response_to_error(type, title, subtitle, error_trace) {
@@ -119,7 +119,6 @@ export const use_console_store = defineStore('console', () => {
         current_console.value.is_query_running = false
 
     }
-
 
     if (route.query.query != null) {
         current_console.value.content = route.query.query

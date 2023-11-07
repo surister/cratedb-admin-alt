@@ -1,6 +1,7 @@
 <script setup>
 import {ref} from "vue";
-import InnerTablesDrawerAddTable from "@/components/tables/TablesDrawerSuspensedContentAddTable.vue";
+import InnerTablesDrawerAddTable
+  from "@/components/tables/TablesDrawerSuspensedContentAddTable.vue";
 import TablesDrawerSuspensedContent from "@/components/tables/TablesDrawerSuspensedContent.vue";
 
 const show_search = ref(false)
@@ -10,12 +11,11 @@ const show_search = ref(false)
   <v-navigation-drawer permanent>
     <v-list>
       <v-list-item>
-
         <v-row no-gutters>
-          <v-label>Tables</v-label>
-          <v-spacer></v-spacer>
+          <v-label text="tables"/>
+          <v-spacer/>
           <inner-tables-drawer-add-table/>
-          <v-btn class="" icon="mdi-table-search" @click="show_search = !show_search" flat/>
+          <v-btn icon="mdi-table-search" @click="show_search = !show_search" flat/>
         </v-row>
       </v-list-item>
 
@@ -29,7 +29,6 @@ const show_search = ref(false)
             </span>
         </template>
       </Suspense>
-
     </v-list>
   </v-navigation-drawer>
 </template>

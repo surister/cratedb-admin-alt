@@ -13,7 +13,7 @@ const console_store = use_console_store()
 <template>
   <v-sheet border>
     <v-container fluid>
-      <v-row justify="center" align="center">
+      <v-row align="center">
         <v-col cols="2">
             <v-text-field
                     density="compact"
@@ -32,6 +32,12 @@ const console_store = use_console_store()
             <query-history-switch/>
             <query-watcher/>
             <format-query-btn/>
+        </v-col>
+
+        <v-col class="text-right" cols="1">
+          <v-btn variant="tonal"
+                 icon="mdi-history"
+                 @click="console_store.history_drawer = !console_store.history_drawer"/>
         </v-col>
       </v-row>
     </v-container>

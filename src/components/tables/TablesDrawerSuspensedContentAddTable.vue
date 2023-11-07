@@ -71,15 +71,15 @@ const generate_sql = computed(() => {
 
     let _stmt = `${column.name} ${column.type}`
 
-    if(column.default != null){
+    if (column.default != null) {
       _stmt += ` DEFAULT '${column.default}'`
     }
 
-    if (column.primary_key != null){
+    if (column.primary_key != null) {
       _stmt += ` PRIMARY KEY`
     }
 
-    if (column.nullable){
+    if (column.nullable) {
       _stmt += ' NOT NULL'
     }
 
@@ -124,7 +124,7 @@ const data_types = [
       <v-card>
         <v-toolbar>
           <v-toolbar-title>Create table: <span
-              class="text-h5 font-weight-bold">{{ table_options.name }}</span>
+            class="text-h5 font-weight-bold">{{ table_options.name }}</span>
           </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -157,23 +157,21 @@ const data_types = [
                                  link/>
                     <v-list-group fluid>
                       <template v-slot:activator="{ props }">
-                        <v-list-item
-                            v-bind="props"
-                            @click="change_context_group(GROUPS.COLUMNS)"
-                            :active="current_group === GROUPS.COLUMNS"
-                            color="blue"
-                            title="Columns"
-                            prepend-icon="mdi-table-column"
-                            link/>
+                        <v-list-item v-bind="props"
+                                     @click="change_context_group(GROUPS.COLUMNS)"
+                                     :active="current_group === GROUPS.COLUMNS"
+                                     color="blue"
+                                     title="Columns"
+                                     prepend-icon="mdi-table-column"
+                                     link/>
                       </template>
 
-                      <v-list-item
-                          @click="current_column = column; current_group = GROUPS.COLUMNS"
-                          :active="current_column != null && current_column.id === column.id"
-                          v-for="(column, i) in columns"
-                          :key="i"
-                          :value="i"
-                          class="ml-6">
+                      <v-list-item @click="current_column = column; current_group = GROUPS.COLUMNS"
+                                   :active="current_column != null && current_column.id === column.id"
+                                   v-for="(column, i) in columns"
+                                   :key="i"
+                                   :value="i"
+                                   class="ml-6">
                         <template #prepend>
                           <v-chip variant="outlined"
                                   v-if="column.type"
@@ -228,11 +226,10 @@ const data_types = [
                                   v-model="current_column.name"/>
                   </v-col>
                   <v-col>
-                    <v-select
-                        density="compact"
-                        label="Data type"
-                        :items="data_types"
-                        v-model="current_column.type"/>
+                    <v-select density="compact"
+                              label="Data type"
+                              :items="data_types"
+                              v-model="current_column.type"/>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -282,9 +279,8 @@ const data_types = [
           <v-btn text="Create"
                  color="primary"
                  @click="table_store.create_table(generate_sql)"/>
-          <v-btn
-              text="Close"
-              @click="isActive.value = false"/>
+          <v-btn text="Close"
+                 @click="isActive.value = false"/>
         </v-card-actions>
       </v-card>
     </template>
