@@ -6,6 +6,7 @@ import GeneralSettings from "@/components/TheSettingsDrawerGeneralSettings.vue";
 
 import {use_global_store} from "@/store/global_store";
 import {use_log_store} from "@/store/log";
+import Debug from "@/components/debug.vue";
 
 const global_store = use_global_store()
 const log_store = use_log_store()
@@ -40,6 +41,8 @@ const drawerLinks = [
     linkTo: 'https://cratedb.com/blog'
   },
 ]
+
+const dev_mode = import.meta.env.DEV
 </script>
 
 <template>
@@ -48,14 +51,12 @@ const drawerLinks = [
     v-model="global_store.settings_drawer_toggle"
     temporary
     location="right">
-
     <v-toolbar title="Settings" flat>
       <template #append>
         <v-btn
           icon="mdi-close"
           variant="flat"
-          @click="global_store.settings_drawer_toggle = false"
-        />
+          @click="global_store.settings_drawer_toggle = false"/>
       </template>
     </v-toolbar>
 
@@ -64,6 +65,8 @@ const drawerLinks = [
       <console-settings/>
       <general-settings/>
     </v-container>
+
+    <debug v-if="dev_mode"></debug>
 
     <template #append>
       <v-divider/>
@@ -78,8 +81,6 @@ const drawerLinks = [
         ></list-item-link>
       </v-list>
     </template>
-
-    <v-btn @click="log_store.log(log_store.ACTIONS.CREATE_TABLE, 'doc.asdfoap1')">Debug</v-btn>
   </v-navigation-drawer>
 
 </template>
