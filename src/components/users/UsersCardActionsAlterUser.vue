@@ -8,7 +8,7 @@ const visible = ref(false)
 const user_store = use_users_store()
 const title = computed(() => `Alter ${user_store.current_open_user.name}`)
 
-const password = ref('')
+const password = ref(null)
 </script>
 
 <template>
@@ -31,7 +31,6 @@ const password = ref('')
           <template #text>
             <h4>CreateDB does not support altering the user name.</h4>
           </template>
-
         </v-banner>
         <v-row justify="center">
           <v-col>
@@ -39,7 +38,7 @@ const password = ref('')
               <v-label>Name</v-label>
               <v-text-field variant="outlined"
                             :disabled="true"/>
-              <v-label>Password</v-label>
+              <v-label text="Password"/>
               <v-text-field v-model="password"
                             variant="outlined"
                             :type="visible ? 'text' : 'password'"
@@ -54,6 +53,7 @@ const password = ref('')
         <v-spacer/>
         <v-btn color="primary"
                @click="user_store.alter_user(password).then(()=>dialog=false)"
+               :disabled="password == null"
                text="Alter"/>
         <v-btn @click="dialog = false"
                text="Close"/>
