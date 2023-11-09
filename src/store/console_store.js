@@ -33,7 +33,7 @@ export const use_console_store = defineStore('console', () => {
         _live_update_interval: null,
         show_full_screen_response: false,
         object_representation_mode: true,
-        history_drawer: true,
+        history_drawer: false,
     })
     const current_console = computed(() => {
         if (state.current_console_index >= state.consoles.length){
