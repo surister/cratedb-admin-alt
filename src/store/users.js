@@ -9,7 +9,12 @@ import {use_log_store} from "@/store/log";
 
 export const use_users_store = defineStore('users', () => {
   const state = reactive({
-    current_open_user: null
+    current_open_user: null,
+    response_from_add_permissions: {
+      type: null,
+      title: '',
+      subtitle: ''
+    }
   })
   const global_store = use_global_store()
   const log_store = use_log_store()
@@ -17,12 +22,12 @@ export const use_users_store = defineStore('users', () => {
   async function revoke_permission(permission) {
     const {type, class_, ident, id} = permission
     const _response = await request_crate(queries.REVOKE, null,
-      {
-        '%permission': type,
-        '%type': class_,
-        '%ident': ident,
-        '%to': state.current_open_user.name
-      })
+        {
+          '%permission': type,
+          '%type': class_,
+          '%ident': ident,
+          '%to': state.current_open_user.name
+        })
 
     if (_response.ok) {
       // We locally remove the privilege, so it updates automatically the row in the permissions table.
@@ -39,9 +44,9 @@ export const use_users_store = defineStore('users', () => {
 
   async function drop_user() {
     const _response = await request_crate(
-      queries.DROP_USER,
-      null,
-      {'%user_name': state.current_open_user.name}
+        queries.DROP_USER,
+        null,
+        {'%user_name': state.current_open_user.name}
     )
 
     if (_response.ok) {
@@ -55,12 +60,12 @@ export const use_users_store = defineStore('users', () => {
 
   async function create_user(username, password) {
     const _response = await request_crate(
-      password != null && password !== '' ? queries.CREATE_USER : queries.CREATE_USER_WITHOUT_PASSWORD,
-      null,
-      {
-        '%username': username,
-        '%password': password
-      })
+        password != null && password !== '' ? queries.CREATE_USER : queries.CREATE_USER_WITHOUT_PASSWORD,
+        null,
+        {
+          '%username': username,
+          '%password': password
+        })
     if (_response.ok) {
       global_store.show_successful_snackbar('Successfully created user')
       await log_store.log(log_store.ACTIONS.USER_CREATED, username)
@@ -79,7 +84,7 @@ export const use_users_store = defineStore('users', () => {
 
     if (_response.ok) {
       await global_store.show_successful_snackbar('Altered correctly!')
-    }else {
+    } else {
       await global_store.show_error_snackbar('Something went wrong')
     }
   }
@@ -87,10 +92,17 @@ export const use_users_store = defineStore('users', () => {
   async function add_privilege(stmt) {
     const _response = await request_crate(stmt)
     if (_response.ok) {
-      global_store.show_successful_snackbar('Ok')
+      state.response_from_add_permissions = {
+        type: 'success',
+        title: 'Added successfully'
+      }
     } else {
-      const error = await _response.json()
-      global_store.show_error_snackbar(error.message)
+      const data = await _response.json()
+      state.response_from_add_permissions = {
+        type: 'error',
+        title: 'Error',
+        subtitle: data.error.message
+      }
     }
   }
 
