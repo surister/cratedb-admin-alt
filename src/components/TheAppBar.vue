@@ -1,10 +1,10 @@
 <script setup>
 import VerticalDivider from "@/components/shared/VerticalDivider.vue";
-import { use_global_store } from "@/store/global_store";
-
 import InfoGroup from "@/components/TheAppBarInfo.vue";
 import SupportButton from "@/components/TheAppBarSupportButton.vue";
+
 import {use_node_info_store} from "@/store/node_info";
+import {use_global_store} from "@/store/global_store";
 
 const global_store = use_global_store()
 const info_store = use_node_info_store()
