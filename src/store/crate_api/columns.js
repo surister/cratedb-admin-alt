@@ -17,12 +17,14 @@ export class Columns {
                 column_name: column.column_name,
                 data_type: column.data_type,
                 is_nullable: column.is_nullable,
+                column_default: column.column_default
             }
         })
     }
 
   constructor(data) {
     for (const raw_column of data) {
+        console.log(raw_column)
       const new_column = new Column(...raw_column)
       this.columns.push(new_column)
     }
@@ -30,10 +32,11 @@ export class Columns {
 }
 
 class Column {
-  constructor(ordinal_position, column_name, data_type, is_nullable) {
-    this.ordinal_position = ordinal_position
-    this.column_name = column_name
-    this.data_type = data_type
-    this.is_nullable = is_nullable
+  constructor(ordinal_position, column_name, data_type, is_nullable, column_default) {
+      this.ordinal_position = ordinal_position
+      this.column_name = column_name
+      this.data_type = data_type
+      this.is_nullable = is_nullable
+      this.column_default = column_default
   }
 }

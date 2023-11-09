@@ -8,7 +8,7 @@ const tables_info = use_tables_store()
 
 const table_columns_table_headers = adaptVTableHeader(
     [
-      'ordinal_position', 'column_name', 'data_type', 'is_nullable'
+      'ordinal_position', 'column_name', 'data_type', 'is_nullable', 'column_default'
     ]
 )
 </script>
@@ -21,11 +21,9 @@ const table_columns_table_headers = adaptVTableHeader(
   <v-card-text>
     <v-window v-model="tables_info.current_tab">
       <v-window-item value="one">
-        <table-card-schema
-            v-if="tables_info.current_open_table_columns != null"
-            :headers="table_columns_table_headers"
-            :items="tables_info.current_open_table_columns.to_table_format()"
-        ></table-card-schema>
+        <table-card-schema v-if="tables_info.current_open_table_columns != null"
+                           :headers="table_columns_table_headers"
+                           :items="tables_info.current_open_table_columns.to_table_format()"/>
       </v-window-item>
       <v-window-item value="two">
         <tables-card-tabs-sample/>

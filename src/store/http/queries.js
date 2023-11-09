@@ -57,7 +57,8 @@ export default {
     SELECT ordinal_position,
            column_name,
            data_type,
-           is_nullable
+           is_nullable,
+           column_default
     FROM information_schema.columns
     WHERE table_name = '%table_name'
       and table_schema = '%table_schema'
