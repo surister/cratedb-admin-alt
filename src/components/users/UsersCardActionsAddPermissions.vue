@@ -103,7 +103,8 @@ const tables_list = computed(() => {
           <v-spacer/>
           <v-btn text="Add"
                  color="primary"
-                 @click="user_store.add_privilege(stmt_sql)"/>
+                 @click="user_store.add_privilege(stmt_sql)"
+                :disabled="permissions.permission == null || permissions.type == null"/>
           <v-btn text="Close"
                  @click="isActive.value = false"/>
         </v-card-actions>
