@@ -5,7 +5,7 @@ import TableCardTabs from "@/components/tables/TablesCardTabs.vue";
 </script>
 
 <template>
-  <v-card class="mt-5 pa-5">
+  <v-card class="pa-5">
     <template #title>
       <tables-card-header></tables-card-header>
     </template>

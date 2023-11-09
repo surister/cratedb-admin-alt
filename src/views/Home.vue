@@ -1,9 +1,5 @@
 <template>
-  <v-row>
-    <v-col>
-      <h1>Overview</h1>
-    </v-col>
-  </v-row>
+
   <span v-if="false">
     <v-row>
     <v-spacer></v-spacer>
