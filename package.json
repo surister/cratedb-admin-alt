@@ -19,6 +19,7 @@
     "pinia": "^2.0.0",
     "pinia-plugin-persistedstate": "^3.2.0",
     "roboto-fontface": "*",
+    "semver": "^7.5.4",
     "sql-formatter": "^13.0.0",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",

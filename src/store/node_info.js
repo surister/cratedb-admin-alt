@@ -13,6 +13,7 @@ import {Jobs} from "@/store/crate_api/jobs";
 import {QueryStats} from "@/store/crate_api/query_stats";
 import {Users} from "@/store/crate_api/users";
 import {use_tables_store} from "@/store/tables";
+import semver from "semver";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 const CHART_MAX_INTERVAL_S = 300 // 5 minutes in seconds.
@@ -56,7 +57,7 @@ const emptyNodeResult = [
     "probe_timestamp": 0
   },
   "load",
-  {version: "version"}, // version
+  {version: "0.0.0"}, // version
   {} // os info
 ]
 export const use_node_info_store = defineStore('node_info', () => {
@@ -75,6 +76,7 @@ export const use_node_info_store = defineStore('node_info', () => {
 
     const charts_store = use_chart_store()
     const tables_store = use_tables_store()
+
     async function update_node_info() {
         const _response = await request_crate(queries.NODE_INFO)
         const data = await _response.json()
@@ -171,6 +173,20 @@ export const use_node_info_store = defineStore('node_info', () => {
         state.current_user = data.rows[0][0]
     }
 
+    function is_compatible(version) {
+        let node_version = state.nodes.get_master_node().version.number
+        // Returns whether this feature is compatible with the current running version
+
+        // We do this check because the node info has to be queried from the server
+        // with this we avoid race condition, it will be default false and once
+        // we get the version from the server it'll get re-rendered if necessary.
+        if (node_version == null) {
+            return false
+        }
+
+        return semver.gte(version, node_version)
+    }
+
     Promise.allSettled([
         update_node_info(),
         update_health_info(),
@@ -201,5 +217,6 @@ export const use_node_info_store = defineStore('node_info', () => {
 
     return {
         ...toRefs(state),
+        is_compatible,
     }
 })
