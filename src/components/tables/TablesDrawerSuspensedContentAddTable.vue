@@ -34,7 +34,7 @@ function init_column() {
   }
 
   columns.value.push(
-    {id: new_id, name: 'new_column'}
+      {id: new_id, name: 'new_column'}
   )
 }
 
@@ -124,7 +124,7 @@ const data_types = [
       <v-card>
         <v-toolbar>
           <v-toolbar-title>Create table: <span
-            class="text-h5 font-weight-bold">{{ table_options.name }}</span>
+              class="text-h5 font-weight-bold">{{ table_options.name }}</span>
           </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -212,7 +212,7 @@ const data_types = [
                   <v-col>
                     <v-checkbox-btn label="IF NOT EXISTS"
                                     density="compact"
-                                    v-model="table_options.if_not_exists"></v-checkbox-btn>
+                                    v-model="table_options.if_not_exists"/>
                   </v-col>
                 </v-row>
               </template>
