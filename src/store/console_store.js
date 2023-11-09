@@ -27,6 +27,7 @@ export const use_console_store = defineStore('console', () => {
         current_console_index: 0,
         response: {...default_console_response}, // The response from querying to CrateDB
         is_query_running: false,
+        is_cancel_query_running: false,
         add_query_to_history: true,
         live_update: false,
         _live_update_interval: null,
@@ -68,10 +69,11 @@ export const use_console_store = defineStore('console', () => {
     }
 
     async function cancel_current_running_query() {
+        state.is_cancel_query_running = true
         const _jobs_response = await request_crate(
             Queries.GET_JOB_BY_STMT,
             null,
-            {'%stmt': state.content})
+            {'%stmt': current_console.value.content})
         const jobs = await _jobs_response.json()
         const target_job = jobs.rows[0][0]
 
@@ -81,11 +83,11 @@ export const use_console_store = defineStore('console', () => {
             {'%id': target_job})
         const kill_json_response = await _kill_response.json()
 
-        if (_kill_response.ok) {
-            state.is_query_running = false
-        } else {
+        if (!_kill_response.ok) {
             await set_console_response_to_error(kill_json_response)
         }
+        state.is_query_running = false
+        state.is_cancel_query_running = false
     }
 
     async function query_from_console() {

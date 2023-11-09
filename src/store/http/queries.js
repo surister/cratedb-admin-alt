@@ -1,6 +1,6 @@
 export default {
   NODE_INFO: "SELECT name, load, fs, heap, rest_url, version, os_info FROM SYS.NODES ORDER BY name",
-  GET_JOB_BY_STMT: "SELECT * FROM SYS.JOBS WHERE stmt = '%stmt'",
+  GET_JOB_BY_STMT: "SELECT * FROM SYS.JOBS WHERE stmt LIKE '%stmt%'",
   KILL: "KILL '%id'",
   HEALTH: `
     SELECT health,

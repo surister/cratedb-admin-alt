@@ -13,6 +13,7 @@ const console_store = use_console_store()
              variant="tonal"
              class="mx-2"
              :disabled="!console_store.current_console.is_query_running"
+             :loading="console_store.is_cancel_query_running"
              @click="console_store.cancel_current_running_query()"
              text="Cancel query"/>
     </template>

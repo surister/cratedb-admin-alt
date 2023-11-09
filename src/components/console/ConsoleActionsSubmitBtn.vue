@@ -13,7 +13,7 @@ function do_query() {
 </script>
 
 <template>
-  <v-btn :loading="console_store.is_query_running"
+  <v-btn :loading="console_store.current_console.is_query_running"
          @click="do_query"
          :disabled="console_store.current_console.content.length === 0"
          variant="outlined"
