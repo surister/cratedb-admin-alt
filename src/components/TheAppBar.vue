@@ -22,7 +22,7 @@ const admin_ui_version = import.meta.env.VITE_ADMIN_UI_VERSION
       <vertical-divider></vertical-divider>
       <info-group></info-group>
       <vertical-divider></vertical-divider>
-      <v-btn variant="flat">{{ info_store.current_user }}</v-btn>
+      <v-btn variant="flat" class="ml-5" color="primary">{{ info_store.current_user }}</v-btn>
       <support-button></support-button>
       <vertical-divider></vertical-divider>
       <v-btn
