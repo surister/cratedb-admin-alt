@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
+    "@vueuse/core": "^10.6.0",
     "ace-builds": "^1.28.0",
     "chart.js": "^4.4.0",
     "core-js": "^3.29.0",

@@ -1,4 +1,4 @@
-# CrateDB Alt panel - 0.0.7
+# CrateDB Alt panel - 0.1.5
 
 This is an Admin panel that intends to support all the features from CrateDB 5.4+ and add extra
 functionality to make the lives of CrateDB users easy.
@@ -43,7 +43,7 @@ bun install
 ## Run with docker
 
 ```shell
-docker run -p 3000:80 surister/cratedbaltadmin:0.0.7
+docker run -p 3000:80 surister/cratedbaltadmin:latest
 ```
 
 ## Solving the cors 'issue'
