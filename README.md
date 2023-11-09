@@ -81,17 +81,16 @@ product, and it will take some time.
 
 An example of a current limitation (As of Nov 9 2023), when creating tables in the UI, certain
 features are yet not supported, such as
-Table constraints, column constraints, column renaming, storage options, generation expressions...
+Table constraints, Column constraints, Column renaming, Storage options, Generation expressions...
 
 As of the writing of this, these limitations exists only on table creation.
 
-Other features such as repositories, Blobs, Node logs, support for notebooks are not yet implemented
-but will eventually, if you want a feature
-or have some ideas, please feel free to open an issue.
+Other features such as Repositories, Blobs, Node logs, Support for notebooks are not yet implemented
+but will eventually be, if you want a feature or have some ideas, please feel free to open an issue.
 
 ## Contributing
 
-This project is currently being developed by only me, but its open for contributions, also if you
+This project is currently being developed by me, but it's open for contributions, also if you
 have some ideas, feature request or happen to find a bug, please let me know in an issue, so it can be addressed.
 
 ## Notice
