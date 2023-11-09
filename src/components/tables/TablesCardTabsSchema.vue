@@ -16,18 +16,14 @@ let search = ref('')
 </script>
 
 <template>
-  <v-text-field
-      v-model="search"
-      append-icon="mdi-magnify"
-      placeholder="Filter column.."
-      single-line
-      hide-details
-  ></v-text-field>
-  <v-data-table
-      :headers="headers"
-      :items="items"
-      :search="search"
-  >
+  <v-text-field v-model="search"
+                append-icon="mdi-magnify"
+                placeholder="Filter column.."
+                single-line
+                hide-details/>
+  <v-data-table :headers="headers"
+                :items="items"
+                :search="search">
     <template v-slot:item="{ item }">
       <tr>
         <td v-for="it, index in item" :key="index">
