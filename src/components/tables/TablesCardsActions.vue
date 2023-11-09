@@ -15,7 +15,7 @@ async function f() {
   await router.push({
     name: 'console',
     query: {query: query}
-  }).then(() => console_store.content = query)
+  }).then(() => console_store.current_console.content = query)
 }
 </script>
 
@@ -25,7 +25,7 @@ async function f() {
       <v-dialog max-width="600">
         <template v-slot:activator="{ props }">
           <v-btn :disabled="table_store.current_open_schema.is_system"
-                 @click="table_store.show_create_table(table_store.current_open_table.name)"
+                 @click="table_store.show_create_table()"
                  v-bind="props"
                  flat
                  text="show create">
@@ -33,7 +33,7 @@ async function f() {
           <v-btn flat
                  class="ml-1"
                  @click="f();"
-                text="query table"/>
+                 text="query table"/>
         </template>
         <template v-slot:default="{ isActive }">
           <v-card>
