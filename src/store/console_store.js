@@ -6,6 +6,7 @@ import Queries from "@/store/http/queries";
 
 import {format_sql} from "@/store/utils";
 import {useRoute, useRouter} from "vue-router";
+import {use_stored_preferences_store} from "@/store/storedPreferences";
 
 
 const default_console_response = {
@@ -43,7 +44,7 @@ export const use_console_store = defineStore('console', () => {
     })
     const router = useRouter()
     const route = useRoute()
-
+    const stored_preferences_store = use_stored_preferences_store()
     async function format_query_content() {
         current_console.value.content = format_sql(current_console.value.content)
     }
@@ -101,6 +102,7 @@ export const use_console_store = defineStore('console', () => {
         const json_response = await _response.json()
 
         if (_response.ok) {
+            stored_preferences_store.add_to_history(current_console.value.content)
             await set_console_response_to_success(
                 'success',
                 'Success!',
