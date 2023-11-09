@@ -4,10 +4,9 @@ import {use_console_store} from "@/store/console_store";
 import {use_stored_preferences_store} from "@/store/storedPreferences";
 import 'ace-builds/src-noconflict/ext-language_tools'
 import langTools from 'ace-builds/src-noconflict/ext-language_tools'
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import 'ace-builds/src-noconflict/ace'
 
-const console_store = use_console_store()
 const stored_preferences = use_stored_preferences_store()
 
 const props = defineProps({
@@ -20,7 +19,7 @@ const props = defineProps({
     type: [Number, String]
   },
   content: {
-    default: null
+    type: String
   }
 })
 
@@ -169,6 +168,7 @@ const kwmap = [
     'MAX'
   ], 'function')
 ]
+
 onMounted(() => {
   function setup() {
     var myCompleter = {
@@ -205,20 +205,27 @@ onMounted(() => {
   setup()
 })
 
+let _content = ref(props.content)
+
+watch(
+    () => props.content, (prev) => {
+      _content.value = prev
+    }
+)
 </script>
 
 <template>
-  <VAceEditor
-    @init="(el) => editor = el"
-    v-model:value="console_store.consoles[console_store.current_console_index].content"
-    :print-margin="false"
-    :options="{
+  <VAceEditor @init="(el) => editor = el"
+              v-model:value="_content"
+              @change="$emit('update:content', _content)"
+              :print-margin="false"
+              :options="{
         enableBasicAutocompletion: true,
         enableLiveAutocompletion: true,
       }"
-    :style="{ 'font-size': stored_preferences.console.font_size + 'px' }"
-    :min-lines="minLines || Number.parseInt(stored_preferences.console.min_lines)"
-    :max-lines="maxLines || Number.parseInt(stored_preferences.console.max_lines)"/>
+              :style="{ 'font-size': stored_preferences.console.font_size + 'px' }"
+              :min-lines="minLines || Number.parseInt(stored_preferences.console.min_lines)"
+              :max-lines="maxLines || Number.parseInt(stored_preferences.console.max_lines)"/>
 </template>
 
 <style>
