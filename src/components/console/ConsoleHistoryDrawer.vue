@@ -7,7 +7,7 @@ const console_store = use_console_store()
 const stored_preferences = use_stored_preferences_store()
 
 const show_search = ref(false)
-const groups = ref([])
+const groups = ref(['history'])
 
 const current_page = ref(1)
 const QUERIES_PER_PAGE = 15
@@ -51,7 +51,8 @@ const is_history_opened = computed(() => groups.value.includes('history'))
       <v-text-field clearable
                     placeholder="Search table.."
                     :focused="true"
-                    class="rounded-0"
+                    class="rounded-0 border-0"
+                    variant="solo-filled"
                     v-model="search"
                     v-if="show_search"/>
     </v-expand-transition>
@@ -65,6 +66,34 @@ const is_history_opened = computed(() => groups.value.includes('history'))
         <v-divider/>
       </div>
     </v-expand-transition>
+    <v-list-group value="saved">
+      <template #activator="{ props }">
+        <v-list-item v-bind="props">Saved quries</v-list-item>
+      </template>
+      <v-list-item link v-for="query in stored_preferences.console.saved_queries"
+                   :key="query.id"
+                   @click="console_store.current_console.content = query.stmt">
+        <template #title>
+          <v-tooltip :text="query.stmt">
+            <template #default>
+              <pre>{{ query.stmt }}</pre>
+            </template>
+            <template v-slot:activator="{ props }">
+                <span v-bind="props" class="text-subtitle-2">
+                 {{ query.name }}
+                </span>
+            </template>
+          </v-tooltip>
+        </template>
+        <template #append>
+          <v-btn icon="mdi-delete"
+                 size="x-small"
+                 flat
+                 class="ml-1"
+                 @click.stop="stored_preferences.delete_from_saved(query.id)"/>
+        </template>
+      </v-list-item>
+    </v-list-group>
     <v-list-group value="history">
       <template #activator="{ props }">
         <v-list-item v-bind="props">Query history</v-list-item>
@@ -89,23 +118,11 @@ const is_history_opened = computed(() => groups.value.includes('history'))
                  size="x-small"
                  flat
                  class="ml-1"
-                 @click.stop="stored_preferences.delete_from_history(query)"/>
+                 @click.stop="stored_preferences.delete_from_history(query.id)"/>
         </template>
       </v-list-item>
     </v-list-group>
-    <v-list-group v-show="false">
-      <template #activator="{ props }">
-        <v-list-item v-bind="props">Saved queries</v-list-item>
-      </template>
 
-      <v-list-item link title="My query">
-        <template #append>
-          <v-btn icon="mdi-delete"
-                 size="small"
-                 flat/>
-        </template>
-      </v-list-item>
-    </v-list-group>
   </v-list>
 </v-navigation-drawer>
 </template>

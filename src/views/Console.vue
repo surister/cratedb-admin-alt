@@ -8,6 +8,7 @@ import {use_console_store} from "@/store/console_store";
 
 import ConsoleHistoryDrawer from "@/components/console/ConsoleHistoryDrawer.vue";
 import ConsoleEditor from "@/components/console/ConsoleEditor.vue";
+import {use_stored_preferences_store} from "@/store/storedPreferences";
 
 const console_store = use_console_store()
 </script>

@@ -13,7 +13,8 @@ const defaultState = {
         max_lines: 20,
         query_limit: 100,
         add_query_to_history: true,
-        query_history: []
+        query_history: [],
+        saved_queries: [] // { name: '', query: ''}
     },
     general: {
         master_node_url: 'http://localhost:4201'
@@ -23,9 +24,9 @@ export const use_stored_preferences_store = defineStore('stored_preferences', ()
         const state = reactive(defaultState)
         const theme = useTheme()
 
-        function delete_from_history(item) {
+        function delete_from_history(query_id) {
             state.console.query_history.splice(state.console.query_history.findIndex(function (i) {
-                return i.id === item.id;
+                return i.id === query_id;
             }), 1);
         }
 
@@ -33,13 +34,34 @@ export const use_stored_preferences_store = defineStore('stored_preferences', ()
             state.console.query_history = []
         }
 
-        function add_to_history(stmt) {
+        function save_query(name, stmt) {
             let lastIndex = 0
-            if (state.console.query_history.length !== 0) {
-                lastIndex = state.console.query_history.slice(-1)[0].id
+
+            if (state.console.saved_queries.length !== 0) {
+                lastIndex = state.console.saved_queries.slice(-1)[0].id
             }
 
+            state.console.saved_queries.unshift(
+                {
+                    id: lastIndex,
+                    name: name,
+                    stmt: stmt
+                }
+            )
+        }
+
+        function delete_from_saved(query_id) {
+            state.console.saved_queries.splice(state.console.saved_queries.findIndex(function (i) {
+                return i.id === query_id;
+            }), 1);
+        }
+
+        function add_to_history(stmt) {
             if (state.console.add_query_to_history) {
+                let lastIndex = 0
+                if (state.console.query_history.length !== 0) {
+                    lastIndex = state.console.query_history.slice(-1)[0].id
+                }
                 state.console.query_history.unshift(
                     {id: lastIndex + 1, query: stmt}
                 )
@@ -57,6 +79,8 @@ export const use_stored_preferences_store = defineStore('stored_preferences', ()
             reset_query_history,
             add_to_history,
             delete_from_history,
+            save_query,
+            delete_from_saved
         }
     },
     {

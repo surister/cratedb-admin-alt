@@ -1,13 +1,13 @@
 <script setup>
 import QueryWatcher from "@/components/console/ConsoleActionsLiveUpdateBtn.vue";
 import SubmitBtn from "@/components/console/ConsoleActionsSubmitBtn.vue";
-
 import CancelQueryBtn from "@/components/console/ConsoleActionsCancelQueryBtn.vue";
 import QueryHistorySwitch from "@/components/console/ConsoleActionsHistorySwitch.vue";
 import FormatQueryBtn from "@/components/console/ConsoleActionsFormatQueryBtn.vue";
+import ConsoleActionSaveQuery from "@/components/console/ConsoleActionSaveQuery.vue";
+import ConsoleActionsHistoryBtn from "@/components/console/ConsoleActionsHistoryBtn.vue";
 
 import {use_console_store} from "@/store/console_store";
-
 const console_store = use_console_store()
 </script>
 
@@ -33,13 +33,13 @@ const console_store = use_console_store()
           <query-history-switch/>
           <query-watcher/>
           <format-query-btn/>
+          <console-action-save-query/>
         </v-col>
 
-        <v-col class="text-right"
-               cols="1">
-          <v-btn variant="tonal"
-                 icon="mdi-history"
-                 @click="console_store.history_drawer = !console_store.history_drawer"/>
+        <v-col class="text-right d-block"
+               cols="2">
+       <consol-action-save-query/>
+        <console-actions-history-btn/>
         </v-col>
       </v-row>
     </v-container>

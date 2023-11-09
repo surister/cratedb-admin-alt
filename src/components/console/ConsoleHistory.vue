@@ -52,18 +52,15 @@ let search_text = ref('')
                 <p>Are you sure you want to delete the entire query history?</p>
               </v-card-text>
               <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                    color="red"
-                    variant="text"
-                    @click="stored_preferences.reset_query_history(); dialog = false">
+                <v-spacer/>
+                <v-btn color="red"
+                       variant="text"
+                       @click="stored_preferences.reset_query_history(); dialog = false">
                   Delete
                 </v-btn>
-                <v-btn
-                    variant="text"
-                    @click="dialog = false">
-                  Cancel
-                </v-btn>
+                <v-btn variant="text"
+                       @click="dialog = false"
+                       text="cancel"/>
               </v-card-actions>
             </v-card>
           </v-dialog>
