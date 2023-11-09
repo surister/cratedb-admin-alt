@@ -92,11 +92,11 @@ export const use_tables_store = defineStore('tables', () => {
         }
     }
 
-    async function show_create_table(table_name) {
+    async function show_create_table() {
         const response = await request_crate(
             queries.SHOW_CREATE,
             null,
-            {'%table_name': table_name}
+            {'%table_schema': state.current_open_table.schema,'%table_name': state.current_open_table.name}
         )
         const data = await response.json()
         state.current_show_create_table = data.rows[0][0]
