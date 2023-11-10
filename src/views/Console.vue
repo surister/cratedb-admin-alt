@@ -27,8 +27,11 @@ const console_store = use_console_store()
   </v-row>
   <v-row no-gutters>
     <v-col>
-      <console-editor @keydown.shift.enter.prevent="console_store.query_from_console()"
-                      v-model:content="console_store.consoles[console_store.current_console_index].content"/>
+      <console-editor v-model:content="console_store.consoles[console_store.current_console_index].content"
+                      @keydown.shift.enter.prevent="()=>{
+        if(console_store.current_console.content !== ''){console_store.query_from_console()}
+      }"
+      />
       <console-response v-if="console_store.response.type !== ''"/>
       <console-table-results class="mt-4"/>
     </v-col>
