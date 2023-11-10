@@ -16,16 +16,19 @@ const stmt_sql = computed(() => {
   }
 
   if (permissions.value.on != null && permissions.value.on !== 'cluster') {
-    stmt += ` ON ${permissions.value.on.toUpperCase()} "${permissions.value.schema}"${permissions.value.table != null ? '.' + `"${permissions.value.table}"` : ''}`
+    stmt += ` ON ${permissions.value.on.toUpperCase()}`
+    stmt += `${permissions.value.schema != null ? permissions.value.schema : ""}`
+    stmt += `${permissions.value.table != null ? '.' + `"${permissions.value.table}"` : ''}`
   }
 
   stmt += ' TO ' + user_store.current_open_user.name
   return stmt
 })
-const schema_list = computed(() => table_store.schemas.schemas.filter((schema) => !schema.is_system))
+
 
 const tables_list = computed(() => {
-  if (permissions.value.on === 'table' && permissions.value.schema != null)
+  // We do this early shortcut to avoid computing stuff when it's not needed.
+  if (['table', 'view'].includes(permissions.value.on)  && permissions.value.schema != null)
     return table_store.schemas.schemas.filter((schema) => schema.name === permissions.value.schema)[0].tables.map((table) => table.name)
   return []
 })
@@ -53,20 +56,22 @@ const tables_list = computed(() => {
           <v-select label="Schema"
                     v-if="['schema', 'table', 'view'].includes(permissions.on)"
                     v-model="permissions.schema"
+                    clearable
                     item-value="name"
                     item-title="name"
                     :items="schema_list">
           </v-select>
           <v-select label="Table"
-                    v-if="['table'].includes(permissions.on)"
+                    v-if="['table', 'view'].includes(permissions.on)"
                     v-model="permissions.table"
                     :items="[...tables_list]">
           </v-select>
-          <!--        <v-select label="View"-->
-          <!--                  v-if="['view',].includes(permissions.on)"-->
-          <!--                  v-model="permissions.view"-->
-          <!--                  :items="['All Views', ...tables_list]">-->
-          <!--        </v-select>-->
+          <v-label class="my-3" v-if="['view',].includes(permissions.on)">Views and tables can both be found in Table select</v-label>
+<!--                  <v-select label="View"-->
+<!--                            v-if="['view',].includes(permissions.on)"-->
+<!--                            v-model="permissions.view"-->
+<!--                            :items="['All Views', ...views_list]">-->
+<!--                  </v-select>-->
           <div>
             <v-btn-toggle v-model="permissions.type"
                           rounded="0"
