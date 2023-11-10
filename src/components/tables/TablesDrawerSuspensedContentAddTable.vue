@@ -2,6 +2,7 @@
 import {computed, ref} from "vue";
 import {format_sql} from "@/store/utils";
 import {use_tables_store} from "@/store/tables";
+import {DATA_TYPES} from "@/store/crate_api/crate_lang";
 
 const table_store = use_tables_store()
 
@@ -16,7 +17,7 @@ const columns = ref([])
 const table_options = ref({
   name: 'table',
   columns: columns,
-  if_not_exists: true
+  if_not_exists: false
 })
 
 function change_context_group(group) {
@@ -52,65 +53,51 @@ function remove_element() {
 }
 
 const generate_sql = computed(() => {
-  // We handcraft the SQL from the options that we get input, perhaps there is a library
-  // that does it from its own API, and we just need to adapt our input to that API?
-  // Is it even worth it to introduce a new dependency to avoid  5 lines of ifs?
-  let stmt_create = "CREATE TABLE"
+    // We handcraft the SQL from the options that we get input, perhaps there is a library
+    // that does it from its own API, and we just need to adapt our input to that API?
+    // Is it even worth it to introduce a new dependency to avoid  5 lines of ifs?
+    let stmt_create = "CREATE TABLE"
 
-  if (table_options.value.if_not_exists) {
-    stmt_create += ' IF NOT EXISTS'
-  }
-
-  let schema = table_options.value.schema ? `"${table_options.value.schema}".` : ''
-  stmt_create += ` ${schema}"${table_options.value.name}"`
-
-  let stmt_columns = '('
-
-  for (const column of table_options.value.columns) {
-    let comma_after_col = column.id === table_options.value.columns.length - 1 ? '' : ','
-
-    let _stmt = `${column.name} ${column.type}`
-
-    if (column.default != null) {
-      _stmt += ` DEFAULT '${column.default}'`
+    if (table_options.value.if_not_exists) {
+        stmt_create += ' IF NOT EXISTS'
     }
 
-    if (column.primary_key != null) {
-      _stmt += ` PRIMARY KEY`
+    let schema = table_options.value.schema ? `"${table_options.value.schema}".` : ''
+    stmt_create += ` ${schema}"${table_options.value.name}"`
+
+    let stmt_columns = '('
+
+    for (const column of table_options.value.columns) {
+        let comma_after_col = column.id === table_options.value.columns.length - 1 ? '' : ','
+
+        let _stmt = `${column.name} ${column.type.name}`
+
+        if (column.type.has_input){
+            _stmt += `(${column.input_value || column.type.default})`
+        }
+
+        if (column.default != null) {
+            _stmt += ` DEFAULT '${column.default}'`
+        }
+
+        if (column.primary_key != null) {
+            _stmt += ` PRIMARY KEY`
+        }
+
+        if (column.nullable) {
+            _stmt += ' NOT NULL'
+        }
+
+        _stmt += comma_after_col
+
+        stmt_columns += _stmt
     }
+    stmt_columns += ')'
 
-    if (column.nullable) {
-      _stmt += ' NOT NULL'
-    }
-
-    _stmt += comma_after_col
-
-    stmt_columns += _stmt
-  }
-  stmt_columns += ')'
-
-  return format_sql(stmt_create + stmt_columns)
+    return format_sql(stmt_create + stmt_columns)
 })
 
-const data_types = [
-  'BOOLEAN',
-  'TEXT',
-  'SMALLINT',
-  'INTEGER',
-  'BIGINT',
-  'REAL',
-  'DOUBLE PRECISION',
-  'NUMERIC',
-  'TIMESTAMP WITH TIME ZONE',
-  'TIMESTAMP WITHOUT TIME ZONE',
-  'DATE',
-  'TIME',
-  'IP',
-  'OBJECT',
-  'ARRAY',
-  'GEO_POINT',
-  'GEO_SHAPE'
-]
+const data_types = DATA_TYPES
 
 </script>
 
@@ -177,7 +164,7 @@ const data_types = [
                                   v-if="column.type"
                                   size="x-small"
                                   color="pink">
-                            {{ column.type }}
+                            {{ column.type.name }}
                           </v-chip>
                         </template>
                         <template #title>
@@ -226,15 +213,36 @@ const data_types = [
                                   v-model="current_column.name"/>
                   </v-col>
                   <v-col>
-                    <v-select density="compact"
-                              label="Data type"
-                              :items="data_types"
-                              v-model="current_column.type"/>
+                      <v-row>
+                          <v-col>
+                              <v-fade-transition>
+                                  <v-select density="compact"
+                                            label="Data type"
+                                            :items="data_types"
+                                            item-title="name"
+                                            item-value="name"
+                                            return-object
+                                            v-model="current_column.type">
+                                  </v-select>
+                              </v-fade-transition>
+
+                          </v-col>
+                          <v-fade-transition>
+                              <v-col v-if="current_column.type != null && current_column.type.has_input">
+                                  <v-text-field density="compact"
+                                                label="Input value"
+                                                v-model="current_column.input_value"/>
+                              </v-col>
+                          </v-fade-transition>
+                      </v-row>
+
+
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col>
                     <v-text-field density="compact"
+                                  clearable
                                   label="Default value"
                                   v-model="current_column.default"/>
                   </v-col>
@@ -266,11 +274,11 @@ const data_types = [
                          :title="table_store.response_from_create_table.title"
                          :text="table_store.response_from_create_table.subtitle"
                          :type="table_store.response_from_create_table.type"
+                         @click:close="table_store.response_from_create_table.type = null"
                          variant="tonal"/>
               </template>
             </v-col>
           </v-row>
-
         </v-card-text>
 
 
