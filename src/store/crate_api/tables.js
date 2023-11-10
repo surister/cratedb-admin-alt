@@ -47,6 +47,11 @@ class Schema {
 }
 
 class Table {
+    // We use the same Table object for Tables and Views, as View is almost like a table for our purposes,
+    // it doesn't make sense to complicate the API with more stuff.
+    is_view(){
+        return this.table_type === 'VIEW'
+    }
     constructor(name, records, size_bytes, shards, replicas, table_type, schema) {
         this.name = name
         this.records = records
