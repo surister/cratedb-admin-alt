@@ -33,13 +33,13 @@ const console_store = use_console_store()
           <query-history-switch/>
           <query-watcher/>
           <format-query-btn/>
-          <console-action-save-query/>
+
         </v-col>
 
         <v-col class="text-right d-block"
                cols="2">
-       <consol-action-save-query/>
-        <console-actions-history-btn/>
+          <console-action-save-query/>
+          <console-actions-history-btn/>
         </v-col>
       </v-row>
     </v-container>

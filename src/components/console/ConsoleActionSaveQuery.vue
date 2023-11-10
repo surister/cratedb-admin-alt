@@ -5,8 +5,10 @@ import {ref} from "vue";
 
 const console_store = use_console_store()
 const stored_preferences_store = use_stored_preferences_store()
+
 const dialog = ref(false)
 const name = ref()
+
 </script>
 
 <template>
@@ -31,7 +33,8 @@ const name = ref()
         <v-card-actions class="text-right">
           <v-spacer/>
           <v-btn color="primary"
-                 @click="stored_preferences_store.save_query(name, console_store.current_console.content)"
+                 @click="stored_preferences_store.save_query(name.value, console_store.current_console.content); dialog = false"
+                 :disabled="name == null"
                  text="save"/>
           <v-btn text="close"
                  @click="dialog = false"/>

@@ -68,7 +68,7 @@ const is_history_opened = computed(() => groups.value.includes('history'))
     </v-expand-transition>
     <v-list-group value="saved">
       <template #activator="{ props }">
-        <v-list-item v-bind="props">Saved quries</v-list-item>
+        <v-list-item v-bind="props">Saved queries</v-list-item>
       </template>
       <v-list-item link v-for="query in stored_preferences.console.saved_queries"
                    :key="query.id"
