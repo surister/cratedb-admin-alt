@@ -29,6 +29,7 @@ const props = defineProps({
   <v-expand-transition>
     <v-text-field v-model="filter"
                   clearable
+                  variant="solo-filled"
                   placeholder="Search table.."
                   :focused="true"
                   class="rounded-0"
