@@ -24,6 +24,10 @@ const props = defineProps({
     type: String,
     default: 'elevated'
   },
+  dialogWidth: {
+    type: String,
+    default: 'auto'
+  },
   dialogTitle: {
     type: String,
   },
@@ -46,20 +50,25 @@ const props = defineProps({
     type: String,
     default: 'tonal'
   },
+  dialogSubmitBtnDisabled: {
+    type: Boolean,
+    default: false
+  },
   dialogCloseOnSubmit: {
     type: Boolean,
     default: false,
   },
-  promise: {
-    type: Promise,
+  submitCallback: {
+    type: Function,
     required: false,
   }
 })
 const result = ref(null)
 
 function handleClick() {
-  props.promise.then((v) => {
-    result.value = v
+  // We expect the received function to ultimately return a dictionary.
+  props.submitCallback().then((res) => {
+    result.value = res
   })
 
   emit("onSubmit")
@@ -79,7 +88,7 @@ const dialog = ref(false)
         {{ activatorBtnText }}
         <v-dialog v-model="dialog"
                   activator="parent"
-                  width="auto">
+                  :width="dialogWidth">
           <v-card>
             <slot name="dialog-title">
               <v-toolbar>
@@ -105,6 +114,7 @@ const dialog = ref(false)
               <v-btn :color="dialogSubmitBtnColor"
                      :text="dialogSubmitBtnText"
                      :variant="dialogSubmitBtnVariant"
+                     :disabled="dialogSubmitBtnDisabled"
                      @click="handleClick"/>
             </v-card-actions>
           </v-card>
