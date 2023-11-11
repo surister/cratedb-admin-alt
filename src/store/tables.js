@@ -92,11 +92,35 @@ export const use_tables_store = defineStore('tables', () => {
         }
     }
 
+    async function rename_table(table_name) {
+        const _response = await request_crate(queries.RENAME_TABLE, null, {
+            '%old_table': state.current_open_table.name,
+            '%new_table': table_name,
+        })
+
+        if (_response.ok) {
+            return {
+                type: 'success',
+                title: 'Success!',
+            }
+        } else {
+            const data = await _response.json()
+            return {
+                type: 'error',
+                title: 'Error',
+                subtitle: data.error.message
+            }
+        }
+    }
+
     async function show_create_table() {
         const response = await request_crate(
             queries.SHOW_CREATE,
             null,
-            {'%table_schema': state.current_open_table.schema,'%table_name': state.current_open_table.name}
+            {
+                '%table_schema': state.current_open_table.schema,
+                '%table_name': state.current_open_table.name
+            }
         )
         const data = await response.json()
         state.current_show_create_table = data.rows[0][0]
@@ -129,6 +153,7 @@ export const use_tables_store = defineStore('tables', () => {
         update_tables,
         update_table_sample_data,
         drop_table,
-        show_create_table
+        show_create_table,
+        rename_table
     }
 })

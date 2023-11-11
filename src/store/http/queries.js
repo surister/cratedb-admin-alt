@@ -103,5 +103,6 @@ export default {
   CURRENT_USER: 'SELECT current_user',
   CREATE_USER: "CREATE USER %username WITH (password='%password')",
   CREATE_USER_WITHOUT_PASSWORD: "CREATE USER %username",
-  ALTER_USER: "ALTER USER %username SET (password = '%password')"
+  ALTER_USER: "ALTER USER %username SET (password = '%password')",
+  RENAME_TABLE: "ALTER TABLE %old_table RENAME TO %new_table"
 }
