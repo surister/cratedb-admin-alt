@@ -52,7 +52,7 @@ const password = ref(null)
       <v-card-actions>
         <v-spacer/>
         <v-btn color="primary"
-               @click="user_store.alter_user(password).then(()=>dialog=false)"
+               @click="user_store.alter_user(password).then(()=> dialog = false)"
                :disabled="password == null"
                text="Alter"/>
         <v-btn @click="dialog = false"

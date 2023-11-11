@@ -19,9 +19,8 @@ const password = ref(null)
               flat/>
     </template>
   </v-tooltip>
-  <v-dialog
-      max-width="600"
-      v-model="dialog">
+  <v-dialog max-width="600"
+            v-model="dialog">
     <v-card>
       <v-toolbar>
         <v-toolbar-title>Create new user</v-toolbar-title>
@@ -48,7 +47,7 @@ const password = ref(null)
       <v-card-actions>
         <v-spacer/>
         <v-btn color="primary"
-               @click="users_store.create_user(name, password).then(()=>dialog=false)"
+               @click="users_store.create_user(name, password).then(() => dialog = false)"
                text="Create"/>
         <v-btn @click="dialog = false"
                text="Close"/>
