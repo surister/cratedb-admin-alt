@@ -184,7 +184,7 @@ export const use_node_info_store = defineStore('node_info', () => {
             return false
         }
 
-        return semver.gte(version, node_version)
+        return semver.lte(version, node_version)
     }
 
     Promise.allSettled([
