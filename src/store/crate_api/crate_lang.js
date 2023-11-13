@@ -37,6 +37,7 @@ export const DATA_TYPES = [
 ]
 
 export const CRATE_KEYWORDS = [
+    'AND',
     'ALTER CLUSTER',
     'ALTER PUBLICATION',
     'ALTER TABLE',
@@ -56,6 +57,8 @@ export const CRATE_KEYWORDS = [
     'CREATE TABLE',
     'CREATE USER',
     'CREATE VIEW',
+    'CONSTRAINT',
+    'CHECK',
     'DEALLOCATE',
     'DECLARE',
     'DELETE',
@@ -76,7 +79,9 @@ export const CRATE_KEYWORDS = [
     'GRANT',
     'INSERT',
     'KILL',
+    'NOT',
     'OPTIMIZE',
+    'PRIMARY KEY',
     'REFRESH',
     'RESTORE SNAPSHOT',
     'REVOKE',
@@ -106,13 +111,13 @@ export const CRATE_KEYWORDS = [
     'JOIN',
     'OUTER',
     'JOIN',
-    'AND'
+
 ]
 
 export const CRATE_VALUES = [
     'true',
     'false',
-    'null',
+    'NULL',
 ]
 
 export const CRATE_FUNCTIONS = ['SUM', 'MIN', 'MAX']
