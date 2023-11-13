@@ -20,10 +20,25 @@ const default_console_response = {
     }
 }
 
+const empty_console_state = {
+    content: '',
+    name: 'default',
+    response: {
+        type: null,
+        title: '',
+        subtitle: '',
+        error_trace: null,
+        data: {
+            rows: null,
+            headers: null,
+            row_count: null
+        }
+    }
+}
 export const use_console_store = defineStore('console', () => {
     const state = reactive({
         consoles: [
-            {content: '', name: 'default'}
+            structuredClone(empty_console_state)
         ],
         current_console_index: 0,
         response: {...default_console_response}, // The response from querying to CrateDB
@@ -49,20 +64,30 @@ export const use_console_store = defineStore('console', () => {
         current_console.value.content = format_sql(current_console.value.content)
     }
 
+    async function add_console() {
+        const name = `new_query(${state.consoles.length})`
+        let new_console = structuredClone(empty_console_state)
+        new_console.name = name
+
+        state.consoles.push(new_console)
+        state.current_console_index = state.consoles.length - 1
+    }
+
     async function set_console_response_to_error(type, title, subtitle, error_trace) {
-        state.response.type = type
-        state.response.title = title
-        state.response.subtitle = subtitle
-        state.response.error_trace = error_trace
+        current_console.value.response.type = type
+        current_console.value.response.title = title
+        current_console.value.response.subtitle = subtitle
+        current_console.value.response.error_trace = error_trace
     }
 
     async function set_console_response_to_success(type, title, subtitle, rows, headers, row_count) {
-        state.response.type = 'success'
-        state.response.title = 'Success'
-        state.response.subtitle = subtitle
-        state.response.data.rows = rows
-        state.response.data.headers = headers
-        state.response.data.row_count = row_count
+        current_console.value.response.type = 'success'
+        current_console.value.response.title = 'Success'
+        current_console.value.response.subtitle = subtitle
+        current_console.value.response.data.rows = rows
+        current_console.value.response.data.headers = headers
+        current_console.value.response.data.row_count = row_count
+        current_console.value.response.error_trace = null
     }
 
     async function set_console_response_to_empty() {
@@ -159,6 +184,7 @@ export const use_console_store = defineStore('console', () => {
         ...toRefs(state),
         current_console,
         query_from_console,
+        add_console,
         cancel_current_running_query,
         set_console_response_to_empty,
         format_query_content

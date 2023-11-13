@@ -27,19 +27,20 @@ const console_store = use_console_store()
   </v-row>
   <v-row no-gutters>
     <v-col>
-      <console-editor v-model:content="console_store.consoles[console_store.current_console_index].content"
-                      @keydown.shift.enter.prevent="()=>{
-        if(console_store.current_console.content !== ''){console_store.query_from_console()}
+      <console-editor v-model:content="console_store.current_console.content"
+                      @keydown.shift.enter.prevent="() => {
+            if(console_store.current_console.content !== ''){console_store.query_from_console()
+                  }
       }"
       />
-      <console-response v-if="console_store.response.type !== ''"/>
-      <console-table-results class="mt-4"/>
+      <console-response :data="console_store.current_console.response"/>
+      <console-table-results :data="console_store.current_console.response.data" class="mt-4"/>
     </v-col>
   </v-row>
 
   <!-- Dialogs -->
   <v-dialog v-model="console_store.show_full_screen_response">
-    <console-table-results v-if="console_store.show_full_screen_response"/>
+    <console-table-results :data="console_store.current_console.response.data" v-if="console_store.show_full_screen_response"/>
   </v-dialog>
 
 </template>

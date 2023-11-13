@@ -4,19 +4,27 @@ import TracebackDialog from "@/components/console/ConsoleResponseTracebackDialog
 
 const console_store = use_console_store()
 
+const props = defineProps(
+    {
+      data: {
+        type: Object,
+        default: null
+      }
+    }
+)
 </script>
 
 <template>
-  <v-card v-if="console_store.response" border class="rounded-0">
+  <v-card v-if="data.type != null" border class="rounded-0">
     <template #title>
-      <p :class="[ console_store.response.type === 'success' ? 'text-green-accent-3' : 'text-red-accent-4' ]">
-        {{ console_store.response.title }}</p>
+      <p :class="[ data.type === 'success' ? 'text-green-accent-3' : 'text-red-accent-4' ]">
+        {{ data.title }}</p>
     </template>
     <template #text>
-      <p style="font-size: 20px">{{ console_store.response.subtitle }}</p>
+      <p style="font-size: 20px">{{ data.subtitle }}</p>
     </template>
     <v-card-actions>
-      <traceback-dialog v-if="console_store.response.error_trace"/>
+      <traceback-dialog v-if="data.error_trace != null" :text="data.error_trace"/>
       <v-btn @click="console_store.set_console_response_to_empty()">Clear</v-btn>
     </v-card-actions>
   </v-card>
