@@ -90,6 +90,10 @@ const generate_sql = computed(() => {
         _stmt += ` DEFAULT '${column.default}'`
       }
 
+      if (column.generated_expression != null){
+        _stmt += ` GENERATED ALWAYS AS ${column.generated_expression}`
+      }
+
       if (column.checks.length !== 0){
         // Supporting only 1 check for now, will prolly have to come back later at this.
         let check = column.checks[0]
@@ -150,218 +154,234 @@ const data_types = DATA_TYPES
       </v-toolbar>
     </template>
     <template #dialog-content>
-          <v-card-text>
-          <v-row>
-            <v-col>
-              <v-row>
-                <v-col>
-                  <v-btn-toggle density="comfortable"
-                                divided
-                                variant="outlined">
-                    <v-btn icon="mdi-plus"
-                           @click="add_new_element"
-                           :active="false"
-                           :disabled="!(current_group !== GROUPS.NAME)"/>
-                    <v-btn icon="mdi-minus"
-                           @click="remove_element"
-                           :active="false"
-                           :disabled="!(current_column != null)"/>
-                  </v-btn-toggle>
-                </v-col>
-              </v-row>
-              <v-row no-gutters>
-                <v-col>
-                  <v-list>
-                    <v-list-item prepend-icon="mdi-table"
-                                 :active="current_group === GROUPS.NAME"
-                                 title="Table name"
-                                 color="blue"
-                                 @click="change_context_group(GROUPS.NAME)"
-                                 link/>
-                    <v-list-group fluid>
+      <v-card-text>
+        <v-row>
+          <v-col>
+            <v-row>
+              <v-col>
+                <v-btn-toggle density="comfortable"
+                              divided
+                              variant="outlined">
+                  <v-btn icon="mdi-plus"
+                         @click="add_new_element"
+                         :active="false"
+                         :disabled="!(current_group !== GROUPS.NAME)"/>
+                  <v-btn icon="mdi-minus"
+                         @click="remove_element"
+                         :active="false"
+                         :disabled="!(current_column != null)"/>
+                </v-btn-toggle>
+              </v-col>
+            </v-row>
+            <v-row no-gutters>
+              <v-col>
+                <v-list>
+                  <v-list-item prepend-icon="mdi-table"
+                               :active="current_group === GROUPS.NAME"
+                               title="Table name"
+                               color="blue"
+                               @click="change_context_group(GROUPS.NAME)"
+                               link/>
+                  <v-list-group fluid>
+                    <template v-slot:activator="{ props }">
+                      <v-list-item v-bind="props"
+                                   @click="change_context_group(GROUPS.COLUMNS)"
+                                   :active="current_group === GROUPS.COLUMNS || current_group === GROUPS.CHECKS"
+                                   color="blue"
+                                   title="Columns"
+                                   prepend-icon="mdi-table-column"
+                                   link/>
+                    </template>
+
+                    <v-list-group v-for="(column, i) in columns" :key="i">
                       <template v-slot:activator="{ props }">
                         <v-list-item v-bind="props"
-                                     @click="change_context_group(GROUPS.COLUMNS)"
-                                     :active="current_group === GROUPS.COLUMNS || current_group === GROUPS.CHECKS"
-                                     color="blue"
-                                     title="Columns"
-                                     prepend-icon="mdi-table-column"
-                                     link/>
-                      </template>
-
-                      <v-list-group v-for="(column, i) in columns" :key="i">
-                        <template v-slot:activator="{ props }">
-                          <v-list-item v-bind="props"
-                                       @click="current_column = column; current_group = GROUPS.COLUMNS"
-                                       :active="current_column != null && current_column.id === column.id"
-                                       :value="i">
-                            <template #prepend>
-                              <v-chip variant="outlined"
-                                      v-if="column.type"
-                                      size="x-small"
-                                      color="pink">
-                                {{ column.type.name }}
-                              </v-chip>
-                            </template>
-                            <template #title>
+                                     @click="current_column = column; current_group = GROUPS.COLUMNS"
+                                     :active="current_column != null && current_column.id === column.id"
+                                     :value="i">
+                          <template #prepend>
+                            <v-chip variant="outlined"
+                                    v-if="column.type"
+                                    size="x-small"
+                                    color="pink">
+                              {{ column.type.name }}
+                            </v-chip>
+                          </template>
+                          <template #title>
                           <span class="ml-2">
                             {{ column.name }}
                           </span>
-                            </template>
-                          </v-list-item>
+                          </template>
+                        </v-list-item>
+                      </template>
+                      <v-list-group :value="'checks' + i">
+                        <template v-slot:activator="{ props }">
+                          <v-list-item v-bind="props">Checks</v-list-item>
                         </template>
-                        <v-list-group :value="'checks' + i">
-                          <template v-slot:activator="{ props }">
-                            <v-list-item v-bind="props">Checks</v-list-item>
-                          </template>
-                          <v-list-item v-for="(check, i) in column.checks" :key="i" @click="current_check = current_column.checks[i];change_context_group(GROUPS.CHECKS)">
-                            {{ check.name }}
-                          </v-list-item>
+                        <v-list-item v-for="(check, i) in column.checks"
+                                     :key="i"
+                                     @click="current_check = current_column.checks[i]; change_context_group(GROUPS.CHECKS)">
+                          {{ check.name }}
+                        </v-list-item>
 
-                        </v-list-group>
-                        <v-list-group link>
-                          <template v-slot:activator="{ props }">
-                            <v-list-item v-bind="props">ohte rstuff</v-list-item>
-                          </template>
-                        </v-list-group>
+                      </v-list-group>
+                      <v-list-group link>
+                        <template v-slot:activator="{ props }">
+                          <v-list-item v-bind="props">ohte rstuff</v-list-item>
+                        </template>
+                      </v-list-group>
+                    </v-list-group>
+                  </v-list-group>
+                </v-list>
+              </v-col>
+            </v-row>
+          </v-col>
 
-
-                      </v-list-group></v-list-group>
-                  </v-list>
+          <!-- Form fields-->
+          <v-col cols="8">
+            <template v-if="current_group === GROUPS.NAME">
+              <v-label>Table options</v-label>
+              <v-row align="end">
+                <v-col>
+                  <v-text-field class="mt-6"
+                                density="compact"
+                                label="Schema"
+                                v-model="table_options.schema"/>
+                </v-col>
+                <v-col>
+                  <v-text-field density="compact"
+                                label="Table name"
+                                v-model="table_options.name"/>
                 </v-col>
               </v-row>
-            </v-col>
-
-            <!-- Form fields-->
-            <v-col cols="8">
-              <template v-if="current_group === GROUPS.NAME">
-                <v-label>Table options</v-label>
-                <v-row align="end">
-                  <v-col>
-                    <v-text-field class="mt-6"
-                                  density="compact"
-                                  label="Schema"
-                                  v-model="table_options.schema"/>
-                  </v-col>
-                  <v-col>
-                    <v-text-field density="compact"
-                                  label="Table name"
-                                  v-model="table_options.name"/>
-                  </v-col>
-                </v-row>
-                <v-row align="end">
-                  <v-col>
-                    <v-text-field density="compact"
-                                  label="Shards"
-                                  v-model="table_options.shards"/>
-                  </v-col>
-                  <v-col>
-                    <v-text-field density="compact"
-                                  label="Partitions"
-                                  v-model="table_options.partitions"/>
-                  </v-col>
-                </v-row>
+              <v-row align="end">
+                <v-col>
+                  <v-text-field density="compact"
+                                label="Shards"
+                                v-model="table_options.shards"/>
+                </v-col>
+                <v-col>
+                  <v-text-field density="compact"
+                                label="Partitions"
+                                v-model="table_options.partitions"/>
+                </v-col>
+              </v-row>
 
 
-                <v-row>
-                  <v-col>
-                    <v-checkbox-btn label="IF NOT EXISTS"
-                                    density="compact"
-                                    v-model="table_options.if_not_exists"/>
-                  </v-col>
-                </v-row>
-              </template>
-              <template v-if="current_column != null && current_group === GROUPS.COLUMNS">
-                <v-label>Column options</v-label>
-                <v-btn size="x-small"
-                       flat class="mx-2"
-                       color="primary"
-                       @click="add_new_check">Add check</v-btn>
-                <v-row align="end">
-                  <v-col>
-                    <v-text-field class="mt-6"
+              <v-row>
+                <v-col>
+                  <v-checkbox-btn label="IF NOT EXISTS"
                                   density="compact"
-                                  label="Name"
-                                  v-model="current_column.name"/>
-                  </v-col>
-                  <v-col>
-                      <v-row>
-                          <v-col>
-                              <v-fade-transition>
-                                  <v-select density="compact"
-                                            label="Data type"
-                                            :items="data_types"
-                                            item-title="name"
-                                            item-value="name"
-                                            return-object
-                                            v-model="current_column.type">
-                                  </v-select>
-                              </v-fade-transition>
+                                  v-model="table_options.if_not_exists"/>
+                </v-col>
+              </v-row>
+            </template>
+            <template v-if="current_column != null && current_group === GROUPS.COLUMNS">
+              <v-label>Column options</v-label>
+              <v-btn size="x-small"
+                     flat class="mx-2"
+                     color="primary"
+                     @click="add_new_check">Add check
+              </v-btn>
+              <v-row align="end">
+                <v-col>
+                  <v-text-field class="mt-6"
+                                density="compact"
+                                label="Name"
+                                v-model="current_column.name"/>
+                </v-col>
+                <v-col>
+                  <v-row>
+                    <v-col>
+                      <v-fade-transition>
+                        <v-select density="compact"
+                                  label="Data type"
+                                  :items="data_types"
+                                  item-title="name"
+                                  item-value="name"
+                                  return-object
+                                  v-model="current_column.type">
+                        </v-select>
+                      </v-fade-transition>
 
-                          </v-col>
-                          <v-fade-transition>
-                              <v-col v-if="current_column.type != null && current_column.type.has_input">
-                                  <v-text-field density="compact"
-                                                label="Input value"
-                                                v-model="current_column.input_value"/>
-                              </v-col>
-                          </v-fade-transition>
-                      </v-row>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <v-text-field density="compact"
-                                  clearable
-                                  label="Default value"
-                                  v-model="current_column.default"/>
-                  </v-col>
-                  <v-col>
-                    <v-checkbox density="compact"
-                                label="Primary key"
-                                v-model="current_column.primary_key"/>
-                    <v-checkbox density="compact"
-                                label="Nullable"
-                                v-model="current_column.nullable"/>
-                  </v-col>
-                </v-row>
-              </template>
-              <template v-if="current_column != null && current_group === GROUPS.CHECKS">
-                <v-label>Column check</v-label>
-                <v-row class="">
-                  <v-col cols="4">
-                    <v-text-field class="my-4"
-                                  label="Check name"
-                                  hide-details
-                                  hint="Check name"
-                                  v-model="current_check.name"
-                                  density="compact"
-                                  clearable/>
-                  </v-col>
-                  <v-col>
-                    <v-text-field class="my-4"
-                                  label="Check statement"
-                                  hide-details
-                                  hint="Check statement"
-                                  v-model="current_check.stmt"
-                                  density="compact"
-                                  clearable/>
-                  </v-col>
-                </v-row>
-              </template>
-            </v-col>
-          </v-row>
-            <!-- Preview -->
-          <v-row class="mt-10">
-            <v-label>Preview</v-label>
-          </v-row>
-          <v-row>
-            <v-divider/>
-            <v-col>
-              <v-code class="mt-6 overflow-auto" tag="pre">{{ generate_sql }}</v-code>
-            </v-col>
-          </v-row>
-        </v-card-text>
+                    </v-col>
+                    <v-fade-transition>
+                      <v-col v-if="current_column.type != null && current_column.type.has_input">
+                        <v-text-field density="compact"
+                                      label="Input value"
+                                      v-model="current_column.input_value"/>
+                      </v-col>
+                    </v-fade-transition>
+                  </v-row>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field density="compact"
+                                clearable
+                                label="Default value"
+                                v-model="current_column.default"
+                                :disabled="current_column.generated_expression != null"
+                  />
+                </v-col>
+                <v-col>
+                  <v-checkbox density="compact"
+                              label="Primary key"
+                              v-model="current_column.primary_key"/>
+
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field density="compact" hide-details
+                                label="Generated expression"
+                                :disabled="current_column.default != null"
+                                v-model="current_column.generated_expression"
+                                clearable/>
+                </v-col>
+                <v-col>
+                  <v-checkbox density="compact"
+                              label="Nullable"
+                              v-model="current_column.nullable"/>
+                </v-col>
+              </v-row>
+            </template>
+            <template v-if="current_column != null && current_group === GROUPS.CHECKS">
+              <v-label>Column check</v-label>
+              <v-row class="">
+                <v-col cols="4">
+                  <v-text-field class="my-4"
+                                label="Check name"
+                                hide-details
+                                hint="Check name"
+                                v-model="current_check.name"
+                                density="compact"
+                                clearable/>
+                </v-col>
+                <v-col>
+                  <v-text-field class="my-4"
+                                label="Check statement"
+                                hide-details
+                                hint="Check statement"
+                                v-model="current_check.stmt"
+                                density="compact"
+                                clearable/>
+                </v-col>
+              </v-row>
+            </template>
+          </v-col>
+        </v-row>
+        <!-- Preview -->
+        <v-row class="mt-10">
+          <v-label>Preview</v-label>
+        </v-row>
+        <v-row>
+          <v-divider/>
+          <v-col>
+            <v-code class="mt-6 overflow-auto" tag="pre">{{ generate_sql }}</v-code>
+          </v-col>
+        </v-row>
+      </v-card-text>
     </template>
   </button-with-dialog>
 </template>
