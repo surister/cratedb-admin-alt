@@ -1,9 +1,9 @@
 <script setup>
 import {computed, ref} from "vue";
 import {use_tables_store} from "@/store/tables";
-import ButtonWithDialog from "@/components/shared/buttons/ButtonWithDialog.vue";
 import {use_node_info_store} from "@/store/node_info";
 import VersionNotice from "@/components/shared/VersionNotice.vue";
+import ButtonWithDialog from "@/components/shared/buttons/ButtonWithDialog.vue";
 
 const table_store = use_tables_store()
 const node_store = use_node_info_store()

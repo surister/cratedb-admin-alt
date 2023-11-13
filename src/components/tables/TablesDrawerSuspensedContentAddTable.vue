@@ -10,9 +10,11 @@ const table_store = use_tables_store()
 const GROUPS = {
   NAME: 0,
   COLUMNS: 1,
+  CHECKS: 2
 }
 const current_group = ref(null)
 const current_column = ref(null)
+const current_check = ref(null)
 const columns = ref([])
 
 const table_options = ref({
@@ -22,13 +24,10 @@ const table_options = ref({
 })
 
 function change_context_group(group) {
-  if (group === GROUPS.NAME) {
-    current_column.value = null
-  }
   current_group.value = group
 }
 
-function init_column() {
+function add_new_column() {
   let new_id = 0
 
   if (columns.value.length > 0) {
@@ -36,13 +35,19 @@ function init_column() {
   }
 
   columns.value.push(
-      {id: new_id, name: 'new_column'}
+      {id: new_id, name: 'new_column', checks: []}
+  )
+}
+
+function add_new_check() {
+  current_column.value.checks.push(
+      {name: 'new_check'}
   )
 }
 
 function add_new_element() {
   if (current_group.value === GROUPS.COLUMNS) {
-    init_column()
+    add_new_column()
   }
 }
 
@@ -85,6 +90,14 @@ const generate_sql = computed(() => {
         _stmt += ` DEFAULT '${column.default}'`
       }
 
+      if (column.checks.length !== 0){
+        // Supporting only 1 check for now, will prolly have to come back later at this.
+        let check = column.checks[0]
+        _stmt += check.name != null ? ` CONSTRAINT ${check.name}` : ''
+        _stmt += ` CHECK` + `(${check.stmt})`
+      }
+
+
       if (column.primary_key != null) {
         _stmt += ` PRIMARY KEY`
       }
@@ -112,7 +125,7 @@ const data_types = DATA_TYPES
                       activator-btn-variant="text"
                       activator-btn-text=""
                       activator-btn-icon="mdi-table-plus"
-                      dialog-width="800"
+                      dialog-width="1000"
                       dialog-submit-btn-color="primary"
                       dialog-submit-btn-text="create"
                       dialog-override-success-component-message="Table created successfully!"
@@ -158,39 +171,57 @@ const data_types = DATA_TYPES
                       <template v-slot:activator="{ props }">
                         <v-list-item v-bind="props"
                                      @click="change_context_group(GROUPS.COLUMNS)"
-                                     :active="current_group === GROUPS.COLUMNS"
+                                     :active="current_group === GROUPS.COLUMNS || current_group === GROUPS.CHECKS"
                                      color="blue"
                                      title="Columns"
                                      prepend-icon="mdi-table-column"
                                      link/>
                       </template>
 
-                      <v-list-item @click="current_column = column; current_group = GROUPS.COLUMNS"
-                                   :active="current_column != null && current_column.id === column.id"
-                                   v-for="(column, i) in columns"
-                                   :key="i"
-                                   :value="i"
-                                   class="ml-6">
-                        <template #prepend>
-                          <v-chip variant="outlined"
-                                  v-if="column.type"
-                                  size="x-small"
-                                  color="pink">
-                            {{ column.type.name }}
-                          </v-chip>
-                        </template>
-                        <template #title>
+                      <v-list-group v-for="(column, i) in columns" :key="i">
+                        <template v-slot:activator="{ props }">
+                          <v-list-item v-bind="props"
+                                       @click="current_column = column; current_group = GROUPS.COLUMNS"
+                                       :active="current_column != null && current_column.id === column.id"
+                                       :value="i">
+                            <template #prepend>
+                              <v-chip variant="outlined"
+                                      v-if="column.type"
+                                      size="x-small"
+                                      color="pink">
+                                {{ column.type.name }}
+                              </v-chip>
+                            </template>
+                            <template #title>
                           <span class="ml-2">
                             {{ column.name }}
                           </span>
+                            </template>
+                          </v-list-item>
                         </template>
-                      </v-list-item>
+                        <v-list-group :value="'checks' + i">
+                          <template v-slot:activator="{ props }">
+                            <v-list-item v-bind="props">Checks</v-list-item>
+                          </template>
+                          <v-list-item v-for="(check, i) in column.checks" :key="i" @click="current_check = current_column.checks[i];change_context_group(GROUPS.CHECKS)">
+                            {{ check.name }}
+                          </v-list-item>
 
-                    </v-list-group>
+                        </v-list-group>
+                        <v-list-group link>
+                          <template v-slot:activator="{ props }">
+                            <v-list-item v-bind="props">ohte rstuff</v-list-item>
+                          </template>
+                        </v-list-group>
+
+
+                      </v-list-group></v-list-group>
                   </v-list>
                 </v-col>
               </v-row>
             </v-col>
+
+            <!-- Form fields-->
             <v-col cols="8">
               <template v-if="current_group === GROUPS.NAME">
                 <v-label>Table options</v-label>
@@ -215,8 +246,12 @@ const data_types = DATA_TYPES
                   </v-col>
                 </v-row>
               </template>
-              <template v-if="current_column != null">
+              <template v-if="current_column != null && current_group === GROUPS.COLUMNS">
                 <v-label>Column options</v-label>
+                <v-btn size="x-small"
+                       flat class="mx-2"
+                       color="primary"
+                       @click="add_new_check">Add check</v-btn>
                 <v-row align="end">
                   <v-col>
                     <v-text-field class="mt-6"
@@ -266,15 +301,39 @@ const data_types = DATA_TYPES
                   </v-col>
                 </v-row>
               </template>
+              <template v-if="current_column != null && current_group === GROUPS.CHECKS">
+                <v-label>Column check</v-label>
+                <v-row class="">
+                  <v-col cols="4">
+                    <v-text-field class="my-4"
+                                  label="Check name"
+                                  hide-details
+                                  hint="Check name"
+                                  v-model="current_check.name"
+                                  density="compact"
+                                  clearable/>
+                  </v-col>
+                  <v-col>
+                    <v-text-field class="my-4"
+                                  label="Check statement"
+                                  hide-details
+                                  hint="Check statement"
+                                  v-model="current_check.stmt"
+                                  density="compact"
+                                  clearable/>
+                  </v-col>
+                </v-row>
+              </template>
             </v-col>
           </v-row>
+            <!-- Preview -->
           <v-row class="mt-10">
             <v-label>Preview</v-label>
           </v-row>
           <v-row>
             <v-divider/>
             <v-col>
-              <v-code class="mt-6" tag="pre">{{ generate_sql }}</v-code>
+              <v-code class="mt-6 overflow-auto" tag="pre">{{ generate_sql }}</v-code>
             </v-col>
           </v-row>
         </v-card-text>
