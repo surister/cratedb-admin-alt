@@ -110,9 +110,20 @@ const generate_sql = computed(() => {
 
       stmt_columns += _stmt
     }
+
     stmt_columns += ')'
 
-    return format_sql(stmt_create + stmt_columns)
+    let stmt_extras = ''
+
+    if (table_options.value.shards != null){
+      stmt_extras += `CLUSTERED INTO ${table_options.value.shards} SHARDS`
+    }
+
+    if (table_options.value.partitions != null){
+      stmt_extras += ` PARTITIONED BY (${table_options.value.partitions})`
+    }
+
+    return format_sql(stmt_create + stmt_columns + stmt_extras)
 })
 
 const data_types = DATA_TYPES
@@ -238,6 +249,20 @@ const data_types = DATA_TYPES
                                   v-model="table_options.name"/>
                   </v-col>
                 </v-row>
+                <v-row align="end">
+                  <v-col>
+                    <v-text-field density="compact"
+                                  label="Shards"
+                                  v-model="table_options.shards"/>
+                  </v-col>
+                  <v-col>
+                    <v-text-field density="compact"
+                                  label="Partitions"
+                                  v-model="table_options.partitions"/>
+                  </v-col>
+                </v-row>
+
+
                 <v-row>
                   <v-col>
                     <v-checkbox-btn label="IF NOT EXISTS"
