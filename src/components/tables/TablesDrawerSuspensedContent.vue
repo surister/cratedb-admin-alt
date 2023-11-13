@@ -66,7 +66,7 @@ const props = defineProps({
       <template v-slot:activator=" { props }">
         <v-list-item v-bind="props" title="Views" density="compact" color="yellow"/>
       </template>
-      <v-list-item :value="schema.name + i"
+      <v-list-item :value="schema.name + table.name"
                    :key="schema.name + i"
                    v-for="(table, i) in filtered_views(schema.tables)"
                    @click="tables_info.current_open_table = table; tables_info.current_open_schema = schema">
@@ -84,8 +84,8 @@ const props = defineProps({
       <template v-slot:activator=" { props }">
         <v-list-item density="compact" v-bind="props" title="Tables" color="primary"/>
       </template>
-      <v-list-item :value="schema.name + i"
-                   :key="schema.name + i"
+      <v-list-item :value="schema.name + table.name"
+                   :key="schema.name + table.name"
                    v-for="(table, i) in filtered_tables(schema.tables)"
                    @click="tables_info.current_open_table = table; tables_info.current_open_schema = schema">
         <template #title>
