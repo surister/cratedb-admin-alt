@@ -3,6 +3,7 @@ import {computed, ref} from "vue";
 import {format_sql} from "@/store/utils";
 import {use_tables_store} from "@/store/tables";
 import {DATA_TYPES} from "@/store/crate_api/crate_lang";
+import ButtonWithDialog from "@/components/shared/buttons/ButtonWithDialog.vue";
 
 const table_store = use_tables_store()
 
@@ -68,29 +69,33 @@ const generate_sql = computed(() => {
     let stmt_columns = '('
 
     for (const column of table_options.value.columns) {
-        let comma_after_col = column.id === table_options.value.columns.length - 1 ? '' : ','
+      if (column.type == null) {
+        // Shortcircuit column stmt generation if column type has not been defined by the user
+        continue
+      }
+      let comma_after_col = column.id === table_options.value.columns.length - 1 ? '' : ','
 
-        let _stmt = `${column.name} ${column.type.name}`
+      let _stmt = `${column.name} ${column.type.name}`
 
-        if (column.type.has_input){
-            _stmt += `(${column.input_value || column.type.default})`
-        }
+      if (column.type.has_input) {
+        _stmt += `(${column.input_value || column.type.default})`
+      }
 
-        if (column.default != null) {
-            _stmt += ` DEFAULT '${column.default}'`
-        }
+      if (column.default != null) {
+        _stmt += ` DEFAULT '${column.default}'`
+      }
 
-        if (column.primary_key != null) {
-            _stmt += ` PRIMARY KEY`
-        }
+      if (column.primary_key != null) {
+        _stmt += ` PRIMARY KEY`
+      }
 
-        if (column.nullable) {
-            _stmt += ' NOT NULL'
-        }
+      if (column.nullable) {
+        _stmt += ' NOT NULL'
+      }
 
-        _stmt += comma_after_col
+      _stmt += comma_after_col
 
-        stmt_columns += _stmt
+      stmt_columns += _stmt
     }
     stmt_columns += ')'
 
@@ -102,19 +107,26 @@ const data_types = DATA_TYPES
 </script>
 
 <template>
-  <v-dialog max-width="800">
-    <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" icon="mdi-table-plus" flat/>
+  <button-with-dialog tooltip-text="Create new table"
+                      activator-btn-color="white"
+                      activator-btn-variant="text"
+                      activator-btn-text=""
+                      activator-btn-icon="mdi-table-plus"
+                      dialog-width="800"
+                      dialog-submit-btn-color="primary"
+                      dialog-submit-btn-text="create"
+                      dialog-override-success-component-message="Table created successfully!"
+                      :dialog-submit-btn-disabled="columns.length === 0"
+                      :submit-callback="()=>table_store.create_table(generate_sql)">
+    <template #dialog-title>
+      <v-toolbar>
+        <v-toolbar-title>Create table: <span
+            class="text-h5 font-weight-bold">{{ table_options.name }}</span>
+        </v-toolbar-title>
+      </v-toolbar>
     </template>
-
-    <template v-slot:default="{ isActive }">
-      <v-card>
-        <v-toolbar>
-          <v-toolbar-title>Create table: <span
-              class="text-h5 font-weight-bold">{{ table_options.name }}</span>
-          </v-toolbar-title>
-        </v-toolbar>
-        <v-card-text>
+    <template #dialog-content>
+          <v-card-text>
           <v-row>
             <v-col>
               <v-row>
@@ -235,8 +247,6 @@ const data_types = DATA_TYPES
                               </v-col>
                           </v-fade-transition>
                       </v-row>
-
-
                   </v-col>
                 </v-row>
                 <v-row>
@@ -267,32 +277,9 @@ const data_types = DATA_TYPES
               <v-code class="mt-6" tag="pre">{{ generate_sql }}</v-code>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col>
-              <template v-if="table_store.response_from_create_table.type != null">
-                <v-alert closable
-                         :title="table_store.response_from_create_table.title"
-                         :text="table_store.response_from_create_table.subtitle"
-                         :type="table_store.response_from_create_table.type"
-                         @click:close="table_store.response_from_create_table.type = null"
-                         variant="tonal"/>
-              </template>
-            </v-col>
-          </v-row>
         </v-card-text>
-
-
-        <v-card-actions>
-          <v-spacer/>
-          <v-btn text="Create"
-                 color="primary"
-                 @click="table_store.create_table(generate_sql)"/>
-          <v-btn text="Close"
-                 @click="isActive.value = false"/>
-        </v-card-actions>
-      </v-card>
     </template>
-  </v-dialog>
+  </button-with-dialog>
 </template>
 
 <style scoped>

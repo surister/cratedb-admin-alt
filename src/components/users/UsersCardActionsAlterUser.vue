@@ -1,6 +1,7 @@
 <script setup>
 import {computed, ref} from "vue";
 import {use_users_store} from "@/store/users";
+import ButtonWithDialog from "@/components/shared/buttons/ButtonWithDialog.vue";
 
 const dialog = ref(false)
 const visible = ref(false)
@@ -12,21 +13,16 @@ const password = ref(null)
 </script>
 
 <template>
-  <v-tooltip text="Create new user">
-    <template v-slot:activator="{ props }">
-      <v-btn v-bind="props"
-             @click="dialog = true"
-             text="ALTER"
-             flat/>
-    </template>
-  </v-tooltip>
-  <v-dialog max-width="600"
-            v-model="dialog">
-    <v-card>
-      <v-toolbar>
-        <v-toolbar-title :text=title />
-      </v-toolbar>
-      <v-card-text>
+  <button-with-dialog tooltip-text="Alter user"
+                      dialog-width="600"
+                      activator-btn-variant="text"
+                      activator-btn-color="white"
+                      activator-btn-text="alter"
+                      :dialog-title="title"
+                      dialog-submit-btn-text="alter"
+                      :submit-callback="()=> user_store.alter_user(password)">
+    <template #dialog-content>
+          <v-card-text>
         <v-banner icon="mdi-information">
           <template #text>
             <h4>CreateDB does not support altering the user name.</h4>
@@ -49,17 +45,8 @@ const password = ref(null)
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-actions>
-        <v-spacer/>
-        <v-btn color="primary"
-               @click="user_store.alter_user(password).then(()=> dialog = false)"
-               :disabled="password == null"
-               text="Alter"/>
-        <v-btn @click="dialog = false"
-               text="Close"/>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    </template>
+  </button-with-dialog>
 </template>
 
 <style scoped>

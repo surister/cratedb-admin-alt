@@ -1,30 +1,31 @@
 <script setup>
 import {ref} from "vue";
 import {use_users_store} from "@/store/users";
+import ButtonWithDialog from "@/components/shared/buttons/ButtonWithDialog.vue";
 
 const users_store = use_users_store()
 const required = (value) => !!value || 'Required'
-const dialog = ref(false)
 const visible = ref(false)
 const name = ref(null)
 const password = ref(null)
 </script>
 
 <template>
-  <v-tooltip text="Create new user">
-    <template v-slot:activator="{ props }">
-      <v-btn v-bind="props"
-             icon="mdi-account-plus"
-             @click="dialog = true"
-              flat/>
-    </template>
-  </v-tooltip>
-  <v-dialog max-width="600"
-            v-model="dialog">
-    <v-card>
-      <v-toolbar>
-        <v-toolbar-title>Create new user</v-toolbar-title>
-      </v-toolbar>
+  <button-with-dialog tooltip-text="Create new user"
+                      activator-btn-variant="text"
+                      activator-btn-text=""
+                      activator-btn-icon="mdi-account-plus"
+                      activator-btn-color="white"
+                      dialog-title="Create new user"
+                      dialog-width="600"
+                      dialog-submit-btn-text="create"
+                      dialog-submit-btn-color="primary"
+                      :dialog-submit-btn-disabled="password == null"
+                      :submit-callback="() => users_store.create_user(name, password)"
+                      dialog-response-component="snackbar"
+                      dialog-override-success-component-message="User successfully created!"
+                      :dialog-close-on-submit="true">
+    <template #dialog-content>
       <v-card-text>
         <v-row justify="center">
           <v-col>
@@ -44,16 +45,8 @@ const password = ref(null)
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-actions>
-        <v-spacer/>
-        <v-btn color="primary"
-               @click="users_store.create_user(name, password).then(() => dialog = false)"
-               text="Create"/>
-        <v-btn @click="dialog = false"
-               text="Close"/>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    </template>
+  </button-with-dialog>
 </template>
 
 <style scoped>

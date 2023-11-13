@@ -1,24 +1,29 @@
 <script setup>
-import ButtonWithConfirmDialog from "@/components/shared/buttons/ButtonWithConfirmDialog.vue";
+
 
 import {use_users_store} from "@/store/users";
+import ButtonWithDialog from "@/components/shared/buttons/ButtonWithDialog.vue";
 
 const users_store = use_users_store()
 </script>
 
 <template>
-  <button-with-confirm-dialog
-    text="DELETE"
-    :disabled="users_store.current_open_user.is_superuser"
-    dialog-title="Are you sure you want to delete the user?"
-    dialog-action-confirm-button-text="YES, DELETE"
-    @click="users_store.drop_user()"
-  >
-    <template #card-text>
-      <v-card-text>
-        This operation
-        <v-label style="color: red">cannot be reverted</v-label>, the user will be lost.
-      </v-card-text>
-    </template>
-  </button-with-confirm-dialog>
+    <button-with-dialog tooltip-text="Delete user"
+                        activator-btn-text="DROP"
+                        activator-btn-color="red"
+                        :activator-btn-disabled="users_store.current_open_user.is_superuser"
+                        dialog-title="Delete current user"
+                        dialog-width="600"
+                        dialog-response-component="snackbar"
+                        dialog-submit-btn-text="YES, DROP"
+                        :dialog-close-on-submit="true"
+                        :submit-callback="() => users_store.drop_user()">
+        <template #dialog-content>
+            <v-card-text>
+                This operation
+                <v-label style="color: red">cannot be reverted</v-label>, the user will be lost.
+            </v-card-text>
+        </template>
+
+    </button-with-dialog>
 </template>
