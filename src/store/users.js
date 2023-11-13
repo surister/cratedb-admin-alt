@@ -43,37 +43,32 @@ export const use_users_store = defineStore('users', () => {
   }
 
   async function drop_user() {
-    const _response = await request_crate(
-        queries.DROP_USER,
-        null,
-        {'%user_name': state.current_open_user.name}
-    )
+      const response = await request_crate(
+          queries.DROP_USER,
+          null,
+          {'%user_name': state.current_open_user.name}
+      )
 
-    if (_response.ok) {
-      global_store.show_successful_snackbar('User deleted correctly')
-      await log_store.log(log_store.ACTIONS.USER_DELETED, state.current_open_user.name)
-      state.current_open_user = null
-    } else {
-      global_store.show_error_snackbar("Something went wrong, could not delete user!")
-    }
+      if (response.ok) {
+          await log_store.log(log_store.ACTIONS.USER_DELETED, state.current_open_user.name)
+          state.current_open_user = null
+      }
+      return response
   }
 
   async function create_user(username, password) {
-    const _response = await request_crate(
+    const response = await request_crate(
         password != null && password !== '' ? queries.CREATE_USER : queries.CREATE_USER_WITHOUT_PASSWORD,
         null,
         {
           '%username': username,
           '%password': password
         })
-    if (_response.ok) {
-      global_store.show_successful_snackbar('Successfully created user')
+
+    if (response.ok) {
       await log_store.log(log_store.ACTIONS.USER_CREATED, username)
-    } else {
-      const data = await _response.json()
-      const err_message = data.error.message
-      global_store.show_error_snackbar(err_message)
     }
+    return response
   }
 
   async function alter_user(new_password) {
@@ -81,29 +76,24 @@ export const use_users_store = defineStore('users', () => {
       '%username': state.current_open_user.name,
       '%password': new_password
     })
-
     if (_response.ok) {
-      await global_store.show_successful_snackbar('Altered correctly!')
-    } else {
-      await global_store.show_error_snackbar('Something went wrong')
-    }
-  }
-
-  async function add_privilege(stmt) {
-    const _response = await request_crate(stmt)
-    if (_response.ok) {
-      state.response_from_add_permissions = {
+      return {
         type: 'success',
-        title: 'Added successfully'
+        title: 'Success!',
       }
     } else {
       const data = await _response.json()
-      state.response_from_add_permissions = {
+      return {
         type: 'error',
         title: 'Error',
         subtitle: data.error.message
       }
     }
+  }
+
+  async function add_privilege(stmt) {
+    const response = await request_crate(stmt)
+      return response
   }
 
   return {
