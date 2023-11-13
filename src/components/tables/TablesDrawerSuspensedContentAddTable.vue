@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref} from "vue";
-import {format_sql} from "@/store/utils";
+import {adaptVTableHeader, format_sql} from "@/store/utils";
 import {use_tables_store} from "@/store/tables";
 import {DATA_TYPES} from "@/store/crate_api/crate_lang";
 import ButtonWithDialog from "@/components/shared/buttons/ButtonWithDialog.vue";
@@ -10,16 +10,45 @@ const table_store = use_tables_store()
 const GROUPS = {
   NAME: 0,
   COLUMNS: 1,
-  CHECKS: 2
+  CHECKS: 2,
+  PARAMETERS: 3,
 }
 const current_group = ref(null)
 const current_column = ref(null)
 const current_check = ref(null)
+const parameter_options = [
+    'number_of_replicas',
+    'number_of_routing_shards',
+    'refresh_interval',
+    'write.wait_for_active_shards',
+    'blocks.read_only',
+    'blocks.read_only_allow_delete',
+    'blocks.read',
+    'blocks.write',
+    'blocks.metadata',
+    'soft_deletes.enabled',
+    'soft_deletes.retention.period',
+    'codec',
+    'store.type',
+    'mapping.total_fields.limit',
+    'translog.flush_threshold_size',
+    'translog.sync_interval',
+    'translog.durability',
+    'routing.allocation.total_shards_per_node',
+    'routing.allocation.enable',
+    'allocation.max_entries',
+    'unassigned.node_left.delayed_timeout',
+    'column_policy',
+    'max_ngram_diff',
+    'max_shingle_diff',
+    'merge.scheduler.max_tread_count'
+]
 const columns = ref([])
 
 const table_options = ref({
   name: 'table',
   columns: columns,
+  parameters: [],
   if_not_exists: false
 })
 
@@ -101,7 +130,6 @@ const generate_sql = computed(() => {
         _stmt += ` CHECK` + `(${check.stmt})`
       }
 
-
       if (column.primary_key != null) {
         _stmt += ` PRIMARY KEY`
       }
@@ -125,6 +153,20 @@ const generate_sql = computed(() => {
 
     if (table_options.value.partitions != null){
       stmt_extras += ` PARTITIONED BY (${table_options.value.partitions})`
+    }
+
+    if (table_options.value.parameters.length !== 0){
+      stmt_extras += ` WITH (`
+
+      for (let i = 0; i < table_options.value.parameters.length; i++) {
+        let parameter = table_options.value.parameters[i]
+
+        let comma_after_col = i === (table_options.value.parameters.length - 1) ? '' : ','
+        stmt_extras += `"${parameter.key}" = ${parameter.value}${comma_after_col}`
+
+      }
+
+      stmt_extras += ')'
     }
 
     return format_sql(stmt_create + stmt_columns + stmt_extras)
@@ -225,11 +267,7 @@ const data_types = DATA_TYPES
                         </v-list-item>
 
                       </v-list-group>
-                      <v-list-group link>
-                        <template v-slot:activator="{ props }">
-                          <v-list-item v-bind="props">ohte rstuff</v-list-item>
-                        </template>
-                      </v-list-group>
+                      <v-list-item @click="change_context_group(GROUPS.PARAMETERS)">Parameters</v-list-item>
                     </v-list-group>
                   </v-list-group>
                 </v-list>
@@ -337,6 +375,39 @@ const data_types = DATA_TYPES
                 </v-col>
               </v-row>
             </template>
+            <template v-if="current_column != null && current_group === GROUPS.PARAMETERS">
+              <v-label>Table parameters, check them &nbsp; <a target="_blank"
+                                                              href="https://cratedb.com/docs/crate/reference/en/latest/sql/statements/create-table.html#with">here</a>
+              </v-label>
+              <br>
+              <v-btn class="mt-2" icon="mdi-plus" variant="tonal"
+                     @click="table_options.parameters.push({})"></v-btn>
+
+              <v-data-table :headers="adaptVTableHeader(['key', 'value', 'delete'])" :items="[{key:'one', value:'s'}]">
+                <template v-slot:headers="{ columns }">
+                  <tr>
+                    <th :key=column.key v-for="column in columns">{{ column.title }}</th>
+                  </tr>
+                </template>
+                <template v-slot:item="{ item }">
+                  <tr class="mt-3" v-for="(option, i) in table_options.parameters" :key="i">
+
+                    <td class="pt-4" style="max-width: 150px">
+                      <v-select :items="parameter_options" density="compact" v-model="option.key"/>
+                    </td>
+                    <td class="pt-4">
+                      <v-text-field density="compact" v-model="option.value"/>
+                    </td>
+                    <td>
+                      <v-btn icon="mdi-delete" variant="plain"
+                             @click="table_options.parameters.splice(i, 1)"/>
+                    </td>
+                  </tr>
+                </template>
+
+              </v-data-table>
+
+            </template>
           </v-col>
         </v-row>
         <!-- Preview -->
@@ -355,5 +426,11 @@ const data_types = DATA_TYPES
 </template>
 
 <style scoped>
-
+table.v-table tbody td {
+    height: 40px;
+    border: none;
+}
+.theme--light.v-table tbody tr:not(:last-child) {
+    border-bottom: none;
+}
 </style>

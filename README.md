@@ -74,19 +74,23 @@ docker run --rm -d \
 Bear in mind that if you run the admin panel from another port, it will have to match
 the `http.cors.allow-origin` setting.
 
+## CrateDB versions.
+
+This panel supports v5.4.3 as the base version, any new version will be added afterward.
+
+For maximum compatibility any new version feature will be added with a versioned Component, meaning
+that those features will only be unlocked if your connected CrateDB cluster supports it.
+
+
 ## Limitations
 
 While it is my intention to fully support everything, it's a daunting task, it is a very complex
 product, and it will take some time.
 
-An example of a current limitation (As of Nov 9 2023), when creating tables in the UI, certain
-features are yet not supported, such as
-Table constraints, Column constraints, Column renaming, Storage options, Generation expressions...
-
-As of the writing of this, these limitations exists only on table creation.
-
-Other features such as Repositories, Blobs, Node logs, Support for notebooks are not yet implemented
-but will eventually be, if you want a feature or have some ideas, please feel free to open an issue.
+The following parameters are not in the Create table UI parameters:
+routing.allocation.include.{attribute}
+routing.allocation.require.{attribute}
+routing.allocation.exclude.{attribute}
 
 ## Contributing
 
