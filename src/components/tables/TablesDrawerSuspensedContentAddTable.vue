@@ -247,27 +247,19 @@ const data_types = DATA_TYPES
                                 density="compact"
                                 label="Schema"
                                 v-model="table_options.schema"/>
-                </v-col>
-                <v-col>
-                  <v-text-field density="compact"
-                                label="Table name"
-                                v-model="table_options.name"/>
-                </v-col>
-              </v-row>
-              <v-row align="end">
-                <v-col>
                   <v-text-field density="compact"
                                 label="Shards"
                                 v-model="table_options.shards"/>
                 </v-col>
                 <v-col>
                   <v-text-field density="compact"
+                                label="Table name"
+                                v-model="table_options.name"/>
+                  <v-text-field density="compact"
                                 label="Partitions"
                                 v-model="table_options.partitions"/>
                 </v-col>
               </v-row>
-
-
               <v-row>
                 <v-col>
                   <v-checkbox-btn label="IF NOT EXISTS"
@@ -283,56 +275,17 @@ const data_types = DATA_TYPES
                      color="primary"
                      @click="add_new_check">Add check
               </v-btn>
-              <v-row align="end">
+              <v-row align="">
                 <v-col>
                   <v-text-field class="mt-6"
                                 density="compact"
                                 label="Name"
                                 v-model="current_column.name"/>
-                </v-col>
-                <v-col>
-                  <v-row>
-                    <v-col>
-                      <v-fade-transition>
-                        <v-select density="compact"
-                                  label="Data type"
-                                  :items="data_types"
-                                  item-title="name"
-                                  item-value="name"
-                                  return-object
-                                  v-model="current_column.type">
-                        </v-select>
-                      </v-fade-transition>
-
-                    </v-col>
-                    <v-fade-transition>
-                      <v-col v-if="current_column.type != null && current_column.type.has_input">
-                        <v-text-field density="compact"
-                                      label="Input value"
-                                      v-model="current_column.input_value"/>
-                      </v-col>
-                    </v-fade-transition>
-                  </v-row>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
                   <v-text-field density="compact"
                                 clearable
                                 label="Default value"
                                 v-model="current_column.default"
-                                :disabled="current_column.generated_expression != null"
-                  />
-                </v-col>
-                <v-col>
-                  <v-checkbox density="compact"
-                              label="Primary key"
-                              v-model="current_column.primary_key"/>
-
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col>
+                                :disabled="current_column.generated_expression != null"/>
                   <v-text-field density="compact" hide-details
                                 label="Generated expression"
                                 :disabled="current_column.default != null"
@@ -340,11 +293,26 @@ const data_types = DATA_TYPES
                                 clearable/>
                 </v-col>
                 <v-col>
+                  <v-fade-transition class="mt-6">
+                    <v-select density="compact"
+                              label="Data type"
+                              :items="data_types"
+                              item-title="name"
+                              item-value="name"
+                              return-object
+                              v-model="current_column.type">
+                    </v-select>
+                  </v-fade-transition>
+                  <v-checkbox density="compact"
+                              label="Primary key"
+                              v-model="current_column.primary_key"/>
                   <v-checkbox density="compact"
                               label="Nullable"
                               v-model="current_column.nullable"/>
                 </v-col>
               </v-row>
+
+
             </template>
             <template v-if="current_column != null && current_group === GROUPS.CHECKS">
               <v-label>Column check</v-label>
