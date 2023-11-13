@@ -78,24 +78,12 @@ export const use_tables_store = defineStore('tables', () => {
     }
 
     async function rename_table(table_name) {
-        const _response = await request_crate(queries.RENAME_TABLE, null, {
+        const response = await request_crate(queries.RENAME_TABLE, null, {
             '%old_table': state.current_open_table.name,
             '%new_table': table_name,
         })
+        return response
 
-        if (_response.ok) {
-            return {
-                type: 'success',
-                title: 'Success!',
-            }
-        } else {
-            const data = await _response.json()
-            return {
-                type: 'error',
-                title: 'Error',
-                subtitle: data.error.message
-            }
-        }
     }
 
     async function show_create_table() {
