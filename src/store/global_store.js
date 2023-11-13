@@ -20,23 +20,25 @@ export const use_global_store = defineStore('global_store', () => {
         }
     })
 
-    function show_successful_snackbar(message) {
+    function show_successful_snackbar(message, location =  'top right') {
         state.snackbar_opts = {
-            title: 'Success',
-            message: message,
-            color: 'success',
-            icon: 'mdi-check',
+          title: 'Success',
+          message: message,
+          color: 'success',
+          icon: 'mdi-check',
+          location: location
         }
         state.show_snackbar = true
     }
 
-    function show_error_snackbar(message) {
-        state.snackbar_opts = {
-            title: 'Error',
-            message: message,
-            color: 'error',
-            icon: 'mdi-alert',
-        }
+    function show_error_snackbar(message, location = 'top right') {
+      state.snackbar_opts = {
+        title: 'Error',
+        message: message,
+        color: 'error',
+        icon: 'mdi-alert',
+        location: location
+      }
         state.show_snackbar = true
     }
 
