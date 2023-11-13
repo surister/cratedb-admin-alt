@@ -6,6 +6,12 @@ import 'ace-builds/src-noconflict/ext-language_tools'
 import langTools from 'ace-builds/src-noconflict/ext-language_tools'
 import {onMounted, ref, watch} from "vue";
 import 'ace-builds/src-noconflict/ace'
+import {
+  CRATE_FUNCTIONS,
+  CRATE_KEYWORDS,
+  CRATE_VALUES,
+  DATA_TYPES
+} from "@/store/crate_api/crate_lang";
 
 const stored_preferences = use_stored_preferences_store()
 
@@ -26,15 +32,16 @@ const props = defineProps({
 const editor = ref(null)
 
 
-function group_keywords(arr, token) {
+function group_keywords(arr, token, value_name = null) {
   let result_array = []
   for (const el of arr) {
+    const keyword_name = value_name == null ? el : el[value_name]
     result_array.push(
-      {
-        token: token,
-        value: el,
-        regex: el,
-      }
+        {
+          token: token,
+          value: keyword_name,
+          regex: keyword_name,
+        }
     )
   }
   return result_array
@@ -58,120 +65,18 @@ const kwmap = [
     token: "string",
     regex: "`.*?`"
   },
-  ...group_keywords(
-    ['true', 'false',], 'value'
-  ),
-  ...group_keywords(
-    [
-        'ALTER CLUSTER',
-        'ALTER PUBLICATION',
-        'ALTER TABLE',
-        'ALTER USER',
-        'ANALYZE',
-        'BEGIN',
-        'CLOSE',
-        'COMMIT',
-        'COPY FROM',
-        'COPY TO',
-        'CREATE ANALYZER',
-        'CREATE BLOB TABLE',
-        'CREATE PUBLICATION',
-        'CREATE REPOSITORY',
-        'CREATE SNAPSHOT',
-        'CREATE SUBSCRIPTION',
-        'CREATE TABLE',
-        'CREATE USER',
-        'CREATE VIEW',
-        'DEALLOCATE',
-        'DECLARE',
-        'DELETE',
-        'DENY',
-        'DISCARD',
-        'DROP ANALYZER',
-        'DROP FUNCTION',
-        'DROP PUBLICATION',
-        'DROP REPOSITORY',
-        'DROP SNAPSHOT',
-        'DROP SUBSCRIPTION',
-        'DROP TABLE',
-        'DROP USER',
-        'DROP VIEW',
-        'END',
-        'EXPLAIN',
-        'FETCH',
-        'GRANT',
-        'INSERT',
-        'KILL',
-        'OPTIMIZE',
-        'REFRESH',
-        'RESTORE SNAPSHOT',
-        'REVOKE',
-        'SELECT',
-        'SET and RESET',
-        'SET LICENSE',
-        'SET AND RESET SESSION AUTHORIZATION',
-        'SET TRANSACTION',
-        'SHOW',
-        'SHOW COLUMNS',
-        'SHOW CREATE TABLE',
-        'SHOW TABLES',
-        'START TRANSACTION',
-        'UPDATE',
-        'VALUES',
-        'WITH',
-        'LIMIT',
-        'FROM',
-        'AS',
-        'DISTINCT',
-        'WHERE',
-        'GROUP BY',
-        'ORDER BY',
-        'ON',
-        'RIGHT',
-        'LEFT',
-        'JOIN',
-        'OUTER',
-        'JOIN',
-        'AND'
-    ], 'keyword'),
-  ...group_keywords(
-    [
-      'BOOLEAN',
-      'VARCHAR',
-      'TEXT',
-      'CHARACTER',
-      'CHAR',
-      'SMALLINT',
-      'INTEGER',
-      'BIGINT',
-      'REAL',
-      'DOUBLE PRECISION',
-      'NUMERIC',
-      'TIMESTAMP WITH',
-      'TIME ZONE',
-      'TIMESTAMP WITHOUT',
-      'TIME ZONE',
-      'DATE',
-      'TIME',
-      'BIT',
-      'IP',
-      'OBJECT',
-      'ARRAY',
-      'GEO_POINT',
-      'GEO_SHAPE',
-      'float_vector',
-      'NULL'
-    ], 'datatype' ),
-  ...group_keywords([
-    'SUM',
-    'MIN',
-    'MAX'
-  ], 'function')
+  {token: "integers",
+  regex: '(?<!\\.)\\d+(?!\\.)'
+  },
+  ...group_keywords(CRATE_VALUES, 'value'),
+  ...group_keywords(CRATE_KEYWORDS, 'keyword'),
+  ...group_keywords(DATA_TYPES, 'datatype', 'name'),
+  ...group_keywords(CRATE_FUNCTIONS, 'function')
 ]
 
 onMounted(() => {
   function setup() {
-    var myCompleter = {
+    let myCompleter = {
       getCompletions: function (editor, session, pos, prefix, callback) {
         callback(null, kwmap.map(function (key) {
           return {
@@ -183,10 +88,11 @@ onMounted(() => {
         }));
       }
     };
+
     langTools.addCompleter(myCompleter);
 
     editor.value.session.setMode('ace/mode/text', function () {
-      var rules = editor.value.session.$mode.$highlightRules.getRules();
+      let rules = editor.value.session.$mode.$highlightRules.getRules();
       for (const rule of kwmap) {
         rules['start'].unshift({
           token: rule.token,
@@ -197,11 +103,11 @@ onMounted(() => {
       // force recreation of tokenizer
       editor.value.session.$mode.$tokenizer = null;
       editor.value.session.bgTokenizer.setTokenizer(editor.value.session.$mode.getTokenizer());
+
       // force re-highlight whole document
       editor.value.session.bgTokenizer.start(0);
     })
   }
-
   setup()
 })
 
@@ -219,10 +125,7 @@ watch(
               v-model:value="_content"
               @change="$emit('update:content', _content)"
               :print-margin="false"
-              :options="{
-        enableBasicAutocompletion: true,
-        enableLiveAutocompletion: true,
-      }"
+              :options="{enableLiveAutocompletion: true}"
               :style="{ 'font-size': stored_preferences.console.font_size + 'px' }"
               :min-lines="minLines || Number.parseInt(stored_preferences.console.min_lines)"
               :max-lines="maxLines || Number.parseInt(stored_preferences.console.max_lines)"/>
@@ -255,5 +158,9 @@ watch(
 
 .ace_value{
   color: #EE8E4A;
+}
+
+.ace_integers {
+  color: #0d47a1;
 }
 </style>

@@ -49,7 +49,7 @@ const is_history_opened = computed(() => groups.value.includes('history'))
     <v-divider/>
     <v-expand-transition>
       <v-text-field clearable
-                    placeholder="Search table.."
+                    placeholder="Search query.."
                     :focused="true"
                     class="rounded-0 border-0"
                     variant="solo-filled"
