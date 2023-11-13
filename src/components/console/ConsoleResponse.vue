@@ -7,7 +7,7 @@ const console_store = use_console_store()
 </script>
 
 <template>
-  <v-card v-if="console_store.response">
+  <v-card v-if="console_store.response" border class="rounded-0">
     <template #title>
       <p :class="[ console_store.response.type === 'success' ? 'text-green-accent-3' : 'text-red-accent-4' ]">
         {{ console_store.response.title }}</p>

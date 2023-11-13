@@ -23,18 +23,26 @@ function color_objects(object) {
 </script>
 
 <template>
-  <v-card v-if="console_store.response.data.rows.length !== 0 && console_store.response.data.rows[0].length !== 0">
+  <v-card
+      v-if="console_store.response.data.rows.length !== 0 && console_store.response.data.rows[0].length !== 0"
+      border
+      class="rounded-0">
     <v-data-table
         :items="adaptVTableItems(console_store.response.data.rows, console_store.response.data.headers)"
         :headers="adaptVTableHeader(console_store.response.data.headers)"
         :items-per-page="!console_store.show_full_screen_response ? 5: 10">
       <template v-slot:top>
-        <v-toolbar flat>
+        <v-toolbar flat class="rounded-0">
           <v-toolbar-title>Query data response: {{ console_store.response.data.row_count }}
             record(s)
           </v-toolbar-title>
           <console-table-results-toolbar-actions/>
         </v-toolbar>
+      </template>
+      <template v-slot:headers="{ columns }">
+        <tr>
+          <th :key=column.key v-for="column in columns">{{ column.title }}</th>
+        </tr>
       </template>
       <template v-slot:item="{ item }">
         <tr>
