@@ -32,25 +32,31 @@ export default {
   // It also gets system schema tables such as information_schema, pg_catalog and sys.
   // IMPORTANT: In this query 'schema' always has to go last for values unpacking order reasons, see tables.js
   TABLES: `
-    SELECT DISTINCT
-           inf.table_name         as name,
-           sha.records,
-           sha.size_bytes,
-           inf.number_of_replicas as replicas,
-           inf.number_of_shards   as shards,
-           inf.table_type,
-           inf.table_schema       as schema
-    FROM (SELECT table_name,
-                 schema_name,
-                 SUM(size)     as size_bytes,
-                 SUM(num_docs) as records
-          FROM sys.shards sha
-          WHERE sha.primary = true
-          GROUP by table_name,
-                   schema_name) as sha RIGHT JOIN information_schema.tables inf
-    ON inf.table_name = sha.table_name
-    ORDER BY
-      shards
+      SELECT DISTINCT inf.table_name         as name,
+                      inf.table_schema       as schema,
+                      inf.number_of_replicas as replicas,
+                      inf.number_of_shards   as shards,
+                      inf.table_type,
+                      sha.records,
+                      sha.size_bytes,
+                      he.health,
+                      he.missing_shards,
+                      he.partition_ident,
+                      he.severity,
+                      he.underreplicated_shards
+      FROM (SELECT table_name,
+                   schema_name,
+                   SUM(size)     as size_bytes,
+                   SUM(num_docs) as records
+            FROM sys.shards sha
+            WHERE sha.primary = true
+            GROUP by table_name,
+                     schema_name) as sha RIGHT JOIN information_schema.tables inf
+      ON inf.table_name = sha.table_name
+          FULL OUTER JOIN sys.health he ON inf.table_name = he.table_name
+          AND inf.table_schema = he.table_schema
+      ORDER BY
+          shards, schema, table_type, name
   `,
   // Gets the table SQL schema from the given %table and %schema
   COLUMNS: `
@@ -82,7 +88,7 @@ export default {
       ended_time ASC
   `,
   DROP_TABLE: `
-   DROP TABLE %schema_name.%table_name
+   DROP TABLE "%schema_name"."%table_name"
   `,
   USERS: `
     SELECT usr.name,
