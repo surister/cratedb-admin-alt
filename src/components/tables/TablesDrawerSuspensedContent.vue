@@ -3,6 +3,7 @@ import {human_file_size, human_numbers} from "@/store/utils";
 
 import {use_tables_store} from "@/store/tables";
 import {ref} from "vue";
+import {CRATE_HEALTH_LEGEND} from "@/store/crate_api/crate_lang";
 
 const tables_info = use_tables_store()
 await tables_info.update_tables() // This is allowed, it converts the whole component into a Suspensable.
@@ -14,7 +15,6 @@ const filtered_tables = (tables) => tables.filter((table) => {
   }
   const regex = `^.*${filter.value}`
   const match = table.name.match(regex)
-  console.log(table)
   return match != null && !table.is_view()
 })
 
@@ -33,6 +33,13 @@ const props = defineProps({
     default: false
   }
 })
+
+function status_color(table){
+  if (table.health == null){
+    return ''
+  }
+  return CRATE_HEALTH_LEGEND[table.health].color
+}
 </script>
 
 <template>
@@ -90,6 +97,17 @@ const props = defineProps({
                    @click="tables_info.current_open_table = table; tables_info.current_open_schema = schema">
         <template #title>
           <span class="font-weight-bold">{{ table.name }}</span>
+        </template>
+        <template #append v-if="!schema.is_system">
+          <span class="mr-2">
+            <template v-if="table != null">
+                 <v-progress-circular model-value="100"
+                                      size="10"
+                                      width="5"
+                                      :color="status_color(table)"/>
+            </template>
+
+          </span>
         </template>
         <template #subtitle>
           {{ table.records == null ? 'n/a' : human_numbers(table.records) }} records - Size
