@@ -89,8 +89,8 @@ export const use_node_info_store = defineStore('node_info', () => {
         state.health = new CrateTableHealths(data.rows)
 
         // If there is a bad health table, we start fetching allocation issues, otherwise
-        // we can stop fetching it.
-        state.should_update_allocation = !!state.health.has_bad_health();
+        // we don't need to fetch it.
+        state.should_update_allocation = state.health.has_unhealthy_tables();
     }
 
     async function update_allocations_info() {
@@ -200,6 +200,8 @@ export const use_node_info_store = defineStore('node_info', () => {
 
     setInterval(async () => {
         // Be careful, this ignores exceptions.
+
+        // We don't refresh update_tables because it causes the drawer to rewrite.
         await Promise.allSettled([
                 update_node_info(),
                 update_health_info(),
