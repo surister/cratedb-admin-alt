@@ -14,10 +14,11 @@ export class CrateTableHealths {
     return this.table_healths.length === 0
   }
 
-  has_bad_health(){
-    return this.get_bad_healths().length !== 0
+  has_unhealthy_tables(){
+    return this.get_unhealthy_tables().length !== 0
   }
-  get_bad_healths() {
+
+  get_unhealthy_tables() {
     return this.table_healths.filter((tbl) => tbl.severity !== 1)
   }
 
