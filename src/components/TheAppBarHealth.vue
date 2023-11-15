@@ -4,6 +4,7 @@ import HealthInfoPopOver from "@/components/TheAppBarHealthPopOver.vue";
 import {computed, ref} from "vue";
 import {use_node_info_store} from "@/store/node_info";
 import {CRATE_HEALTH_LEGEND} from "@/store/crate_api/crate_lang";
+import {use_tables_store} from "@/store/tables";
 
 let menu = ref(false)
 
@@ -25,7 +26,7 @@ const health_status = computed(() => CRATE_HEALTH_LEGEND[node_info_store.health.
         <health-info-pop-over :icon="health_status.icon"
                               :color="health_status.color"
                               :message="health_status.message"
-                              :healths="node_info_store.health.get_bad_healths()"
+                              :unhealthy_tables="node_info_store.health.get_unhealthy_tables()"
         />
       </v-menu>
       <v-progress-circular model-value="100"

@@ -1,7 +1,6 @@
 <script setup>
 
 import {use_node_info_store} from "@/store/node_info";
-import {computed} from "vue";
 
 const node_info_store = use_node_info_store()
 
@@ -11,46 +10,48 @@ const props = defineProps(
       color: String,
       icon: String,
       message: String,
-      healths: Array[Object],
+      unhealthy_tables: Array[Object],
       allocations_by_health: Array[Object]
     }
 )
 
-const allocation_issues = computed(() =>{
-  let t = []
-  for (const issue of node_info_store.allocations.get_issues_by_table(health.tableName)) {
-    t.push(issue)
-  }
-})
 </script>
 
 <template>
-  <v-card min-width="300" class="pa-5">
+  <v-card min-width="300" class="pa-5" max-width="800">
     <v-icon :icon="icon"
             :color="color"/>
     <v-label class="ml-2"
              :text="message"/>
-    <template v-for="health in healths"
-              :key="health.tableName">
-      <p class="mt-5 pb-4">Found the following allocation issues issues on <span class="font-weight-bold">{{ health.table_name }}</span>:</p>
-      <p>There are {{ health.missing_shards }} missing shards and {{ health.under_replicated_shards }} under replicated shards.</p>
-      <template v-for="issue in node_info_store.allocations.get_issues_by_table(health.tableName)" :key="issue.shard_id">
-        <v-divider/>
-        {{ healths }}
-        <div class="pa-4">
-          Table `<strong>{{ issue.table_name }}</strong>` (shard {{ issue.shard_id }}):
-          <v-label>{{ issue.explanation }}.</v-label>
-          <br>
-          Reason:
-          <template v-if="issue.decisions != null">
-            <v-label style="max-width: 500px">{{ issue.decisions[0].explanations[0] }}</v-label>
-          </template>
-          <template v-else>
-            Not explained by the node.
-          </template>
-        </div>
-
-      </template>
+    <template v-for="health in unhealthy_tables"
+              :key="health.table_name">
+        <v-expansion-panels class="my-3">
+          <v-expansion-panel>
+            <v-expansion-panel-title><p>Table
+              <span class="font-weight-bold text-h6">"{{ health.table_name }}"</span>
+              has <span class="text-red">{{ health.missing_shards }}</span> missing shards and
+              <span class="text-red">{{ health.under_replicated_shards }}</span> under replicated shards.</p>
+            </v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <template v-for="issue in node_info_store.allocations.get_issues_by_table(health.table_name)"
+                  :key="issue.shard_id">
+                <v-divider/>
+                <div class="pa-4" v-if="issue.current_state !== 'STARTED'">
+                  State: {{ issue.current_state }}
+                  (shard {{ issue.shard_id }}):
+                  <v-label>{{ issue.explanation }}.</v-label>
+                  <br>
+                  Reason:
+                  <template v-if="issue.decisions != null">{{issue.decisions[0].explanations[0] }}
+                  </template>
+                  <template v-else>
+                    Not explained by the node.
+                  </template>
+                </div>
+              </template>
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
     </template>
   </v-card>
 </template>
