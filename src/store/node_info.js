@@ -14,6 +14,7 @@ import {QueryStats} from "@/store/crate_api/query_stats";
 import {Users} from "@/store/crate_api/users";
 import {use_tables_store} from "@/store/tables";
 import semver from "semver";
+import {use_users_store} from "@/store/users";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 const CHART_MAX_INTERVAL_S = 300 // 5 minutes in seconds.
@@ -68,7 +69,6 @@ export const use_node_info_store = defineStore('node_info', () => {
         node_checks: new NodeChecks([]),
         jobs: new Jobs([]),
         query_stats: new QueryStats([]),
-        users: new Users([]),
         should_update_allocation: false,
         node_count: '0',
         current_user: ''
@@ -76,6 +76,7 @@ export const use_node_info_store = defineStore('node_info', () => {
 
     const charts_store = use_chart_store()
     const tables_store = use_tables_store()
+    const users_store = use_users_store()
 
     async function update_node_info() {
         const _response = await request_crate(queries.NODE_INFO)
@@ -160,18 +161,9 @@ export const use_node_info_store = defineStore('node_info', () => {
         state.query_stats = new QueryStats(data.rows)
     }
 
-    async function update_privileges() {
-        //TODO Move this, pending the store refactor
-        const _response = await request_crate(queries.USERS)
-        const data = await _response.json()
-        state.users = new Users(data.rows)
-    }
 
-    async function update_current_user() {
-        const _response = await request_crate(queries.CURRENT_USER)
-        const data = await _response.json()
-        state.current_user = data.rows[0][0]
-    }
+
+
 
     function is_compatible(version) {
         let node_version = state.nodes.get_master_node().version.number
@@ -193,8 +185,8 @@ export const use_node_info_store = defineStore('node_info', () => {
         update_node_checks(),
         update_jobs_info(),
         update_qps_data(),
-        update_privileges(),
-        update_current_user(),
+        users_store.update_users(),
+        users_store.update_current_user(),
         tables_store.update_tables()
     ])
 
@@ -209,7 +201,6 @@ export const use_node_info_store = defineStore('node_info', () => {
                 update_jobs_info(),
                 update_chart_load_data(),
                 update_qps_data(),
-                update_privileges(),
             ],
         )
         if (state.should_update_allocation) {
