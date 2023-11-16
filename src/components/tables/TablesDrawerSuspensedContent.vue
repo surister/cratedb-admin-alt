@@ -2,7 +2,7 @@
 import {human_file_size, human_numbers} from "@/store/utils";
 
 import {use_tables_store} from "@/store/tables";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {CRATE_HEALTH_LEGEND} from "@/store/crate_api/crate_lang";
 
 const tables_info = use_tables_store()
@@ -40,6 +40,7 @@ function status_color(table){
   }
   return CRATE_HEALTH_LEGEND[table.health].color
 }
+
 </script>
 
 <template>
@@ -56,7 +57,7 @@ function status_color(table){
   <v-list-group fluid
                 v-for="schema in tables_info.schemas.schemas"
                 color="primary"
-                :key="schema"
+                :key="schema.name"
                 :value="schema.name">
     <v-divider/>
     <template v-slot:activator="{ props }">
@@ -116,9 +117,7 @@ function status_color(table){
         </template>
       </v-list-item>
     </v-list-group>
-
-    <v-divider></v-divider>
-
+    <v-divider/>
   </v-list-group>
 </template>
 

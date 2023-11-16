@@ -4,15 +4,14 @@ import InnerTablesDrawerAddTable
   from "@/components/tables/TablesDrawerSuspensedContentAddTable.vue";
 import TablesDrawerSuspensedContent from "@/components/tables/TablesDrawerSuspensedContent.vue";
 import {use_tables_store} from "@/store/tables";
-
-const tables_store = use_tables_store()
+import {use_stored_preferences_store} from "@/store/storedPreferences";
 const show_search = ref(false)
+const stored_prefernces = use_stored_preferences_store()
 </script>
 
 <template>
-  {{ tables_store.drawer_opened_tabs }}
   <v-navigation-drawer permanent>
-    <v-list v-model:opened="tables_store.drawer_opened_tabs">
+    <v-list v-model:opened="stored_prefernces.tables_drawer_opened" :mandatory="true">
       <v-list-item>
         <v-row no-gutters>
           <v-label text="tables"/>

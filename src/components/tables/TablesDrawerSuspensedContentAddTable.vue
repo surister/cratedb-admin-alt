@@ -313,7 +313,7 @@ const data_types = DATA_TYPES
                      color="primary"
                      @click="add_new_check">Add check
               </v-btn>
-              <v-row align="">
+              <v-row>
                 <v-col>
                   <v-text-field class="mt-6"
                                 density="compact"

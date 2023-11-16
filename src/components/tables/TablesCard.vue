@@ -7,12 +7,12 @@ import TableCardTabs from "@/components/tables/TablesCardTabs.vue";
 <template>
   <v-card class="pa-5">
     <template #title>
-      <tables-card-header></tables-card-header>
+      <tables-card-header/>
     </template>
     <v-divider/>
-    <tables-card-actions></tables-card-actions>
+    <tables-card-actions/>
     <v-divider/>
-    <table-card-tabs></table-card-tabs>
+    <table-card-tabs/>
   </v-card>
 </template>
 

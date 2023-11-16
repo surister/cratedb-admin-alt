@@ -193,7 +193,7 @@ export const use_node_info_store = defineStore('node_info', () => {
     setInterval(async () => {
         // Be careful, this ignores exceptions.
 
-        // We don't refresh update_tables because it causes the drawer to rewrite.
+
         await Promise.allSettled([
                 update_node_info(),
                 update_health_info(),
@@ -201,6 +201,7 @@ export const use_node_info_store = defineStore('node_info', () => {
                 update_jobs_info(),
                 update_chart_load_data(),
                 update_qps_data(),
+                tables_store.update_tables()
             ],
         )
         if (state.should_update_allocation) {
