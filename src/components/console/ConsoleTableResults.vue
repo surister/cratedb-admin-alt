@@ -29,7 +29,7 @@ function color_objects(object) {
 </script>
 
 <template>
-  <template v-if="data.rows != null">
+  <template v-if="data.rows != null && data.rows.length !== 0">
     <v-card v-if="data.rows[0].length !== 0"
             border
             class="rounded-0">
