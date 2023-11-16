@@ -18,7 +18,7 @@ const stmt_sql = computed(() => {
 
   if (permissions.value.on != null && permissions.value.on !== 'cluster') {
     stmt += ` ON ${permissions.value.on.toUpperCase()}`
-    stmt += `${permissions.value.schema != null ? permissions.value.schema : ""}`
+    stmt += ` ${permissions.value.schema != null ? `"${permissions.value.schema}"` : "{schema}"}`
     stmt += `${permissions.value.table != null ? '.' + `"${permissions.value.table}"` : ''}`
   }
 
@@ -26,6 +26,7 @@ const stmt_sql = computed(() => {
   return stmt
 })
 
+const schema_list = computed(() => table_store.schemas.schemas.filter((schema) => !schema.is_system))
 
 const tables_list = computed(() => {
   // We do this early shortcut to avoid computing stuff when it's not needed.
