@@ -5,9 +5,10 @@ import SupportButton from "@/components/TheAppBarSupportButton.vue";
 
 import {use_node_info_store} from "@/store/node_info";
 import {use_global_store} from "@/store/global_store";
+import {use_users_store} from "@/store/users";
 
 const global_store = use_global_store()
-const info_store = use_node_info_store()
+const user_store = use_users_store()
 const admin_ui_version = import.meta.env.VITE_ADMIN_UI_VERSION
 </script>
 
@@ -22,7 +23,7 @@ const admin_ui_version = import.meta.env.VITE_ADMIN_UI_VERSION
       <vertical-divider></vertical-divider>
       <info-group></info-group>
       <vertical-divider></vertical-divider>
-      <v-btn variant="flat" class="ml-5" color="primary">{{ info_store.current_user }}</v-btn>
+      <v-btn variant="flat" class="ml-5" color="primary">{{ user_store.current_user_name }}</v-btn>
       <support-button></support-button>
       <vertical-divider></vertical-divider>
       <v-btn
