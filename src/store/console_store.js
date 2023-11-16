@@ -10,7 +10,7 @@ import {use_stored_preferences_store} from "@/store/storedPreferences";
 
 
 const default_console_response = {
-    type: '',
+    type: null,
     title: '',
     subtitle: '',
     error_trace: '',
@@ -91,7 +91,11 @@ export const use_console_store = defineStore('console', () => {
     }
 
     async function set_console_response_to_empty() {
-        state.response = {...default_console_response}
+        // We don't touch current_console.value.data so the data response table doesn't dissappear
+        current_console.value.response.type = null
+        current_console.value.title = ''
+        current_console.value.sutitle = ''
+        current_console.value.response.error_trace = null
     }
 
     async function cancel_current_running_query() {
