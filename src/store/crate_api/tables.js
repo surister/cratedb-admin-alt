@@ -4,11 +4,11 @@ export class Schemas {
     schemas = []
     system_schemas = ['information_schema', 'pg_catalog', 'sys']
 
-    remove_table(table) {
+    remove_table(table_to_delete) {
         for (const schema_ of this.schemas) {
-            if (schema_.name === table.schema) {
-                const table_index = schema_.tables.indexOf(table)
-                console.log(table_index)
+            if (schema_.name === table_to_delete.schema) {
+                const found_table = schema_.tables.filter((table) => table_to_delete.name === table.name)[0]
+                const table_index = schema_.tables.indexOf(found_table)
                 schema_.tables.splice(table_index, 1)
             }
         }
