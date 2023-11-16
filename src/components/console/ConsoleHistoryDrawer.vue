@@ -35,7 +35,8 @@ const is_history_opened = computed(() => groups.value.includes('history'))
 </script>
 
 <template>
-<v-navigation-drawer location="right" v-model="console_store.history_drawer">
+<v-navigation-drawer location="right"
+                     v-model="console_store.history_drawer">
   <v-list v-model:opened="groups">
     <v-list-item>
       <v-row no-gutters>
@@ -66,7 +67,8 @@ const is_history_opened = computed(() => groups.value.includes('history'))
         <v-divider/>
       </div>
     </v-expand-transition>
-    <v-list-group value="saved">
+    <v-list-group value="saved"
+                  color="primary">
       <template #activator="{ props }">
         <v-list-item v-bind="props">Saved queries</v-list-item>
       </template>
@@ -94,7 +96,8 @@ const is_history_opened = computed(() => groups.value.includes('history'))
         </template>
       </v-list-item>
     </v-list-group>
-    <v-list-group value="history">
+    <v-list-group value="history"
+                  color="primary">
       <template #activator="{ props }">
         <v-list-item v-bind="props">Query history</v-list-item>
       </template>
