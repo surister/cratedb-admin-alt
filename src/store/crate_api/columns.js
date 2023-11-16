@@ -24,7 +24,6 @@ export class Columns {
 
   constructor(data) {
     for (const raw_column of data) {
-        console.log(raw_column)
       const new_column = new Column(...raw_column)
       this.columns.push(new_column)
     }

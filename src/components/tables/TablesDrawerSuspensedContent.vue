@@ -78,8 +78,8 @@ function status_color(table){
         <v-list-item v-bind="props" title="Views" density="compact" color="yellow"/>
       </template>
       <v-list-item :value="schema.name + table.name"
-                   :key="schema.name + i"
-                   v-for="(table, i) in filtered_views(schema.tables)"
+                   :key="schema.name + table.name"
+                   v-for="table in filtered_views(schema.tables)"
                    @click="tables_info.current_open_table = table; tables_info.current_open_schema = schema">
         <template #title>
           <span class="font-weight-bold">{{ table.name }}</span>
@@ -97,7 +97,7 @@ function status_color(table){
       </template>
       <v-list-item :value="schema.name + table.name"
                    :key="schema.name + table.name"
-                   v-for="(table, i) in filtered_tables(schema.tables)"
+                   v-for="table in filtered_tables(schema.tables)"
                    @click="tables_info.current_open_table = table; tables_info.current_open_schema = schema">
         <template #title>
           <span class="font-weight-bold">{{ table.name }}</span>

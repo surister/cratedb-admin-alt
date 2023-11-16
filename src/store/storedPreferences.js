@@ -39,19 +39,19 @@ export const use_stored_preferences_store = defineStore('stored_preferences', ()
             let lastIndex = 0
 
             if (state.console.saved_queries.length !== 0) {
-                lastIndex = state.console.saved_queries.slice(-1)[0].id
+                lastIndex = state.console.saved_queries.at(0).id
             }
 
             state.console.saved_queries.unshift(
                 {
-                    id: lastIndex,
+                    id: lastIndex + 1,
                     name: name,
                     stmt: stmt
                 }
             )
         }
 
-        function delete_from_saved(query_id) {
+        function remove_saved_query(query_id) {
             state.console.saved_queries.splice(state.console.saved_queries.findIndex(function (i) {
                 return i.id === query_id;
             }), 1);
@@ -61,7 +61,7 @@ export const use_stored_preferences_store = defineStore('stored_preferences', ()
             if (state.console.add_query_to_history) {
                 let lastIndex = 0
                 if (state.console.query_history.length !== 0) {
-                    lastIndex = state.console.query_history.slice(-1)[0].id
+                    lastIndex = state.console.query_history.at(0).id
                 }
                 state.console.query_history.unshift(
                     {id: lastIndex + 1, query: stmt}
@@ -81,7 +81,7 @@ export const use_stored_preferences_store = defineStore('stored_preferences', ()
             add_to_history,
             delete_from_history,
             save_query,
-            delete_from_saved
+            remove_saved_query
         }
     },
     {

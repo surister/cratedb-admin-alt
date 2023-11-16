@@ -16,7 +16,7 @@ const table_store = use_tables_store()
                       :dialog-close-on-submit="true"
                       dialog-response-component="snackbar"
                       dialog-override-success-component-message="Table dropped successfully"
-                      :submit-callback="()=>table_store.drop_table()">
+                      :submit-callback="() => table_store.drop_table()">
     <template #dialog-content>
       <v-card-text>
         This operation

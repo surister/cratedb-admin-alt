@@ -3,8 +3,8 @@ import {ref} from "vue";
 import InnerTablesDrawerAddTable
   from "@/components/tables/TablesDrawerSuspensedContentAddTable.vue";
 import TablesDrawerSuspensedContent from "@/components/tables/TablesDrawerSuspensedContent.vue";
-import {use_tables_store} from "@/store/tables";
 import {use_stored_preferences_store} from "@/store/storedPreferences";
+
 const show_search = ref(false)
 const stored_prefernces = use_stored_preferences_store()
 </script>

@@ -92,7 +92,7 @@ const is_history_opened = computed(() => groups.value.includes('history'))
                  size="x-small"
                  flat
                  class="ml-1"
-                 @click.stop="stored_preferences.delete_from_saved(query.id)"/>
+                 @click.stop="stored_preferences.remove_saved_query(query.id)"/>
         </template>
       </v-list-item>
     </v-list-group>
@@ -125,7 +125,6 @@ const is_history_opened = computed(() => groups.value.includes('history'))
         </template>
       </v-list-item>
     </v-list-group>
-
   </v-list>
 </v-navigation-drawer>
 </template>
