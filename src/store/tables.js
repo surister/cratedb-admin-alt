@@ -52,7 +52,8 @@ export const use_tables_store = defineStore('tables', () => {
     }
 
     async function drop_table() {
-        const response = await request_crate(queries.DROP_TABLE,
+        const query = state.current_open_table.is_view() ? queries.DROP_VIEW : queries.DROP_TABLE
+        const response = await request_crate(query,
             null,
             {
                 '%schema_name': state.current_open_table.schema,

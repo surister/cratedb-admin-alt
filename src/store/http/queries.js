@@ -90,6 +90,8 @@ export default {
   DROP_TABLE: `
    DROP TABLE "%schema_name"."%table_name"
   `,
+  DROP_VIEW:`
+    DROP VIEW "%schema_name"."%table_name"`,
   USERS: `
     SELECT usr.name,
            usr.superuser,
