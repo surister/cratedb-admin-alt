@@ -28,12 +28,12 @@ const name = ref()
     <v-card>
       <v-card-text>
         <v-label class="pb-4" text="Name"/>
-        <v-text-field autofocus="true"
+        <v-text-field :autofocus="true"
                       v-model="name"/>
         <v-card-actions class="text-right">
           <v-spacer/>
           <v-btn color="primary"
-                 @click="stored_preferences_store.save_query(name.value, console_store.current_console.content); dialog = false"
+                 @click="stored_preferences_store.save_query(name, console_store.current_console.content); dialog = false"
                  :disabled="name == null"
                  text="save"/>
           <v-btn text="close"
