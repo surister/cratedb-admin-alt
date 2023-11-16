@@ -51,26 +51,34 @@ const routes = [
     value: 'logs',
     title: 'Logs',
     active_if_matches: '/logs'
+  },
+  {
+    to: 'repositories',
+    icon: 'mdi-book',
+    value: 'repositories',
+    title: 'Repositories',
+    active_if_matches: '/repositories'
   }
 ]
 </script>
 
 <template>
-  <v-navigation-drawer
-    v-model="drawer"
-    :rail="rail"
-    permanent>
-    <v-btn variant="text" class="ma-1" :icon="chevron_button" @click.stop="rail = !rail"></v-btn>
+  <v-navigation-drawer v-model="drawer"
+                       :rail="rail"
+                       permanent>
+    <v-btn variant="text"
+           class="ma-1"
+           :icon="chevron_button"
+           @click.stop="rail = !rail"/>
     <v-divider/>
     <v-list density="compact" nav>
-      <v-list-item
-        v-for="route in routes"
-        :key="route.value"
-        :prepend-icon="route.icon"
-        :title="route.title"
-        :value="route.value"
-        :to="{ name: route.to }"
-        :active="router.path === route.active_if_matches" link/>
+      <v-list-item v-for="route in routes"
+                   :key="route.value"
+                   :prepend-icon="route.icon"
+                   :title="route.title"
+                   :value="route.value"
+                   :to="{ name: route.to }"
+                   :active="router.path === route.active_if_matches" link/>
     </v-list>
   </v-navigation-drawer>
 </template>

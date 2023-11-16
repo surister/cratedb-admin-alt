@@ -17,7 +17,11 @@ export const use_tables_store = defineStore('tables', () => {
         current_open_table_columns: null,
         current_show_create_table: null,
         sample_data: null,
-        response_from_create_table: {}
+        response_from_create_table: {},
+
+        drawer_opened_tabs: []
+        // Keeps tracks of the tabs that are opened in the tables drawer, for example ['doc', 'doc.tables'] would be the state
+        // if the user had the doc schema opened, and the tables of the doc schema.
     })
     const log_store = use_log_store()
     const global_store = use_global_store()
@@ -56,16 +60,15 @@ export const use_tables_store = defineStore('tables', () => {
             })
 
         if (response.ok) {
-            const _table_fqd = state.current_open_table.schema + '.' + state.current_open_table.name
+            const _table_fqdn = state.current_open_table.schema + '.' + state.current_open_table.name
 
-            await update_tables()
-            // TODO
+            state.schemas.remove_table(state.current_open_table)
             // Perhaps we can locally delete the data instead of forcing a request + re-drawn.
             // this costs a few milliseconds delay when deleting a table, it is not a 'problem'
             // but it is noticeable, should be fixed to ensure max smoothness.
             // We do it correctly in drop user and table privileges for reference.
             state.current_open_table = null // Redraws the card, in this case, removing it.
-            await log_store.log(log_store.ACTIONS.DROP_TABLE, _table_fqd)
+            await log_store.log(log_store.ACTIONS.DROP_TABLE, _table_fqdn)
 
         }
         return response

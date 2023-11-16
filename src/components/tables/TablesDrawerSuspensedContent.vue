@@ -56,7 +56,8 @@ function status_color(table){
   <v-list-group fluid
                 v-for="schema in tables_info.schemas.schemas"
                 color="primary"
-                :key="schema">
+                :key="schema"
+                :value="schema.name">
     <v-divider/>
     <template v-slot:activator="{ props }">
       <v-list-item v-bind="props"
@@ -69,7 +70,7 @@ function status_color(table){
       </v-list-item>
     </template>
 
-    <v-list-group fluid>
+    <v-list-group fluid :value="schema.name + '.' + 'views'">
       <template v-slot:activator=" { props }">
         <v-list-item v-bind="props" title="Views" density="compact" color="yellow"/>
       </template>
@@ -87,7 +88,7 @@ function status_color(table){
         </template>
       </v-list-item>
     </v-list-group>
-    <v-list-group fluid>
+    <v-list-group fluid :value="schema.name + '.' + 'tables'">
       <template v-slot:activator=" { props }">
         <v-list-item density="compact" v-bind="props" title="Tables" color="primary"/>
       </template>
@@ -119,7 +120,6 @@ function status_color(table){
     <v-divider></v-divider>
 
   </v-list-group>
-
 </template>
 
 <style scoped>
