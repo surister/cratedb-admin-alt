@@ -1,5 +1,4 @@
 <script setup>
-
 import {ref} from "vue";
 import {download} from "@/store/utils";
 import {use_console_store} from "@/store/console_store";
@@ -48,7 +47,7 @@ const console_store = use_console_store()
                    :key="index"
                    :value="index"
                    :prepend-icon="item.icon"
-                   @click="download(console_store.response.data.rows, item.format)">
+                   @click="download(console_store.current_console.response.data.rows, item.format)">
         <v-list-item-title>{{ item.title }}</v-list-item-title>
       </v-list-item>
     </v-list>

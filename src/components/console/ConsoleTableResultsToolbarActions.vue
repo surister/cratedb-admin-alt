@@ -1,5 +1,5 @@
 <script setup>
-import DownloadBtn from "@/components/console/ConsoleResponseDownloadBtn.vue";
+import DownloadBtn from "@/components/console/ConsoleTableResultsToolbarActionsDownlaodBtn.vue";
 import ConsoleTableResultsToolbarActionsViewRaw
   from "@/components/console/ConsoleTableResultsToolbarActionsViewRawBtn.vue";
 import {use_console_store} from "@/store/console_store";
@@ -17,7 +17,7 @@ const consoleStore = use_console_store()
             color="primary"/>
   <vertical-divider/>
 
-  <console-table-results-toolbar-actions-view-raw :object="consoleStore.response.data.rows"/>
+  <console-table-results-toolbar-actions-view-raw :object="consoleStore.current_console.response.data.rows"/>
   <download-btn/>
   <v-btn v-if="!consoleStore.show_full_screen_response"
          icon="mdi-fullscreen"
