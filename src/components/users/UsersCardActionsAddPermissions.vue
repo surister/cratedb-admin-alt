@@ -49,7 +49,7 @@ const tables_list = computed(() => {
                       dialog-width="500"
                       :dialog-submit-btn-disabled="permissions.permission == null || permissions.type == null"
                       dialog-override-success-component-message="Privilege added!"
-                      :submit-callback="()=>user_store.add_privilege(stmt_sql)">
+                      :submit-callback="() => user_store.add_privilege(stmt_sql, permissions)">
     <template #dialog-content>
       <v-card-text>
         <v-select v-model="permissions.permission"
@@ -84,10 +84,10 @@ const tables_list = computed(() => {
                         rounded="0"
                         color="deep-purple-accent-3"
                         group>
-            <v-btn value="grant">
+            <v-btn value="GRANT">
               GRANT
             </v-btn>
-            <v-btn value="deny">
+            <v-btn value="DENY">
               DENY
             </v-btn>
           </v-btn-toggle>

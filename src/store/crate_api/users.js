@@ -64,7 +64,7 @@ class User {
 }
 
 
-class Privilege {
+export class Privilege {
     constructor(id, class_, grantee, grantor, ident, state, type) {
         this.id = id
         this.class_ = class_

@@ -6,10 +6,13 @@ import queries from "@/store/http/queries";
 
 import {use_global_store} from "@/store/global_store";
 import {use_log_store} from "@/store/log";
+import {Privilege, Users} from "@/store/crate_api/users";
 
 export const use_users_store = defineStore('users', () => {
   const state = reactive({
     current_open_user: null,
+    users: new Users([]),
+    current_user_name: null,
     response_from_add_permissions: {
       type: null,
       title: '',
@@ -18,6 +21,18 @@ export const use_users_store = defineStore('users', () => {
   })
   const global_store = use_global_store()
   const log_store = use_log_store()
+
+  async function update_users() {
+    const _response = await request_crate(queries.USERS)
+    const data = await _response.json()
+    state.users = new Users(data.rows)
+  }
+
+  async function update_current_user() {
+    const _response = await request_crate(queries.CURRENT_USER)
+    const data = await _response.json()
+    state.current_user_name = data.rows[0][0]
+  }
 
   async function revoke_permission(permission) {
     const {type, class_, ident, id} = permission
@@ -91,9 +106,36 @@ export const use_users_store = defineStore('users', () => {
     }
   }
 
-  async function add_privilege(stmt) {
+  async function add_permission_to_user(params, user) {
+    const new_id = state.current_open_user.privileges[state.current_open_user.privileges.length - 1].id
+    const class_ = params.on
+    const grantee = state.current_open_user.name
+    const grantor = state.current_user_name
+    let ident = ''
+    const state_ = params.type
+    const type = params.permission
+    if (params.on === 'cluster') {
+      ident = ''
+    } else {
+      if (params.schema != null) {
+        ident += params.schema
+      }
+      if (params.table != null) {
+        ident += '.'
+        ident += params.table
+      }
+    }
+
+    const new_privilege = new Privilege(new_id, class_, grantee, grantor, ident, state_, type)
+    user.privileges.push(new_privilege)
+
+  }
+  async function add_privilege(stmt, privilege_params) {
     const response = await request_crate(stmt)
-      return response
+    if (response.ok) {
+      await add_permission_to_user(privilege_params, state.current_open_user)
+    }
+    return response
   }
 
   return {
@@ -102,6 +144,8 @@ export const use_users_store = defineStore('users', () => {
     create_user,
     alter_user,
     drop_user,
-    revoke_permission
+    revoke_permission,
+    update_users,
+    update_current_user
   }
 })
