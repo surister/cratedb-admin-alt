@@ -61,10 +61,12 @@ function status_color(table){
                 :value="schema.name">
     <v-divider/>
     <template v-slot:activator="{ props }">
-      <v-list-item v-bind="props"
-                   :title="schema.name">
+      <v-list-item v-bind="props">
+        <template #title>
+          <span class="font-weight-bold">{{ schema.name }}</span>
+        </template>
         <template #subtitle>
-          {{ schema.tables.length }} tables <span v-if="!schema.is_system"> - Size: {{
+          {{ schema.tables.length }} table(s) <span v-if="!schema.is_system"> - Size: {{
             human_file_size(schema.get_size_bytes())
           }}</span>
         </template>
