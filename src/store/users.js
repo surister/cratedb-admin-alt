@@ -91,19 +91,7 @@ export const use_users_store = defineStore('users', () => {
       '%username': state.current_open_user.name,
       '%password': new_password
     })
-    if (_response.ok) {
-      return {
-        type: 'success',
-        title: 'Success!',
-      }
-    } else {
-      const data = await _response.json()
-      return {
-        type: 'error',
-        title: 'Error',
-        subtitle: data.error.message
-      }
-    }
+    return _response
   }
 
   async function add_permission_to_user(params, user) {
