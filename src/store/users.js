@@ -35,7 +35,18 @@ export const use_users_store = defineStore('users', () => {
   }
 
   async function revoke_permission(permission) {
-    const {type, class_, ident, id} = permission
+    let {type, class_, ident, id} = permission
+
+    if (class_ === 'TABLE') {
+      // If class is TABLE, from CRATE we'd get 'schema.tablename', which would
+      // fail if we just do: 'REVOKE AL ON doc.tablename FROM user'
+      // we need to wrap the schema and the table name in " so it doesn't fail, ex:
+      // 'REVOKE AL ON "doc"."tablename" FROM user'would not fail.
+
+      const [schema, table_name ] = ident.split('.')
+      ident = `"${schema}"."${table_name}"`
+    }
+
     const _response = await request_crate(queries.REVOKE, null,
         {
           '%permission': type,
