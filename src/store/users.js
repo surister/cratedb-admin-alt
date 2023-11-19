@@ -73,7 +73,7 @@ export const use_users_store = defineStore('users', () => {
 
   async function create_user(username, password) {
     const response = await request_crate(
-        password != null && password !== '' ? queries.CREATE_USER : queries.CREATE_USER_WITHOUT_PASSWORD,
+        password && password !== '' ? queries.CREATE_USER : queries.CREATE_USER_WITHOUT_PASSWORD,
         null,
         {
           '%username': username,

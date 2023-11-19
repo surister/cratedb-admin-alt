@@ -20,7 +20,7 @@ const password = ref(null)
                       dialog-width="600"
                       dialog-submit-btn-text="create"
                       dialog-submit-btn-color="primary"
-                      :dialog-submit-btn-disabled="password == null"
+                      :dialog-submit-btn-disabled="!name"
                       :submit-callback="() => users_store.create_user(name, password)"
                       dialog-response-component="snackbar"
                       dialog-override-success-component-message="User successfully created!"
