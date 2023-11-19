@@ -97,7 +97,7 @@ async function handleClick() {
     result.value = {}
     if (res.ok) {
       result.value['type'] = 'success'
-      result.value['title'] = props.dialogOverrideSuccessComponentMessage != null ? props.dialogOverrideSuccessComponentMessage : props.dialogResponseComponentMessage['success']
+      result.value['title'] = props.dialogOverrideSuccessComponentMessage ? props.dialogOverrideSuccessComponentMessage : props.dialogResponseComponentMessage['success']
     } else {
       result.value['type'] = 'error'
       result.value['title'] = props.dialogResponseComponentMessage['error']
@@ -155,7 +155,7 @@ const dialog = ref(false)
                         </v-card-text>
                     </slot>
                     <template v-if="dialogResponseComponent === 'alert'">
-                        <v-card-text v-if="result.type != null">
+                        <v-card-text v-if="result.type">
                             <v-alert closable variant="tonal"
                                      :color="result.type"
                                      :title="result.title"

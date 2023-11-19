@@ -153,7 +153,8 @@ export const use_console_store = defineStore('console', () => {
 
     }
 
-    if (route.query.query != null) {
+    // If there is a ?query=MYQUERY on the url, set it as the current console's content.
+    if (route.query.query) {
         current_console.value.content = route.query.query
     }
 
@@ -166,7 +167,7 @@ export const use_console_store = defineStore('console', () => {
         }
     )
 
-    // Whenever live_update is true, every 5000ms, we re-submit the query this enables
+    // Whenever live_update is true, every 5s, we re-submit the query this enables
     // our 'live' update feature.
     const LIVE_UPDATE_EVERY_MS = 5000
 

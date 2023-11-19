@@ -15,37 +15,49 @@ const password = ref(null)
 <template>
   <button-with-dialog tooltip-text="Alter user"
                       dialog-width="600"
+                      :activator-btn-disabled="user_store.current_open_user.is_superuser"
                       activator-btn-variant="text"
                       activator-btn-color="white"
                       activator-btn-text="alter"
                       :dialog-title="title"
                       dialog-submit-btn-text="alter"
                       :submit-callback="()=> user_store.alter_user(password)">
+
     <template #dialog-content>
-          <v-card-text>
+      <v-card-text>
+
         <v-banner icon="mdi-information">
           <template #text>
             <h4>CreateDB does not support altering the user name.</h4>
           </template>
         </v-banner>
+
         <v-row justify="center">
           <v-col>
             <v-container>
+
               <v-label>Name</v-label>
+
               <v-text-field variant="outlined"
                             :disabled="true"/>
-              <v-label text="Password"/>
+
+              <v-label text="New password"/>
+
               <v-text-field v-model="password"
                             variant="outlined"
+                            hint="There are no constraints"
                             :type="visible ? 'text' : 'password'"
                             :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
                             @click:append-inner="visible = !visible"
                             prepend-inner-icon="mdi-lock-outline"/>
+
             </v-container>
           </v-col>
         </v-row>
       </v-card-text>
+
     </template>
+
   </button-with-dialog>
 </template>
 

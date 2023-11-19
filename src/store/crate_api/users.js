@@ -34,7 +34,7 @@ export class Users {
             if (created) {
                 this.users.push(user)
             }
-            if (privilege.type != null) {
+            if (privilege.type) {
                 user.privileges.push(privilege)
             }
         }

@@ -12,14 +12,14 @@ const table_store = use_tables_store()
 const stmt_sql = computed(() => {
   let stmt = permissions.value.type || ''
 
-  if (permissions.value.permission != null) {
+  if (permissions.value.permission) {
     stmt += ` ${permissions.value.permission}\n`
   }
 
-  if (permissions.value.on != null && permissions.value.on !== 'cluster') {
+  if (permissions.value.on && permissions.value.on !== 'cluster') {
     stmt += ` ON ${permissions.value.on.toUpperCase()}`
-    stmt += ` ${permissions.value.schema != null ? `"${permissions.value.schema}"` : "{schema}"}`
-    stmt += `${permissions.value.table != null ? '.' + `"${permissions.value.table}"` : ''}`
+    stmt += ` ${permissions.value.schema ? `"${permissions.value.schema}"` : "{schema}"}`
+    stmt += `${permissions.value.table ? '.' + `"${permissions.value.table}"` : ''}`
   }
 
   stmt += ' TO ' + user_store.current_open_user.name
@@ -30,7 +30,7 @@ const schema_list = computed(() => table_store.schemas.schemas.filter((schema) =
 
 const tables_list = computed(() => {
   // We do this early shortcut to avoid computing stuff when it's not needed.
-  if (['table', 'view'].includes(permissions.value.on) && permissions.value.schema != null)
+  if (['table', 'view'].includes(permissions.value.on) && permissions.value.schema)
     return table_store.schemas.schemas.filter((schema) => schema.name === permissions.value.schema)[0].tables.map((table) => table.name)
   return []
 })
@@ -47,59 +47,70 @@ const tables_list = computed(() => {
                       dialog-submit-btn-text="add"
                       dialog-submit-btn-color="primary"
                       dialog-width="500"
-                      :dialog-submit-btn-disabled="permissions.permission == null || permissions.type == null"
+                      :dialog-submit-btn-disabled="!permissions.permission || !permissions.type"
                       dialog-override-success-component-message="Privilege added!"
                       :submit-callback="() => user_store.add_privilege(stmt_sql, permissions)">
+
     <template #dialog-content>
+
       <v-card-text>
+
         <v-select v-model="permissions.permission"
                   label="Permission"
                   :items="['ALL', 'AL', 'DQL', 'DML', 'DDL']"/>
+
         <v-select v-model="permissions.on"
                   label="On"
                   :items="['cluster', 'schema', 'table', 'view']"/>
+
         <v-select label="Schema"
                   v-if="['schema', 'table', 'view'].includes(permissions.on)"
                   v-model="permissions.schema"
                   clearable
                   item-value="name"
                   item-title="name"
-                  :items="schema_list">
-        </v-select>
+                  :items="schema_list"/>
+
         <v-select label="Table"
                   v-if="['table', 'view'].includes(permissions.on)"
                   v-model="permissions.table"
-                  :items="[...tables_list]">
-        </v-select>
-        <v-label class="my-3" v-if="['view',].includes(permissions.on)">Views and tables can both be
-          found in Table select
+                  :items="[...tables_list]"/>
+
+        <v-label class="my-3" v-if="['view',].includes(permissions.on)">
+          Views and tables can both be found in Table select
         </v-label>
+
         <!--                  <v-select label="View"-->
         <!--                            v-if="['view',].includes(permissions.on)"-->
         <!--                            v-model="permissions.view"-->
         <!--                            :items="['All Views', ...views_list]">-->
         <!--                  </v-select>-->
+
         <div>
           <v-btn-toggle v-model="permissions.type"
                         rounded="0"
                         color="deep-purple-accent-3"
                         group>
-            <v-btn value="GRANT">
-              GRANT
-            </v-btn>
-            <v-btn value="DENY">
-              DENY
-            </v-btn>
+
+            <v-btn value="GRANT" text="GRANT"/>
+
+            <v-btn value="DENY" text="DENY"/>
+
           </v-btn-toggle>
         </div>
+
         <v-divider class="mt-4"/>
+
         <p class="mt-4">
           <v-code tag="pre">
             {{ stmt_sql }}
           </v-code>
         </p>
+
       </v-card-text>
+
     </template>
+
   </button-with-dialog>
 </template>
 

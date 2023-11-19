@@ -26,10 +26,10 @@ export class Schemas {
         return this.schemas.filter((schema) => schema.name === schema_name).length === 1
     }
 
-    get_all_tables(ignore_system = false) {
+    get_all_tables(ignore_system_schemas = false) {
         let tables = []
         for (const schema of this.schemas) {
-            if (ignore_system && schema.is_system) {
+            if (ignore_system_schemas && schema.is_system) {
                 break
             }
             tables.push(...schema.tables)
@@ -38,7 +38,7 @@ export class Schemas {
     }
 
     get_unhealthy_tables() {
-        return this.get_all_tables(true).filter((table) => table.severity !== 1 && table.severity != null)
+        return this.get_all_tables(true).filter((table) => table.severity !== 1 && table.severity)
     }
 
     get_current_health_level() {
@@ -48,7 +48,7 @@ export class Schemas {
             return 'UNKNOWN'
         }
 
-        const unhealthy_tables = tables.filter((table) => table.severity !== 1 && table.severity != null)
+        const unhealthy_tables = tables.filter((table) => table.severity !== 1 && table.severity)
 
         if (unhealthy_tables.length !== 0) {
             // Unhealthy tables can only be RED or YELLOW, so if we see a RED, we can just return, otherwise we know it's yellow.
@@ -59,7 +59,6 @@ export class Schemas {
             }
             return 'YELLOW'
         }
-
         return 'GREEN'
     }
 

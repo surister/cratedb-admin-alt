@@ -103,7 +103,7 @@ const generate_sql = computed(() => {
     let stmt_columns = '('
 
     for (const column of table_options.value.columns) {
-      if (column.type == null) {
+      if (!column.type) {
         // Shortcircuit column stmt generation if column type has not been defined by the user
         continue
       }
@@ -115,22 +115,22 @@ const generate_sql = computed(() => {
         _stmt += `(${column.input_value || column.type.default})`
       }
 
-      if (column.default != null) {
+      if (column.default) {
         _stmt += ` DEFAULT '${column.default}'`
       }
 
-      if (column.generated_expression != null){
+      if (column.generated_expression){
         _stmt += ` GENERATED ALWAYS AS ${column.generated_expression}`
       }
 
       if (column.checks.length !== 0){
         // Supporting only 1 check for now, will prolly have to come back later at this.
         let check = column.checks[0]
-        _stmt += check.name != null ? ` CONSTRAINT ${check.name}` : ''
+        _stmt += check.name ? ` CONSTRAINT ${check.name}` : ''
         _stmt += ` CHECK` + `(${check.stmt})`
       }
 
-      if (column.primary_key != null) {
+      if (column.primary_key) {
         _stmt += ` PRIMARY KEY`
       }
 
@@ -147,11 +147,11 @@ const generate_sql = computed(() => {
 
     let stmt_extras = ''
 
-    if (table_options.value.shards != null){
+    if (table_options.value.shards){
       stmt_extras += `CLUSTERED INTO ${table_options.value.shards} SHARDS`
     }
 
-    if (table_options.value.partitions != null){
+    if (table_options.value.partitions){
       stmt_extras += ` PARTITIONED BY (${table_options.value.partitions})`
     }
 
@@ -207,11 +207,11 @@ const data_types = DATA_TYPES
                   <v-btn icon="mdi-plus"
                          @click="add_new_element"
                          :active="false"
-                         :disabled="!(current_group !== GROUPS.NAME)"/>
+                         :disabled="current_group === GROUPS.NAME"/>
                   <v-btn icon="mdi-minus"
                          @click="remove_element"
                          :active="false"
-                         :disabled="!(current_column != null)"/>
+                         :disabled="!current_column"/>
                 </v-btn-toggle>
               </v-col>
             </v-row>
@@ -239,7 +239,7 @@ const data_types = DATA_TYPES
                       <template v-slot:activator="{ props }">
                         <v-list-item v-bind="props"
                                      @click="current_column = column; current_group = GROUPS.COLUMNS"
-                                     :active="current_column != null && current_column.id === column.id"
+                                     :active="current_column && current_column.id === column.id"
                                      :value="i">
                           <template #prepend>
                             <v-chip variant="outlined"
@@ -306,7 +306,7 @@ const data_types = DATA_TYPES
                 </v-col>
               </v-row>
             </template>
-            <template v-if="current_column != null && current_group === GROUPS.COLUMNS">
+            <template v-if="current_column && current_group === GROUPS.COLUMNS">
               <v-label>Column options</v-label>
               <v-btn size="x-small"
                      flat class="mx-2"
@@ -323,10 +323,10 @@ const data_types = DATA_TYPES
                                 clearable
                                 label="Default value"
                                 v-model="current_column.default"
-                                :disabled="current_column.generated_expression != null"/>
+                                :disabled="current_column.generated_expression"/>
                   <v-text-field density="compact" hide-details
                                 label="Generated expression"
-                                :disabled="current_column.default != null"
+                                :disabled="current_column.default"
                                 v-model="current_column.generated_expression"
                                 clearable/>
                 </v-col>
@@ -352,7 +352,7 @@ const data_types = DATA_TYPES
 
 
             </template>
-            <template v-if="current_column != null && current_group === GROUPS.CHECKS">
+            <template v-if="current_column && current_group === GROUPS.CHECKS">
               <v-label>Column check</v-label>
               <v-row class="">
                 <v-col cols="4">
@@ -375,7 +375,7 @@ const data_types = DATA_TYPES
                 </v-col>
               </v-row>
             </template>
-            <template v-if="current_column != null && current_group === GROUPS.PARAMETERS">
+            <template v-if="current_column && current_group === GROUPS.PARAMETERS">
               <v-label>Table parameters, check them &nbsp; <a target="_blank"
                                                               href="https://cratedb.com/docs/crate/reference/en/latest/sql/statements/create-table.html#with">here</a>
               </v-label>
