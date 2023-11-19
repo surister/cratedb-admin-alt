@@ -88,11 +88,13 @@ const props = defineProps({
   }
 })
 const result = ref({})
+const loading = ref(false)
+async function handleClick() {
+  loading.value = true
 
-function handleClick() {
-  // We expect the received function to ultimately return a dictionary.
   props.submitCallback().then(async (res) => {
-      result.value = {}
+    // We expect the received function to return a dictionary.
+    result.value = {}
     if (res.ok) {
       result.value['type'] = 'success'
       result.value['title'] = props.dialogOverrideSuccessComponentMessage != null ? props.dialogOverrideSuccessComponentMessage : props.dialogResponseComponentMessage['success']
@@ -114,6 +116,7 @@ function handleClick() {
         store.show_error_snackbar(result.value.message)
       }
     }
+    loading.value = false
     if (props.dialogCloseOnSubmit) {
       dialog.value = false
     }
@@ -168,6 +171,7 @@ const dialog = ref(false)
                                :text="dialogSubmitBtnText"
                                :variant="dialogSubmitBtnVariant"
                                :disabled="dialogSubmitBtnDisabled"
+                               :loading="loading"
                                @click="handleClick"/>
                     </v-card-actions>
                 </v-card>
