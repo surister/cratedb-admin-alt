@@ -15,6 +15,11 @@ export class Users {
         return [created, user]
     }
 
+  remove_user(user_name) {
+    const user = this.users.filter((user) => user.name === user_name)[0]
+    const user_index = this.users.indexOf(user)
+    this.users.splice(user_index, 1)
+  }
     constructor(data) {
         for (const [i, datum] of data.entries()) {
             const name = datum[0]
@@ -41,7 +46,7 @@ export class Users {
     }
 }
 
-class User {
+export class User {
     privileges = []
 
     constructor(name, is_superuser) {

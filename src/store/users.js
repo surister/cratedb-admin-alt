@@ -6,7 +6,7 @@ import queries from "@/store/http/queries";
 
 import {use_global_store} from "@/store/global_store";
 import {use_log_store} from "@/store/log";
-import {Privilege, Users} from "@/store/crate_api/users";
+import {Privilege, User, Users} from "@/store/crate_api/users";
 
 export const use_users_store = defineStore('users', () => {
   const state = reactive({
@@ -77,6 +77,7 @@ export const use_users_store = defineStore('users', () => {
 
       if (response.ok) {
           await log_store.log(log_store.ACTIONS.USER_DELETED, state.current_open_user.name)
+          state.users.remove_user(state.current_open_user.name)
           state.current_open_user = null
       }
       return response
@@ -92,6 +93,8 @@ export const use_users_store = defineStore('users', () => {
         })
 
     if (response.ok) {
+      const new_user = new User(username, false)
+      state.users.users.push(new_user)
       await log_store.log(log_store.ACTIONS.USER_CREATED, username)
     }
     return response
