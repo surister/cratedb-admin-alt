@@ -95,7 +95,12 @@ export const use_users_store = defineStore('users', () => {
   }
 
   async function add_permission_to_user(params, user) {
-    const new_id = state.current_open_user.privileges[state.current_open_user.privileges.length - 1].id
+    let new_id = 0
+
+    if (state.current_open_user.privileges.length != 0){
+      new_id = state.current_open_user.privileges[state.current_open_user.privileges.length - 1].id
+    }
+
     const class_ = params.on
     const grantee = state.current_open_user.name
     const grantor = state.current_user_name
@@ -105,24 +110,24 @@ export const use_users_store = defineStore('users', () => {
     if (params.on === 'cluster') {
       ident = ''
     } else {
-      if (params.schema != null) {
+      if (params.schema) {
         ident += params.schema
       }
-      if (params.table != null) {
+      if (params.table) {
         ident += '.'
         ident += params.table
       }
     }
-
     const new_privilege = new Privilege(new_id, class_, grantee, grantor, ident, state_, type)
-    user.privileges.push(new_privilege)
 
+    user.privileges.push(new_privilege)
   }
   async function add_privilege(stmt, privilege_params) {
     const response = await request_crate(stmt)
     if (response.ok) {
       await add_permission_to_user(privilege_params, state.current_open_user)
     }
+
     return response
   }
 
