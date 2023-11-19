@@ -43,12 +43,22 @@ export const use_tables_store = defineStore('tables', () => {
     }
 
     async function update_table_sample_data() {
-        const _response = await request_crate(queries.SAMPLE_DATA, null, {
+        // Reset just in case there is data from previous calls
+        state.sample_data = null
+
+        const response = await request_crate(queries.SAMPLE_DATA, null, {
             '%table_name': state.current_open_table.name,
             '%table_schema': state.current_open_table.schema
         })
-        const data = await _response.json()
-        state.sample_data = data
+        const data = await response.json()
+        if (response.ok) {
+            state.sample_data = data
+        } else {
+            state.sample_data = {
+                cols: [],
+                rows: []
+            }
+        }
     }
 
     async function drop_table() {
