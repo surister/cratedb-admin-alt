@@ -83,8 +83,10 @@ const config = {
 setInterval(() => {
   // We reset the internal chart state every 1 minute to avoid possible memory leaks as
   // recommended by the documentation on hour-long sessions, this is technically
-  // covered on our implementation (interval) but never hurts to extra careful.
-  if (_chart.value != null) {
+  // covered on our implementation, (we only show a fixed amount of data at the same time, an interval,
+  // and on updates, the array of fixed amount gets replaced by a new one)
+  // but never hurts to extra careful.
+  if (_chart.value) {
     _chart.value.resetSeries()
   }
 }, 60000) // 1 minute
@@ -92,15 +94,16 @@ setInterval(() => {
 
 <template>
   <v-card class="pa-2">
+
     <div id="chart">
-      <VueApexCharts
-          ref="_chart"
-          type="line"
-          height="350"
-          :options="config"
-          :series="data.series">
-      </VueApexCharts>
+
+      <VueApexCharts ref="_chart"
+                     type="line"
+                     height="350"
+                     :options="config"
+                     :series="data.series"/>
     </div>
+
   </v-card>
 </template>
 

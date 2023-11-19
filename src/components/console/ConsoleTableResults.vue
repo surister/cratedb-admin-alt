@@ -29,14 +29,15 @@ function color_objects(object) {
 </script>
 
 <template>
-  <template v-if="data.rows != null && data.rows.length !== 0">
+  <template v-if="data.rows && data.rows.length !== 0">
     <v-card v-if="data.rows[0].length !== 0"
             border
             class="rounded-0">
-      <v-data-table
-          :items="adaptVTableItems(data.rows, data.headers)"
-          :headers="adaptVTableHeader(data.headers)"
-          :items-per-page="!console_store.show_full_screen_response ? 5: 10">
+
+      <v-data-table :items="adaptVTableItems(data.rows, data.headers)"
+                    :headers="adaptVTableHeader(data.headers)"
+                    :items-per-page="!console_store.show_full_screen_response ? 5: 10">
+
         <template v-slot:top>
           <v-toolbar flat class="rounded-0">
             <v-toolbar-title>Query data response: {{ data.row_count }}
@@ -45,23 +46,25 @@ function color_objects(object) {
             <console-table-results-toolbar-actions/>
           </v-toolbar>
         </template>
+
         <template v-slot:headers="{ columns }">
           <tr>
             <th :key=column.key v-for="column in columns">{{ column.title }}</th>
           </tr>
         </template>
+
         <template v-slot:item="{ item }">
           <tr>
             <td v-for="(it, index) in item" :key="index">
               <template v-if="is_object(it) || Array.isArray(it)">
                 <component
-                    :is="console_store.object_representation_mode ? JsonTreeView : DialogText"
-                    class="my-1"
-                    colorScheme="dark"
-                    rootKey="Object"
-                    :maxDepth="0"
-                    :data="JSON.stringify(it)"
-                    :length="Object.entries(it).length"/>
+                  :is="console_store.object_representation_mode ? JsonTreeView : DialogText"
+                  class="my-1"
+                  colorScheme="dark"
+                  rootKey="Object"
+                  :maxDepth="0"
+                  :data="JSON.stringify(it)"
+                  :length="Object.entries(it).length"/>
               </template>
               <template v-else>
                 <span :style="{color: color_objects(it)}">{{ it }} </span>
@@ -69,7 +72,9 @@ function color_objects(object) {
             </td>
           </tr>
         </template>
+
       </v-data-table>
+
     </v-card>
   </template>
 </template>

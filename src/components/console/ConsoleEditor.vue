@@ -118,10 +118,19 @@ watch(
       _content.value = prev
     }
 )
+
 </script>
 
 <template>
-  <VAceEditor @init="(el) => editor = el"
+  <VAceEditor @init="(el) => {
+      editor = el
+      const handler = editor.textInput.getElement()
+      handler.addEventListener('keydown', (e) => {
+          // Emit only arrow up,left,right and down events which are blocked by default on ACE.
+          if ([37,38,39,40].includes(e.keyCode)){$emit('keydown', e)
+        }
+      })
+  }"
               v-model:value="_content"
               @change="$emit('update:content', _content)"
               :print-margin="false"
