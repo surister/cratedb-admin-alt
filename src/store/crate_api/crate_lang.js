@@ -21,8 +21,8 @@ export const DATA_TYPES = [
     {name: 'NUMERIC', has_input: true},
 
     // Date-Times
-    {name: 'TIMESTAMP WITH TIME ZONE', has_input: false},
-    {name: 'TIMESTAMP WITHOUT TIME ZONE', has_input: false},
+    // {name: 'TIMESTAMP WITH TIME ZONE', has_input: false},
+    {name: 'TIMESTAMP', has_input: false},
     {name: 'DATE', has_input: false},
     {name: 'TIME', has_input: false},
 
