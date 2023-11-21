@@ -18,10 +18,6 @@ const console_store = use_console_store()
   <v-btn size="x-large"
          class="ml-2"
          ref="button">
-    Watch query every {{ selectedItems.value }}s
-    <template #prepend>
-      <v-icon>mdi-pencil</v-icon>
-    </template>
   </v-btn>
   <v-select :menu-props="{
       activator: button,
