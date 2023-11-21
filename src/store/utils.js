@@ -1,4 +1,5 @@
 import {format} from "sql-formatter";
+import {ar} from "vuetify/locale";
 
 export function adaptVTableHeader(arr, align = 'start', sortable = false, enable_filter_special = null) {
   // Adapts a flat string array like [ 'col1', 'col2', 'col3' ]
@@ -130,4 +131,31 @@ export function download(object, format) {
     link.click();
 
     URL.revokeObjectURL(url);
+}
+
+function rows_to_table_values(rows) {
+  let rows_table = ``
+
+  for (const row of rows) {
+    let _row = '|'
+    for (const row_el of row) {
+      let el = row_el
+      if (is_object(row_el)) {
+          el = JSON.stringify(row_el)
+      }
+      _row += `${el}|`
+    }
+    rows_table += `${_row}\n`
+  }
+  return rows_table
+}
+
+export function query_to_markdown(crate_version, query, query_meta_subtitle, query_result_headers, query_result_rows) {
+  const query_meta = `##### Query ran at ${new Date().toISOString()} on CrateDB ${crate_version}\n`
+  const sql_query = '```\n' + `${format_sql(query)}` + '\n```'
+  const query_result_meta = `\n##### ${query_meta_subtitle}`
+  const query_result_table_headers = `\n\n|${query_result_headers.join('|')}|`
+  const query_result_table_header_separator = `\n |${'-|'.repeat(query_result_headers.length)} \n`
+  const query_result_table_values = rows_to_table_values(query_result_rows)
+  return query_meta + sql_query + query_result_meta + query_result_table_headers + query_result_table_header_separator + query_result_table_values
 }
