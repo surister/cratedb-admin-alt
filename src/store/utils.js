@@ -1,5 +1,5 @@
-import {format} from "sql-formatter";
-import {ar} from "vuetify/locale";
+
+import sqlFormatter from "sql-formatter-plus/lib/sqlFormatter";
 
 export function adaptVTableHeader(arr, align = 'start', sortable = false, enable_filter_special = null) {
   // Adapts a flat string array like [ 'col1', 'col2', 'col3' ]
@@ -117,7 +117,7 @@ export function color_objects(object) {
 }
 
 export function format_sql(stmt) {
-    return format(stmt, {language: 'postgresql', tabulateAlias: true})
+    return sqlFormatter.format(stmt, {language: 'n1ql', tabulateAlias: true})
 }
 
 export function download(object, format) {
@@ -139,11 +139,7 @@ function rows_to_table_values(rows) {
   for (const row of rows) {
     let _row = '|'
     for (const row_el of row) {
-      let el = row_el
-      if (is_object(row_el)) {
-          el = JSON.stringify(row_el)
-      }
-      _row += `${el}|`
+      _row += `${JSON.stringify(row_el)}|`
     }
     rows_table += `${_row}\n`
   }
