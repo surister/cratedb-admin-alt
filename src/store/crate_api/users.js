@@ -3,45 +3,25 @@ import queries from "@/store/http/queries";
 export class Users {
     users = []
 
-    get_or_create(name, is_superuser) {
-        let user = this.users.filter((user) => user.name === name)[0]
-        let created = false
-
-        if (user == null) {
-            user = new User(name, is_superuser)
-            created = true
-        }
-
-        return [created, user]
-    }
-
   remove_user(user_name) {
     const user = this.users.filter((user) => user.name === user_name)[0]
     const user_index = this.users.indexOf(user)
     this.users.splice(user_index, 1)
   }
+
     constructor(data) {
-        for (const [i, datum] of data.entries()) {
+        for (const datum of data) {
             const name = datum[0]
             const is_superuser = datum[1]
+            const privileges = datum[2]
 
-            const privilege = new Privilege(
-                i,
-                datum[2],
-                datum[3],
-                datum[4],
-                datum[5],
-                datum[6],
-                datum[7],
-            )
-            const [created, user] = this.get_or_create(name, is_superuser)
+            const new_user = new User(name, is_superuser)
 
-            if (created) {
-                this.users.push(user)
+            for (const [i, privilege] of privileges.entries()) {
+                const new_privilege = new Privilege(i, ...Object.values(privilege))
+                new_user.privileges.push(new_privilege)
             }
-            if (privilege.type) {
-                user.privileges.push(privilege)
-            }
+            this.users.push(new_user)
         }
     }
 }
@@ -70,10 +50,9 @@ export class User {
 
 
 export class Privilege {
-    constructor(id, class_, grantee, grantor, ident, state, type) {
+    constructor(id, class_, grantor, ident, state, type) {
         this.id = id
         this.class_ = class_
-        this.grantee = grantee
         this.grantor = grantor
         this.ident = ident
         this.state = state

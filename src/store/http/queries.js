@@ -51,17 +51,30 @@ export default {
 
   // USER QUERIES
   USERS: `
-    SELECT usr.name,
-           usr.superuser,
-           priv.class,
-           priv.grantee,
-           priv.grantor,
-           priv.ident,
-           priv.state,
-           priv.type
-    FROM sys.users usr
-           LEFT JOIN sys.privileges priv ON usr.name = priv.grantee
-    ORDER BY usr.superuser DESC, usr.name asc
+        SELECT
+          usr.name,
+          usr.superuser,
+          (
+            SELECT
+              ARRAY_AGG(
+                {
+                  "class" = priv.class,
+                  "grantor" = priv.grantor,
+                  "ident" = priv.ident,
+                  "state" = priv.state,
+                  "type" = priv.type
+                }
+              )
+            FROM
+              sys.privileges priv
+            WHERE
+              priv.grantee = usr.name
+          ) as privileges
+        FROM
+          sys.users usr
+        ORDER BY
+          usr.superuser DESC,
+          usr.name ASC
   `,
   REVOKE: 'REVOKE %permission ON %type %ident FROM %to',
   DROP_USER: 'DROP USER %user_name',
