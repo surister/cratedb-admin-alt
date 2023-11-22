@@ -115,7 +115,6 @@ export const CRATE_KEYWORDS = [
     'JOIN',
     'OUTER',
     'JOIN',
-
 ]
 
 export const CRATE_VALUES = [
@@ -124,7 +123,97 @@ export const CRATE_VALUES = [
     'NULL',
 ]
 
-export const CRATE_FUNCTIONS = ['SUM', 'MIN', 'MAX']
+export const CRATE_FUNCTIONS = [
+  // https://cratedb.com/docs/crate/reference/en/5.5/general/builtins/scalar-functions.html
+  // String
+  'CONCAT',
+  'CONCAT_WS',
+  'FORMAT',
+  'SUBSTR',
+  'CHAR_LENGTH',
+  'LENGTH',
+  'BIT_LENGTH',
+  'OCTET_LENGTH',
+  'ASCII',
+  'CHR',
+  'LOWER',
+  'UPPER',
+  'INITCAP',
+  'SHA1',
+  'MD5',
+  'REPLACE',
+  'TRANSLATE',
+  'TRANSLATE',
+  'TRIM',
+  'LTRIM',
+  'RTRIM',
+  'BTRIM',
+  'QUOTE_IDENT',
+  'LEFT',
+  'RIGHT',
+  'LPAD',
+  'RPAD',
+  'ENCODE',
+  'DECODE',
+  'REPEAT',
+  'SPLIT_PART',
+  'PARSE_URI',
+  'PARSE_URL',
+
+  // Dates and time.
+  'DATE_TRUNC',
+  'DATE_BIN',
+  'EXTRACT',
+  'CURRENT_TIME',
+  'CURRENT_TIMESTAMP',
+  'CURDATE',
+  'CURRENT_DATE',
+  'NOW',
+  'DATE_FORMAT',
+  'TIMEZONE',
+  'TO_CHAR',
+  'AGE',
+
+  // Geo functions
+  'DISTANCE',
+  'WITHIN',
+  'INTERSECTS',
+  'LATITUDE',
+  'GEOHASH',
+  'AREA',
+
+  // Math
+  'ABS',
+  'CEIL',
+  'CEILING',
+  'DEGREES',
+  'EXP',
+  'FLOOR',
+  'LN',
+  'LOG',
+  'MODULUS',
+  'MOD',
+  'POWER',
+  'RADIANS',
+  'RANDOM',
+  'GET_RANDOM_TEXT_UUID',
+  'ROUND',
+  'TRUNC',
+  'SQRT',
+  'SIN',
+  'ASIN',
+  'COS',
+  'ACOS',
+  'TAN',
+  'COT',
+  'ATAN',
+  'ATAN2',
+  'PI',
+
+  // Regex
+  'REGEX_REPLACE',
+
+]
 
 export const CRATE_HEALTH_LEGEND = {
   GREEN: {
