@@ -37,7 +37,9 @@ export const DATA_TYPES = [
 ]
 
 export const CRATE_KEYWORDS = [
+    'AS',
     'AND',
+    'ASC',
     'ALTER CLUSTER',
     'ALTER PUBLICATION',
     'ALTER TABLE',
@@ -75,6 +77,7 @@ export const CRATE_KEYWORDS = [
     'DROP USER',
     'DROP VIEW',
     'DROP',
+    'DESC',
     'END',
     'EXPLAIN',
     'FETCH',
@@ -102,7 +105,6 @@ export const CRATE_KEYWORDS = [
     'WITH',
     'LIMIT',
     'FROM',
-    'AS',
     'DISTINCT',
     'WHERE',
     'GROUP BY',
