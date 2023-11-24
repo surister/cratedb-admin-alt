@@ -14,18 +14,6 @@ export class Schemas {
         }
     }
 
-    add_table(new_table, schema_name) {
-        for (const _schema of this.schemas) {
-            if (_schema.name === schema_name) {
-                _schema.tables.push(new_table)
-            }
-        }
-    }
-
-    schema_exists(schema_name) {
-        return this.schemas.filter((schema) => schema.name === schema_name).length === 1
-    }
-
     get_all_tables(ignore_system_schemas = false) {
         let tables = []
         for (const schema of this.schemas) {
@@ -63,16 +51,19 @@ export class Schemas {
     }
 
     constructor(data) {
-        for (const row of data) {
-            const schema_name = row[1]
-            const new_table = new Table(...row)
+        for (const schema_data of data) {
+          const schema_name = schema_data[0]
+          const tables = schema_data[1]
 
-            if (!this.schema_exists(schema_name)) {
-                const is_system_schema = this.system_schemas.includes(schema_name)
-                const new_schema = new Schema(schema_name, is_system_schema)
-                this.schemas.push(new_schema)
-            }
-            this.add_table(new_table, schema_name)
+          const is_system_schema = this.system_schemas.includes(schema_name)
+          const new_schema = new Schema(schema_name, is_system_schema)
+
+          for (const table of tables) {
+            const new_table = new Table(...Object.values(table))
+            new_schema.tables.push(new_table)
+          }
+
+          this.schemas.push(new_schema)
         }
     }
 }

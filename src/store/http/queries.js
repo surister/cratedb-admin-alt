@@ -17,13 +17,13 @@ export default {
     order by severity DESC
   `,
   ALLOCATIONS: `
-    SELECT current_state,
-           decisions,
-           explanation,
-           node_id,
-           partition_ident, primary, shard_id, table_name, table_schema
-    FROM
-      SYS.ALLOCATIONS
+      SELECT current_state,
+             decisions,
+             explanation,
+             node_id,
+             partition_ident, primary, shard_id, table_name, table_schema
+      FROM
+          SYS.ALLOCATIONS
   `,
   NODE_CHECKS: 'SELECT id, node_id, severity, acknowledged, description FROM SYS.node_checks WHERE passed = false',
   JOBS: 'SELECT id, node, started, stmt, username FROM sys.jobs',
@@ -44,10 +44,33 @@ export default {
     ORDER BY
       ended_time ASC
   `,
-  REPOSITORIES: `SELECT name,
-                        settings,
-                        type
-                 FROM sys.repositories`,
+  REPOSITORIES: `
+      SELECT
+        repos.name,
+        repos.type,
+        repos.settings,
+        (
+          SELECT
+            ARRAY_AGG(
+              {
+                "name" = snaps.name,
+                "state" = snaps.state,
+                "concrete_indices" = snaps.concrete_indices,
+                "failures" = snaps.failures,
+                "started" = snaps.started,
+                "finished" = snaps.finished,
+                "table_partitions" = snaps.table_partitions,
+                "tables" = snaps.tables,
+                "version" = snaps.version
+              }
+            )
+          FROM
+            sys.snapshots snaps
+          WHERE repos.name = snaps.repository
+        ) as snapshots
+      FROM
+        sys.repositories repos
+  `,
 
   // USER QUERIES
   USERS: `
@@ -85,32 +108,72 @@ export default {
 
   // TABLE QUERIES
   TABLES: `
-    SELECT DISTINCT inf.table_name         as name,
-                    inf.table_schema       as schema,
-                    inf.number_of_replicas as replicas,
-                    inf.number_of_shards   as shards,
-                    inf.table_type,
-                    sha.records,
-                    sha.size_bytes,
-                    he.health,
-                    he.missing_shards,
-                    he.partition_ident,
-                    he.severity,
-                    he.underreplicated_shards
-    FROM (SELECT table_name,
-                 schema_name,
-                 SUM(size)     as size_bytes,
-                 SUM(num_docs) as records
-          FROM sys.shards sha
-          WHERE sha.primary = true
-          GROUP by table_name,
-                   schema_name) as sha RIGHT JOIN information_schema.tables inf
-    ON inf.table_name = sha.table_name
-      FULL OUTER JOIN sys.health he ON inf.table_name = he.table_name
-      AND inf.table_schema = he.table_schema
-    ORDER BY
-      shards, schema, table_type, name
-  `,   // Gets the total amount of tables, user created tables get the rows of the primary
+        WITH table_info AS (
+          SELECT
+            inf.table_name AS name,
+            inf.table_schema AS schema,
+            inf.number_of_replicas AS replicas,
+            inf.number_of_shards AS shards,
+            inf.table_type,
+            sha.records,
+            sha.size_bytes,
+            he.health,
+            he.missing_shards,
+            he.partition_ident,
+            he.severity,
+            he.underreplicated_shards
+          FROM information_schema.tables inf
+            LEFT JOIN (
+              SELECT
+                table_name,
+                schema_name,
+                SUM(size) AS size_bytes,
+                SUM(num_docs) AS records
+              FROM sys.shards
+              WHERE primary = true
+              GROUP BY table_name, schema_name
+            ) sha ON inf.table_name = sha.table_name
+            LEFT JOIN sys.health he ON inf.table_name = he.table_name AND inf.table_schema = he.table_schema
+        ),
+        schema_with_tables AS (
+          SELECT
+            schemata.schema_name,
+            COALESCE(
+              NULLIF(ARRAY_AGG(
+                CASE
+                  WHEN ti.name IS NOT NULL THEN
+                    {
+                      "name" = ti.name,
+                      "schema" = ti.schema,
+                      "replicas" = ti.replicas,
+                      "shards" = ti.shards,
+                      "table_type" = ti.table_type,
+                      "records" = ti.records,
+                      "size_bytes" = ti.size_bytes,
+                      "health" = ti.health,
+                      "missing_shards" = ti.missing_shards,
+                      "partition_ident" = ti.partition_ident,
+                      "severity" = ti.severity,
+                      "underreplicated_shards" = ti.underreplicated_shards
+                    }
+                  ELSE NULL
+                END
+              ), ARRAY[NULL])
+            , ARRAY[]) AS tables
+          FROM information_schema.schemata schemata
+            LEFT JOIN table_info ti ON schemata.schema_name = ti.schema
+          GROUP BY schemata.schema_name
+        )
+        SELECT *
+        FROM schema_with_tables
+        ORDER BY CASE
+                     WHEN schema_name IN ('doc') THEN 0
+                     WHEN schema_name IN ('sys', 'information_schema', 'pg_catalog', 'blob') THEN 2
+                     ELSE 1
+                     END,
+                 schema_name;
+  `,
+  // Gets the total amount of tables, user created tables get the rows of the primary
   // It also gets system schema tables such as information_schema, pg_catalog and sys.
   // IMPORTANT: In this query 'schema' always has to go last for values unpacking order reasons, see tables.js
   COLUMNS: `
