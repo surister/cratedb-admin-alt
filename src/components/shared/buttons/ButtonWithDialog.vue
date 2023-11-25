@@ -33,6 +33,10 @@ const props = defineProps({
     type: String,
     default: 'elevated'
   },
+  activatorBtnClasses: {
+    type: Array,
+    default: []
+  },
   dialogWidth: {
     type: String,
     default: 'auto'
@@ -42,6 +46,10 @@ const props = defineProps({
   },
   dialogText: {
     type: String
+  },
+  removeDialogSubmitBtn :{
+    type: Boolean,
+    default: false,
   },
   dialogCloseBtnText: {
     type: String,
@@ -135,6 +143,7 @@ const dialog = ref(false)
                :variant="activatorBtnVariant"
                :disabled="activatorBtnDisabled"
                :icon="activatorBtnIcon"
+               :class="activatorBtnClasses"
                v-bind="props">
             {{ activatorBtnText }}
             <template v-if="activatorBtnIcon">
@@ -167,7 +176,8 @@ const dialog = ref(false)
                         <v-spacer/>
                         <v-btn @click="dialog = false"
                                :text="dialogCloseBtnText"/>
-                        <v-btn :color="dialogSubmitBtnColor"
+                        <v-btn v-if="!removeDialogSubmitBtn"
+                               :color="dialogSubmitBtnColor"
                                :text="dialogSubmitBtnText"
                                :variant="dialogSubmitBtnVariant"
                                :disabled="dialogSubmitBtnDisabled"
