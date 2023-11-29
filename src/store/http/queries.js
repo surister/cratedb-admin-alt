@@ -44,6 +44,8 @@ export default {
     ORDER BY
       ended_time ASC
   `,
+
+  // Repositories
   REPOSITORIES: `
       SELECT
         repos.name,
@@ -71,7 +73,9 @@ export default {
       FROM
         sys.repositories repos
   `,
-
+  DROP_REPOSITORY: `DROP REPOSITORY "%repository_name"`,
+  CREATE_REPOSITORY: 'CREATE REPOSITORY "%repository_name" TYPE %type WITH (%options)',
+  CREATE_SNAPSHOT: 'CREATE SNAPSHOT "%repository_name" TABLE %tables WITH (wait_for_completion = %wait_for_completion, ignore_unavailable = %ignore_unavailable)',
   // USER QUERIES
   USERS: `
         SELECT
