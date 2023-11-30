@@ -6,8 +6,8 @@ export class Repositories {
       const repository = new Repository(...datum)
       const snapshots = datum.at(-1)
 
-      for (const snapshot of snapshots) {
-        const new_snapshot = new Snapshot(...Object.values(snapshot))
+      for (const [index, snapshot] of snapshots.entries()) {
+        const new_snapshot = new Snapshot(index, ...Object.values(snapshot))
         repository.snapshots.push(new_snapshot)
       }
       this.repositories.push(repository)
@@ -18,6 +18,13 @@ export class Repositories {
 class Repository {
   snapshots = []
 
+  remove_snapshot(snapshot_name) {
+    for (const snapshot of this.snapshots) {
+      if (snapshot.name === snapshot_name) {
+        this.snapshots.splice(snapshot.id, 1)
+      }
+    }
+  }
   constructor(name, type, settings) {
     this.name = name
     this.type = type
@@ -26,7 +33,8 @@ class Repository {
 }
 
 class Snapshot {
-  constructor(name, state, concrete_indices, failures, started, finished, table_partitions, tables, version) {
+  constructor(id, name, state, concrete_indices, failures, started, finished, table_partitions, tables, version) {
+    this.id = id
     this.name = name
     this.state = state
     this.concrete_indices = concrete_indices

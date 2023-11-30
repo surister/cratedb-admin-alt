@@ -1,6 +1,8 @@
 <script setup>
-
 import {use_repositories_store} from "@/store/repositories";
+
+import RepositoriesCardSnapshotsDropSnapshot
+  from "@/components/repositories/RepositoriesCardSnapshotsDropSnapshot.vue";
 
 const repository_store = use_repositories_store()
 </script>
@@ -8,8 +10,7 @@ const repository_store = use_repositories_store()
 <template>
   <v-expansion-panels>
     <v-expansion-panel v-for="(snapshot, i) in repository_store.current_open_repository.snapshots"
-                       :key="i"
-                       :title="snapshot.state">
+                       :key="i">
 
       <template #title>
         <v-chip class="mr-2" size="small"
@@ -17,6 +18,7 @@ const repository_store = use_repositories_store()
         </v-chip>
         <v-toolbar-title>{{ snapshot.name }}</v-toolbar-title>
         <v-spacer></v-spacer>
+        <repositories-card-snapshots-drop-snapshot :snapshot_name="snapshot.name"/>
         <v-chip>{{ snapshot.version }}</v-chip>
       </template>
 

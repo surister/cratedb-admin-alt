@@ -29,8 +29,9 @@ const repository_store = use_repositories_store()
       </v-list-item>
 
       <v-divider/>
-      <v-list-item v-for="(repository, i) in repository_store.repositories.repositories"
-                   :key="i"
+      <v-list-item v-for="repository in  repository_store.repositories.repositories"
+                   :key="repository.name"
+                   :value="repository.name"
                    @click="repository_store.current_open_repository = repository">
 
         <template #title>
