@@ -54,16 +54,38 @@ export const use_repositories_store = defineStore('repositories', () => {
       '%SQL_TABLE_STMT': all_tables ? '' : 'TABLE',
     })
     if (response.ok) {
-      await update_repositories()
+        await update_repositories()
+        // A  way of updating the state locally of a .current_opened_something.
+        // In tables and users we handle the data manually, but doing so in here would be inaccurate
+        // since we actually need data from the server that we cannot know beforehand,
+        // such as finished time, failures...
+        for (const repository of state.repositories.repositories) {
+          if (repository.name === state.current_open_repository.name){
+            state.current_open_repository = repository
+          }
+        }
     }
     return response
   }
+
+  async function drop_snapshot(snapshot_name){
+    const response = await request_crate(queries.DROP_SNAPSHOT, null, {
+      '%snapshot_name': snapshot_name,
+      '%repository_name': state.current_open_repository.name
+    })
+    if (response.ok){
+      state.current_open_repository.remove_snapshot(snapshot_name)
+    }
+    return response
+  }
+
   return {
     ...toRefs(state),
     update_repositories,
     drop_repository,
     create_repository,
-    create_snapshot
+    create_snapshot,
+    drop_snapshot
   }
 
 })
