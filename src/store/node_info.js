@@ -15,6 +15,7 @@ import {Users} from "@/store/crate_api/users";
 import {use_tables_store} from "@/store/tables";
 import semver from "semver";
 import {use_users_store} from "@/store/users";
+import {use_repositories_store} from "@/store/repositories";
 
 const REFRESH_EVERY_MS = 5000 // milliseconds
 const CHART_MAX_INTERVAL_S = 300 // 5 minutes in seconds.
@@ -77,7 +78,7 @@ export const use_node_info_store = defineStore('node_info', () => {
     const charts_store = use_chart_store()
     const tables_store = use_tables_store()
     const users_store = use_users_store()
-
+    const repository_store = use_repositories_store()
     async function update_node_info() {
         const _response = await request_crate(queries.NODE_INFO)
         const data = await _response.json()
@@ -180,14 +181,15 @@ export const use_node_info_store = defineStore('node_info', () => {
     }
 
     Promise.allSettled([
-        update_node_info(),
-        update_health_info(),
-        update_node_checks(),
-        update_jobs_info(),
-        update_qps_data(),
-        users_store.update_users(),
-        users_store.update_current_user(),
-        tables_store.update_tables()
+      update_node_info(),
+      update_health_info(),
+      update_node_checks(),
+      update_jobs_info(),
+      update_qps_data(),
+      users_store.update_users(),
+      users_store.update_current_user(),
+      tables_store.update_tables(),
+      repository_store.update_repositories()
     ])
 
     setInterval(async () => {
@@ -201,7 +203,8 @@ export const use_node_info_store = defineStore('node_info', () => {
                 update_jobs_info(),
                 update_chart_load_data(),
                 update_qps_data(),
-                tables_store.update_tables()
+                tables_store.update_tables(),
+
             ],
         )
         if (state.should_update_allocation) {
