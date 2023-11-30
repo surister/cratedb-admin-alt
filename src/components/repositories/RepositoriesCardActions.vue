@@ -7,7 +7,7 @@ import RepositoriesCardActionsCreateSnapshot
 
 <template>
   <repositories-card-actions-create-snapshot/>
-<repositories-card-actions-drop/>
+  <repositories-card-actions-drop/>
 </template>
 
 <style scoped>

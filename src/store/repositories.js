@@ -46,7 +46,17 @@ export const use_repositories_store = defineStore('repositories', () => {
 
   async function create_snapshot(options){
     const { name, wait_for_completion, ignore_unavailable, all_tables, tables } = options
-    const response = await request_crate(queries.CREATE_SNAPSHOT)
+    const response = await request_crate(queries.CREATE_SNAPSHOT, null, {
+      '%repository_name': `"${state.current_open_repository.name}"."${name.replace(' ', '_')}"`,
+      '%tables': all_tables ? 'ALL' : tables,
+      '%wait_for_completion': wait_for_completion,
+      '%ignore_unavailable': ignore_unavailable,
+      '%SQL_TABLE_STMT': all_tables ? '' : 'TABLE',
+    })
+    if (response.ok) {
+      await update_repositories()
+    }
+    return response
   }
   return {
     ...toRefs(state),

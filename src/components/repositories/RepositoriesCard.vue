@@ -29,7 +29,7 @@ const repository_store = use_repositories_store()
     </v-card-text>
     <v-divider/>
     <v-card-text>Snapshots</v-card-text>
- <repositories-card-snapshots/>
+    <repositories-card-snapshots/>
   </v-card>
 </template>
 

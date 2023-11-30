@@ -7,11 +7,9 @@ export class Repositories {
       const snapshots = datum.at(-1)
 
       for (const snapshot of snapshots) {
-        console.log(snapshot)
         const new_snapshot = new Snapshot(...Object.values(snapshot))
-        repository.snapshots.push(snapshot)
+        repository.snapshots.push(new_snapshot)
       }
-      console.log(repository)
       this.repositories.push(repository)
     }
   }

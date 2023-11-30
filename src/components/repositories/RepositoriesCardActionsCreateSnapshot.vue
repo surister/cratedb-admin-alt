@@ -23,7 +23,7 @@ const tables_list = computed(() => {
 
   return _tables
 })
-const options = ref({})
+const options = ref({wait_for_completion: false, ignore_unavailable: false})
 </script>
 
 <template>
@@ -36,8 +36,7 @@ const options = ref({})
                       dialog-submit-btn-color="primary"
                       dialog-submit-btn-text="Create"
                       dialog-width="600"
-                    :submit-callback="() => repository_store.create_snapshot(options)"
-      >
+                      :submit-callback="() => repository_store.create_snapshot(options)">
 
     <template #dialog-content>
       <v-container>
