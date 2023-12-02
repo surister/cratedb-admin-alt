@@ -68,7 +68,8 @@ const options = ref({wait_for_completion: false, ignore_unavailable: false})
                       multiple clearable
                       :items="tables_list"
                       v-model="options.tables"
-                      :disabled="options.all_tables"/>
+                      :disabled="options.all_tables"
+                      chips/>
           </v-col>
 
         </v-row>

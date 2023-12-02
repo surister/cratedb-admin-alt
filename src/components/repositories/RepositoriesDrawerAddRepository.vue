@@ -19,8 +19,7 @@ const path = ref()
                       activator-btn-color="white"
                       dialog-width="600"
                       dialog-title="Create new repository"
-                      :submit-callback="() => repository_store.create_repository(name, 'fs', {location: path})"
-  >
+                      :submit-callback="() => repository_store.create_repository(name, 'fs', {location: path})">
     <template #dialog-content>
       <v-container>
         <v-text-field label="Name" v-model="name"></v-text-field>
