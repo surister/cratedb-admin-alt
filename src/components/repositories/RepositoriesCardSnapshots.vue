@@ -3,6 +3,8 @@ import {use_repositories_store} from "@/store/repositories";
 
 import RepositoriesCardSnapshotsDropSnapshot
   from "@/components/repositories/RepositoriesCardSnapshotsDropSnapshot.vue";
+import RepositoriesCardSnapshotsRestoreSnapshot
+  from "@/components/repositories/RepositoriesCardSnapshotsRestoreSnapshot.vue";
 
 const repository_store = use_repositories_store()
 </script>
@@ -14,11 +16,18 @@ const repository_store = use_repositories_store()
 
       <template #title>
         <v-chip class="mr-2" size="small"
-                :color="snapshot.state === 'SUCCESS' ? 'success': 'error'">{{ snapshot.state }}
+                :color="snapshot.state === 'SUCCESS' ? 'success': 'error'">
+          {{ snapshot.state }}
         </v-chip>
-        <v-toolbar-title>{{ snapshot.name }}</v-toolbar-title>
-        <v-spacer></v-spacer>
+
+        <v-toolbar-title>{{ snapshot.name }} ({{ snapshot.tables.length }})</v-toolbar-title>
+
+        <v-spacer/>
+
+        <repositories-card-snapshots-restore-snapshot :snapshot="snapshot"/>
+
         <repositories-card-snapshots-drop-snapshot :snapshot_name="snapshot.name"/>
+
         <v-chip>{{ snapshot.version }}</v-chip>
       </template>
 
@@ -58,6 +67,7 @@ const repository_store = use_repositories_store()
           </v-card-text>
         </v-card>
       </template>
+
     </v-expansion-panel>
   </v-expansion-panels>
 </template>

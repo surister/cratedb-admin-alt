@@ -82,15 +82,19 @@ For maximum compatibility any new version feature will be added with a versioned
 that those features will only be unlocked if your connected CrateDB cluster supports it.
 
 
-## Limitations
+## Known limitations
 
 While it is my intention to fully support everything, it's a daunting task, it is a very complex
 product, and it will take some time.
 
-The following parameters are not in the Create table UI parameters:
-routing.allocation.include.{attribute}
-routing.allocation.require.{attribute}
-routing.allocation.exclude.{attribute}
+The following parameters are not supported in the Create table UI:
+
+- routing.allocation.include.{attribute}
+- routing.allocation.require.{attribute}
+- routing.allocation.exclude.{attribute}
+
+We do not support restoring a snapshot from a partition.
+`PARTITION (partition_column = value [, ...])] [, ...]`
 
 ## Contributing
 
