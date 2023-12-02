@@ -21,7 +21,8 @@ class Repository {
   remove_snapshot(snapshot_name) {
     for (const snapshot of this.snapshots) {
       if (snapshot.name === snapshot_name) {
-        this.snapshots.splice(snapshot.id, 1)
+        const id = this.snapshots.indexOf(snapshot)
+        this.snapshots.splice(id, 1)
       }
     }
   }

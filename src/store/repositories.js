@@ -53,6 +53,7 @@ export const use_repositories_store = defineStore('repositories', () => {
       '%ignore_unavailable': ignore_unavailable,
       '%SQL_TABLE_STMT': all_tables ? '' : 'TABLE',
     })
+
     if (response.ok) {
         await update_repositories()
         // A  way of updating the state locally of a .current_opened_something.
