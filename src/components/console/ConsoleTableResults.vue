@@ -81,26 +81,24 @@ const is_clicked = ref()
   </template>
 </template>
 
-<style>
-.tabular .v-data-table-footer {
-  border-top: rgba(var(--v-border-color), var(--v-border-opacity)) solid 1px;
-}
-</style>
-
 <style scoped>
 
 .tabular td, th {
-  border-inline-end-color: rgba(var(--v-border-color), var(--v-border-opacity)) !important;
-  border-inline-end-style: solid !important;
-  border-inline-end-width: 1px !important
+  border-inline-end-color: rgba(var(--v-border-color), var(--v-border-opacity));
+  border-inline-end-style: solid;
+  border-inline-end-width: 1px;
 }
 
-.is_clicked{
+.is_clicked {
   border: cornflowerblue solid 2px !important;
 }
 
 .tabular td:hover {
   border: cornflowerblue solid 2px !important;
+}
+
+.tabular .v-data-table-footer {
+  border-top: rgba(var(--v-border-color), var(--v-border-opacity)) solid 1px;
 }
 
 </style>
