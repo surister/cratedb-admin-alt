@@ -120,7 +120,8 @@ function status_color(table){
                    @click="tables_info.current_open_table = table; tables_info.current_open_schema = schema">
 
         <template #title>
-          <span class="font-weight-bold">{{ table.name }}</span>
+          <v-icon icon="mdi-table" color="primary"/>
+          <span class="font-weight-bold ml-2">{{ table.name }}</span>
         </template>
 
         <template #append v-if="!schema.is_system">
@@ -136,8 +137,10 @@ function status_color(table){
         </template>
 
         <template #subtitle>
-          {{ !table.records == null ? 'n/a' : human_numbers(table.records) }} records - Size
+          <span class="text-subtitle-2">
+            {{ !table.records == null ? 'n/a' : human_numbers(table.records) }} records - Size
           {{ table.size_bytes != null ? human_file_size(table.size_bytes) : 'n/a' }}
+          </span>
         </template>
 
       </v-list-item>
