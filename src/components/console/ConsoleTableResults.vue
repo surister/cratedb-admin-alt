@@ -57,7 +57,9 @@ const is_clicked = ref()
 
         <template v-slot:item="{ item, index }">
           <tr>
-            <td v-for="(data, column_name) in item" :key="index + column_name" @click="is_clicked = index + column_name" :class="[is_clicked === index + column_name ? 'is_clicked': '']">
+            <td v-for="(data, column_name) in item" :key="index + column_name"
+                @click="is_clicked = index + column_name"
+                :class="[is_clicked === index + column_name ? 'is_clicked': '']">
               <template v-if="is_object(data) || Array.isArray(data)">
                 <component
                   :is="console_store.object_representation_mode ? JsonTreeView : DialogText"
@@ -81,6 +83,11 @@ const is_clicked = ref()
   </template>
 </template>
 
+<style>
+.tabular .v-data-table-footer {
+  border-top: rgba(var(--v-border-color), var(--v-border-opacity)) solid 1px !important;
+}
+</style>
 <style scoped>
 
 .tabular td, th {
@@ -95,10 +102,6 @@ const is_clicked = ref()
 
 .tabular td:hover {
   border: cornflowerblue solid 2px !important;
-}
-
-.tabular .v-data-table-footer {
-  border-top: rgba(var(--v-border-color), var(--v-border-opacity)) solid 1px;
 }
 
 </style>
