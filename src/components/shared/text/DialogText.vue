@@ -11,7 +11,7 @@ const object_name = computed(()=>`Object[${props.length}]`)
 <template>
   <v-dialog max-width="600">
     <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" :text="object_name"></v-btn>
+      <v-btn v-bind="props" :text="object_name" variant="tonal"></v-btn>
     </template>
     <template v-slot:default="{ isActive }">
       <v-card :title="object_name">

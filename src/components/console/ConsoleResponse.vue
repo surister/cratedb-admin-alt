@@ -15,22 +15,17 @@ const props = defineProps(
 </script>
 
 <template>
-  <v-card v-if="data.type" border class="rounded-0">
-
-    <template #title>
-      <p :class="[ data.type === 'success' ? 'text-green-accent-3' : 'text-red-accent-4' ]">
-        {{ data.title }}</p>
-    </template>
-
+  <v-card v-if="data.type" class="rounded-0 border-s-sm border-e-sm">
     <template #text>
-      <p style="font-size: 20px">{{ data.subtitle }}</p>
+      <span :class="[ data.type === 'success' ? 'text-green-accent-3' : 'text-red-accent-4', 'text-h5' ]">
+        {{ data.title }}
+      </span> -
+      <span class="text-h6">{{ data.subtitle }}</span>
     </template>
 
-    <v-card-actions>
+    <v-card-actions v-if="data.error_trace">
 
-      <traceback-dialog v-if="data.error_trace" :text="data.error_trace"/>
-
-      <v-btn @click="console_store.set_console_response_to_empty()" text="clear"/>
+      <traceback-dialog  :text="data.error_trace"/>
 
     </v-card-actions>
   </v-card>
