@@ -97,15 +97,16 @@ const is_history_opened = computed(() => groups.value.includes('history'))
       </v-list-item>
     </v-list-group>
     <v-list-group value="history"
-                  color="primary">
+                  color="primary" class="border-t-sm border-b-sm">
       <template #activator="{ props }">
         <v-list-item v-bind="props">Query history</v-list-item>
       </template>
       <v-list-item link v-for="(query, i) in queries"
                    :key="i"
-                   @click="console_store.current_console.content = query.query">
+                   @click="console_store.current_console.content = query.query"
+                   class="border-t-sm">
         <template #title>
-          <v-tooltip :text="query.query">
+          <v-tooltip>
             <template #default>
               <pre>{{ query.query }}</pre>
             </template>

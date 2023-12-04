@@ -24,17 +24,21 @@ const headers = adaptVTableHeader([
 </script>
 
 <template>
-  <v-card>
+  <v-card border="sm"
+          rounded="0">
+
     <v-data-table v-model:expanded="expanded"
                   :headers="headers"
                   :items="node_info_store.nodes.to_table_format()"
                   item-value="name"
                   class="overflow-visible">
+
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Nodes</v-toolbar-title>
         </v-toolbar>
       </template>
+
       <template v-slot:expanded-row="{ columns, item }">
         <tr>
           <td :colspan="columns.length">
@@ -42,6 +46,7 @@ const headers = adaptVTableHeader([
           </td>
         </tr>
       </template>
+
       <template v-slot:[`item.node_name`]="{ value }">
         <v-row class="">
           <v-col>
@@ -58,22 +63,26 @@ const headers = adaptVTableHeader([
           </v-col>
         </v-row>
       </template>
+
       <template v-slot:[`item.version`]="{ value }">
         <v-chip color="red">
           {{ value.number }}
         </v-chip>
       </template>
+
       <template v-slot:[`item.http_endpoint`]="{ value }">
         <v-chip color="danger">
           <a :href="`http://${value}`">{{ value }}</a>
         </v-chip>
       </template>
+
       <template v-slot:[`item.os_info`]="{ value }">
         <div class="pa-2">
           <titled-text title="Available Cores" :text="value.available_processors"></titled-text>
           <titled-text title="Architecture" :text="value.arch"></titled-text>
         </div>
       </template>
+
       <template v-slot:[`item.heap_usage`]="{ value }">
         <v-progress-linear :model-value="(value.used / value.max) * 100"
                            class="mt-4"></v-progress-linear>
@@ -81,20 +90,23 @@ const headers = adaptVTableHeader([
         <p>Free: <strong>{{ human_file_size(value.free) }}</strong></p>
         <p>Max: <strong>{{ human_file_size(value.max) }}</strong></p>
       </template>
+
       <template v-slot:[`item.load`]="{ value }">
         <p class="pt-3">Load 1min: <strong>{{ value.load1 }} </strong></p>
         <p>Load 5min: <strong>{{ value.load5 }} </strong></p>
         <p>Load 15min: <strong>{{ value.load15 }} </strong></p>
       </template>
+
       <template v-slot:[`item.disk_usage`]="{ value }">
         <v-progress-linear :model-value="(value.disks[0].used / value.disks[0].size) * 100"
-                           class="mt-4"></v-progress-linear>
+                           class="mt-4"/>
         <p class="pt-3">Available: <strong>{{
             human_file_size(value.disks[0].available)
           }} </strong></p>
         <p>Used: <strong>{{ human_file_size(value.disks[0].used) }} </strong></p>
         <p>Size: <strong>{{ human_file_size(value.disks[0].size) }} </strong></p>
       </template>
+
       <template v-slot:[`item.actions`]="{ item }">
         <v-tooltip text="View jobs">
           <template v-slot:activator="{ props }">
@@ -102,12 +114,13 @@ const headers = adaptVTableHeader([
               v-bind="props"
               @click="jobs_cluster = item.node_name.name; jobs_dialog = !jobs_dialog"
               variant="flat"
-              icon="mdi-clipboard-list"
-            ></v-btn>
+              icon="mdi-clipboard-list"/>
           </template>
         </v-tooltip>
       </template>
+
     </v-data-table>
+
     <jobs-dialog v-model:is_open="jobs_dialog"
                  :cluster_name="jobs_cluster"/>
   </v-card>

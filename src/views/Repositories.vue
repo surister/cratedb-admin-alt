@@ -7,7 +7,7 @@ const repository_store = use_repositories_store()
 </script>
 
 <template>
-<repositories-drawer/>
+  <repositories-drawer/>
   <repositories-card/>
 </template>
 

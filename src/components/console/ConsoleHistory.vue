@@ -25,9 +25,11 @@ let search_text = ref('')
         :items="stored_preferences.console.query_history"
         :search="search_text">
       <template v-slot:top>
+
         <v-toolbar flat>
           <v-toolbar-title>Query history</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
+
           <v-scale-transition>
             <v-text-field v-model="search_text"
                           variant="underlined"
@@ -45,26 +47,37 @@ let search_text = ref('')
               <v-btn @click="dialog = true" v-bind="props" icon="mdi-delete-sweep"/>
             </template>
           </v-tooltip>
+
           <v-dialog v-model="dialog"
                     max-width="500px">
+
             <v-card>
+
               <v-card-text>
                 <p>Are you sure you want to delete the entire query history?</p>
               </v-card-text>
+
               <v-card-actions>
+
                 <v-spacer/>
+
                 <v-btn color="red"
                        variant="text"
                        @click="stored_preferences.reset_query_history(); dialog = false">
                   Delete
                 </v-btn>
+
                 <v-btn variant="text"
                        @click="dialog = false"
                        text="cancel"/>
+
               </v-card-actions>
+
             </v-card>
+
           </v-dialog>
         </v-toolbar>
+
       </template>
       <template v-slot:item="{ item }">
         <tr>

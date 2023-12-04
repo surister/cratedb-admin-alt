@@ -6,7 +6,7 @@ const nodeStore = use_node_info_store()
 </script>
 
 <template>
-  <v-chip size="large" prepend-icon="mdi-resistor-nodes">
+  <v-chip prepend-icon="mdi-resistor-nodes">
     <span class="font-weight-bold">
           Nodes: {{ nodeStore.nodes.node_count }}
     </span>

@@ -7,7 +7,9 @@ const repository_store = use_repositories_store()
 </script>
 
 <template>
-  <v-card v-if="repository_store.current_open_repository">
+  <v-card v-if="repository_store.current_open_repository"
+          border="sm"
+          rounded="0">
 
     <v-card-title>{{ repository_store.current_open_repository.name }}</v-card-title>
 

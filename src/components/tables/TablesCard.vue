@@ -5,13 +5,20 @@ import TableCardTabs from "@/components/tables/TablesCardTabs.vue";
 </script>
 
 <template>
-  <v-card class="pa-5">
+  <v-card class="pa-5"
+          border="sm"
+          rounded="0">
+
     <template #title>
       <tables-card-header/>
     </template>
+
     <v-divider/>
+
     <tables-card-actions/>
+
     <v-divider/>
+
     <table-card-tabs/>
   </v-card>
 </template>

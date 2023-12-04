@@ -29,7 +29,7 @@ const props = defineProps(
             node_check.description
           }}</p>
       </div>
-      <v-divider></v-divider>
+      <v-divider/>
     </template>
   </v-card>
 </template>

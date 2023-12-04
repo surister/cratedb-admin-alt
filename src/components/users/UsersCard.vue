@@ -9,8 +9,10 @@ const users_store = use_users_store()
 </script>
 
 <template>
-  <v-card class="pa-5" v-if="users_store.current_open_user">
-
+  <v-card class="pa-5"
+          v-if="users_store.current_open_user"
+          border="sm"
+          rounded="0">
     <v-card-title>
       <h1>{{ users_store.current_open_user.name }}</h1>
     </v-card-title>
