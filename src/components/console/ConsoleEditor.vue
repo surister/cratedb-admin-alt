@@ -16,17 +16,29 @@ import {
 const stored_preferences = use_stored_preferences_store()
 
 const props = defineProps({
-  minLines: {
-    default: null,
-    type: [Number, String]
-  },
-  maxLines: {
-    default: null,
-    type: [Number, String]
-  },
-  content: {
-    type: String
-  }
+    minLines: {
+        default: null,
+        type: [Number, String]
+    },
+    maxLines: {
+        default: null,
+        type: [Number, String]
+    },
+    content: {
+        type: String
+    },
+    read_only: {
+        type: Boolean,
+        default: false
+    },
+    hide_cursor: {
+        type: Boolean,
+        default: false
+    },
+    unclickable: {
+        type: Boolean,
+        default: false
+    },
 })
 
 const editor = ref(null)
@@ -107,6 +119,11 @@ onMounted(() => {
       // force re-highlight whole document
       editor.value.session.bgTokenizer.start(0);
     })
+
+    if (props.hide_cursor){
+      // Removes the cursor if in clickable mode.
+      editor.value.renderer.$cursorLayer.element.style.display = "none"
+    }
   }
   setup()
 })
@@ -119,6 +136,11 @@ watch(
     }
 )
 
+let options = {enableLiveAutocompletion: true}
+
+if (props.unclickable){
+    options = {...options, ...{highlightGutterLine: false,  highlightActiveLine: false}}
+}
 </script>
 
 <template>
@@ -134,8 +156,9 @@ watch(
               v-model:value="_content"
               @change="$emit('update:content', _content)"
               :print-margin="false"
-              :options="{enableLiveAutocompletion: true}"
-              :style="{ 'font-size': stored_preferences.console.font_size + 'px' }"
+              :options="options"
+              :readonly="read_only"
+              :style="{ 'font-size': stored_preferences.console.font_size + 'px', 'pointer-events': unclickable ? 'none': '' }"
               :min-lines="minLines || Number.parseInt(stored_preferences.console.min_lines)"
               :max-lines="maxLines || Number.parseInt(stored_preferences.console.max_lines)"/>
 </template>
