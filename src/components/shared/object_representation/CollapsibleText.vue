@@ -1,11 +1,7 @@
 <script setup>
-import {computed} from "vue";
 import {is_array, is_object} from "@/store/utils";
 
 const props = defineProps({object: Object, type: String})
-
-const is_array = computed(() => props.type === 'array')
-const is_object = computed(() => props.type === 'object')
 </script>
 
 <template>
