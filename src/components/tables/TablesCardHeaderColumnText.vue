@@ -25,12 +25,8 @@ const formatted_value = () => {
 </script>
 
 <template>
-  <v-col :cols="cols">
-    <h2>{{ title }}</h2>
-    <h3 class="pt-2">
-      {{ formatted_value() }}
-    </h3>
-  </v-col>
+    <v-col><h3>{{ title }}</h3>{{ formatted_value() }}</v-col>
+
 </template>
 
 <style scoped>
