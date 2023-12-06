@@ -118,8 +118,8 @@ export const CRATE_KEYWORDS = [
 ]
 
 export const CRATE_VALUES = [
-    'true',
-    'false',
+    'TRUE',
+    'FALSE',
     'NULL',
 ]
 
@@ -219,21 +219,25 @@ export const CRATE_HEALTH_LEGEND = {
   GREEN: {
     icon: 'mdi-check',
     color: 'green',
-    message: 'All shards (primary and replicated) are started.'
+    message: 'All shards (primary and replicated) are started.',
+    short_description: 'Healthy'
   },
   YELLOW: {
     icon: 'mdi-alert',
     color: 'warning',
-    message: 'At least one shard is under-replicated (replica shard not started or unassigned).'
+    message: 'At least one shard is under-replicated (replica shard not started or unassigned).',
+    short_description: 'Unhealthy'
   },
   RED: {
     icon: 'mdi-close-octagon',
     color: 'red',
-    message: 'At least one primary shard is missing (primary shard not started or unassigned).'
+    message: 'At least one primary shard is missing (primary shard not started or unassigned).',
+    short_description: 'Very unhealthy'
   },
   UNKNOWN: {
     icon: 'mdi-wifi-strength-alert-outline',
     color: '',
-    message: 'Cannot get health info, check that you have connection, that the cluster is up or that there are tables in the cluster.'
+    message: 'Cannot get health info, check that you have connection, that the cluster is up or that there are tables in the cluster.',
+    short_description: 'Health not known'
   }
 }
