@@ -58,6 +58,13 @@ const routes = [
     value: 'repositories',
     title: 'Repositories',
     active_if_matches: '/repositories'
+  },
+  {
+    to: 'notebooks',
+    icon: 'mdi-notebook',
+    value: 'notebooks',
+    title: 'Notebooks',
+    active_if_matches: '/notebooks'
   }
 ]
 </script>
