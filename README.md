@@ -17,6 +17,9 @@ functionality to make the lives of CrateDB users easy.
   drop user, create user, alter user.
 - Logs: Actions from the Admin UI (Example: drop table, create user, drop user..) are logged and can
   be filtered depending on the severity.
+- Repositories & Snapshots: Create, delete and admin your repositories, create, delete and restore the snapshots.
+- Notebooks: Full-on notebooks with Markdown support, directly connected to your CrateDB instance
+  and automatic save-on disk (local storage)
 
 ![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/overview.png)
 ![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/console.png)
