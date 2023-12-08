@@ -6,6 +6,7 @@ import ConsoleTableResultsToolbarActions
   from "@/components/console/ConsoleTableResultsToolbarActions.vue";
 import DialogText from "@/components/shared/text/DialogText.vue";
 import {ref} from "vue";
+import VerticalDivider from "@/components/shared/VerticalDivider.vue";
 
 const console_store = use_console_store()
 
@@ -29,40 +30,45 @@ function color_objects(object) {
 }
 
 const is_clicked = ref()
+const is_collapsed = ref(false)
 </script>
 
 <template>
     <v-card v-if="data.rows && data.rows.length !== 0 && data.rows[0].length !== 0"
             class="rounded-0">
-      <v-data-table :items="adaptVTableItems(data.rows, data.headers)"
-                    :headers="adaptVTableHeader(data.headers)"
-                    :items-per-page="!console_store.show_full_screen_response ? 5: 10"
-                    class="border-sm tabular">
 
-        <template v-slot:top>
-          <v-toolbar flat class="rounded-0 bg-surface border-b-sm">
-            <v-toolbar-title>Query data response: {{ data.row_count }}
-              record(s)
-            </v-toolbar-title>
-            <console-table-results-toolbar-actions/>
-          </v-toolbar>
-        </template>
+      <v-toolbar flat class="rounded-0 bg-surface border-b-sm">
+        <v-toolbar-title>Showing: {{ data.headers.length }} columns and {{ data.rows.length }}
+          record(s)
+          <vertical-divider></vertical-divider>
+          <v-btn @click="is_collapsed = !is_collapsed" :text="is_collapsed ? 'expand' : 'collapse'" class="ml-1" variant="text"/>
+        </v-toolbar-title>
 
-        <template v-slot:headers="{ columns }">
-          <tr>
-            <th :key=column.key v-for="column in columns">{{ column.title }}</th>
-          </tr>
-        </template>
+        <console-table-results-toolbar-actions/>
+      </v-toolbar>
 
-        <template v-slot:item="{ item, index }">
-          <tr>
-            <td v-for="(data, column_name) in item"
-                :key="index + column_name"
-                @click="is_clicked = index + column_name"
-                :class="[is_clicked === index + column_name ? 'is_clicked': '']">
+      <v-expand-transition>
+    <v-data-table :items="adaptVTableItems(data.rows, data.headers)"
+                  :headers="adaptVTableHeader(data.headers)"
+                  :items-per-page="!console_store.show_full_screen_response ? 5: 10"
+                  class="tabular"
+                  v-if="!is_collapsed">
 
-              <template v-if="is_object(data) || Array.isArray(data)">
-                <component
+      <template v-slot:headers="{ columns }">
+        <tr>
+          <th :key=column.key v-for="column in columns">{{ column.title }}</th>
+        </tr>
+      </template>
+
+      <template v-slot:item="{ item, index }">
+        <tr>
+          <td v-for="(data, column_name) in item"
+              :key="index + column_name"
+              @click="is_clicked = index + column_name"
+              :class="[is_clicked === index + column_name ? 'is_clicked': '']">
+
+            <template v-if="is_object(data) || Array.isArray(data)">
+              <component
                   :is="console_store.object_representation_mode ? JsonTreeView : DialogText"
                   class="my-1"
                   colorScheme="dark"
@@ -70,17 +76,17 @@ const is_clicked = ref()
                   :maxDepth="0"
                   :data="JSON.stringify(data)"
                   :length="Object.entries(data).length"/>
-              </template>
+            </template>
 
-              <template v-else>
-                <span :style="{color: color_objects(data)}">{{ data }} </span>
-              </template>
+            <template v-else>
+              <span :style="{color: color_objects(data)}">{{ data }} </span>
+            </template>
+          </td>
+        </tr>
+      </template>
 
-            </td>
-          </tr>
-        </template>
-
-      </v-data-table>
+    </v-data-table>
+  </v-expand-transition>
 
     </v-card>
 </template>
