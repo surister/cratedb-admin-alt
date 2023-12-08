@@ -132,8 +132,16 @@ let _content = ref(props.content)
 
 watch(
     () => props.content, (prev) => {
-      _content.value = prev
+    _content.value = prev
+
+    if (_content.value.startsWith('%md') && editor.value.$enableLiveAutocompletion) {
+      editor.value.setOptions({enableLiveAutocompletion: false})
     }
+
+    if (!_content.value.startsWith('%md')) {
+      editor.value.setOptions({enableLiveAutocompletion: true})
+    }
+  }
 )
 
 let options = {enableLiveAutocompletion: true}
