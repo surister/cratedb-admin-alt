@@ -61,13 +61,12 @@ async function insert_data() {
     <v-row align-content="center"
            class="pt-4">
   <v-spacer/>
-      <v-col cols="5">
+      <v-col cols="8">
         <h2>To get started on tables have a look at the documentation <a
             href="https://cratedb.com/docs/crate/reference/en/latest/general/ddl/index.html"
             target="_blank">here</a> or create your first table here:
         </h2>
         <v-card class="rounded-0 border-s-sm mt-4">
-          <v-card-title></v-card-title>
           <v-card-title>
             <console-editor style="outline: 1px solid #c2c2c2"
                             :content="queries.CREATE_TABLE"
@@ -87,7 +86,7 @@ async function insert_data() {
     <v-row align-content="center"
            class="pt-4">
   <v-spacer/>
-    <v-col cols="5">
+    <v-col cols="8">
             <h2>Now let's add some data</h2>
       <v-card class="rounded-0 border-s-sm mt-4">
         <v-card-title>
@@ -107,8 +106,8 @@ async function insert_data() {
     <v-spacer/>
   </v-row>
     <v-row>
-    <v-spacer></v-spacer>
-    <v-col cols="5">
+    <v-spacer/>
+    <v-col cols="8">
       <h2>Isn't this cool? Now explore the UI, you can do everything with the click of a button.</h2>
     </v-col>
     <v-spacer></v-spacer>
