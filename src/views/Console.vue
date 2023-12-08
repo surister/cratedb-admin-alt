@@ -33,7 +33,7 @@ const console_store = use_console_store()
       }"
       />
       <console-response :data="console_store.current_console.response"/>
-      <console-table-results :data="console_store.current_console.response.data" class="mt-4"/>
+      <console-table-results :data="console_store.current_console.response.data" class="border-sm"/>
     </v-col>
   </v-row>
 

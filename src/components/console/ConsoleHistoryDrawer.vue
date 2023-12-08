@@ -67,11 +67,14 @@ const is_history_opened = computed(() => groups.value.includes('history'))
         <v-divider/>
       </div>
     </v-expand-transition>
+
     <v-list-group value="saved"
                   color="primary">
+
       <template #activator="{ props }">
         <v-list-item v-bind="props">Saved queries</v-list-item>
       </template>
+
       <v-list-item link v-for="query in stored_preferences.console.saved_queries"
                    :key="query.id"
                    @click="console_store.current_console.content = query.stmt">
@@ -95,7 +98,9 @@ const is_history_opened = computed(() => groups.value.includes('history'))
                  @click.stop="stored_preferences.remove_saved_query(query.id)"/>
         </template>
       </v-list-item>
+
     </v-list-group>
+
     <v-list-group value="history"
                   color="primary" class="border-t-sm border-b-sm">
       <template #activator="{ props }">
