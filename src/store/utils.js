@@ -133,10 +133,10 @@ export function download(object, format) {
     URL.revokeObjectURL(url);
 }
 
-function rows_to_table_values(rows) {
+function rows_to_table_values(rows, max_rows) {
   let rows_table = ``
-
-  for (const row of rows) {
+  for (let i = 0; i < max_rows; i++) {
+    const row = rows[i]
     let _row = '|'
     for (const row_el of row) {
       _row += `${JSON.stringify(row_el)}|`
@@ -146,12 +146,12 @@ function rows_to_table_values(rows) {
   return rows_table
 }
 
-export function query_to_markdown(crate_version, query, query_meta_subtitle, query_result_headers, query_result_rows) {
-  const query_meta = `##### Query ran at ${new Date().toISOString()} on CrateDB ${crate_version}\n`
+export function query_to_markdown(date, crate_version, query, query_meta_subtitle, query_result_headers, query_result_rows, max_rows) {
+  const query_meta = `##### Query ran at ${date} on CrateDB ${crate_version}\n`
   const sql_query = '```\n' + `${format_sql(query)}` + '\n```'
-  const query_result_meta = `\n##### ${query_meta_subtitle}`
+  const query_result_meta = `\n##### ${query_meta_subtitle}, showing ${max_rows} row(s).`
   const query_result_table_headers = `\n\n|${query_result_headers.join('|')}|`
   const query_result_table_header_separator = `\n |${'-|'.repeat(query_result_headers.length)} \n`
-  const query_result_table_values = rows_to_table_values(query_result_rows)
+  const query_result_table_values = rows_to_table_values(query_result_rows, max_rows)
   return query_meta + sql_query + query_result_meta + query_result_table_headers + query_result_table_header_separator + query_result_table_values
 }

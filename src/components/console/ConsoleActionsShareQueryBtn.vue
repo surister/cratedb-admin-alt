@@ -11,16 +11,21 @@ const node_store = use_node_info_store()
 const tab = ref()
 const tabs = [
   {
-    title: 'ALL (Markdown)',
+    title: 'ALL - Markdown',
     needs_query_run: true,
-    func: () => query_to_markdown(node_store.nodes.get_master_node().version.number,
-        console_store.current_console.content,
-        console_store.current_console.response.subtitle,
-        console_store.current_console.response.data.headers,
-        console_store.current_console.response.data.rows)
+    func: () => query_to_markdown(
+      new Date().toISOString(),
+      node_store.nodes.get_master_node().version.number,
+      console_store.current_console.content,
+      console_store.current_console.response.subtitle,
+      console_store.current_console.response.data.headers,
+      console_store.current_console.response.data.rows,
+      15
+    )
   },
   {
-    title: 'Query - Markdown', needs_query_run: false,
+    title: 'Query - Markdown',
+    needs_query_run: false,
     func: () => '```\n' + `${format_sql(console_store.current_console.content)}` + '\n```'
   }
 ]
