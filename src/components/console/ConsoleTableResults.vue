@@ -45,11 +45,11 @@ const is_collapsed = ref(false)
         </v-toolbar-title>
 
         <console-table-results-toolbar-actions/>
+
       </v-toolbar>
 
       <v-expand-transition>
     <v-data-table :items="adaptVTableItems(data.rows, data.headers)"
-                  :headers="adaptVTableHeader(data.headers)"
                   :items-per-page="!console_store.show_full_screen_response ? 5: 10"
                   class="tabular"
                   v-if="!is_collapsed">
@@ -68,8 +68,7 @@ const is_collapsed = ref(false)
               :class="[is_clicked === index + column_name ? 'is_clicked': '']">
 
             <template v-if="is_object(data) || Array.isArray(data)">
-              <component
-                  :is="console_store.object_representation_mode ? JsonTreeView : DialogText"
+              <component :is="console_store.object_representation_mode ? JsonTreeView : DialogText"
                   class="my-1"
                   colorScheme="dark"
                   rootKey="Object"
@@ -151,6 +150,5 @@ const is_collapsed = ref(false)
 .v-theme--light .crate-datatype-boolean {
   color: #ff7600
 }
-
 
 </style>
