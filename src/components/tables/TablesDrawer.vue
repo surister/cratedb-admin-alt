@@ -6,18 +6,27 @@ import TablesDrawerSuspensedContent from "@/components/tables/TablesDrawerSuspen
 import {use_stored_preferences_store} from "@/store/storedPreferences";
 
 const show_search = ref(false)
-const stored_prefernces = use_stored_preferences_store()
+const stored_preferences = use_stored_preferences_store()
 </script>
 
 <template>
   <v-navigation-drawer permanent>
-    <v-list v-model:opened="stored_prefernces.tables_drawer_opened" :mandatory="true">
+    <v-list v-model:opened="stored_preferences.tables_drawer_opened" :mandatory="true">
       <v-list-item>
         <v-row no-gutters>
           <v-label text="tables"/>
           <v-spacer/>
           <inner-tables-drawer-add-table/>
-          <v-btn icon="mdi-table-search" @click="show_search = !show_search" flat/>
+
+            <v-tooltip text="Filter tables" location="top">
+              <template v-slot:activator="{ props }">
+                <v-btn icon="mdi-table-search"
+                       @click="show_search = !show_search"
+                       v-bind="props"
+                       flat/>
+              </template>
+            </v-tooltip>
+
         </v-row>
       </v-list-item>
 

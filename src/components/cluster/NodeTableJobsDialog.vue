@@ -59,8 +59,8 @@ const table_headers = adaptVTableHeader([
         <v-switch v-model="filter_created_by_admin" color="primary">
           <template #label>
             <v-label>Hide created by admin ui</v-label>
-            <v-tooltip text="In order to show you live data this admin ui queries your
-             CrateDB cluster every few seconds, some jobs shown here might not be relevant for you.
+            <v-tooltip location="top" text="In order to show you live data this admin ui queries your
+             CrateDB cluster every few seconds therefore some jobs shown here might not be relevant for you.
               Queries from the console will not be hidden.">
               <template v-slot:activator="{ props }">
                 <v-btn class="ml-3"
