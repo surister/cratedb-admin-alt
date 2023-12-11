@@ -67,7 +67,7 @@ async function insert_data() {
             target="_blank">here</a> or create your first table here:
         </h2>
         <v-card class="rounded-0 border-s-sm mt-4">
-          <v-card-title>
+          <v-card-title class="pa-0">
             <console-editor style="outline: 1px solid #c2c2c2"
                             :content="queries.CREATE_TABLE"
                             :min-lines="1"
@@ -75,7 +75,7 @@ async function insert_data() {
                             :unclickable="false"
                             :hide_cursor="true"/>
           </v-card-title>
-          <v-card-actions>
+          <v-card-actions class="pt-2">
             <v-btn @click="create_tutorial_table">run</v-btn>
             <v-btn>copy</v-btn>
           </v-card-actions>
@@ -89,7 +89,7 @@ async function insert_data() {
     <v-col cols="8">
             <h2>Now let's add some data</h2>
       <v-card class="rounded-0 border-s-sm mt-4">
-        <v-card-title>
+        <v-card-title class="pa-0">
           <console-editor style="outline: 1px solid #c2c2c2"
                           :content="queries.INSERT"
                           :min-lines="1"
@@ -97,7 +97,7 @@ async function insert_data() {
                           :unclickable="false"
                           :hide_cursor="true"/>
         </v-card-title>
-        <v-card-actions>
+        <v-card-actions class="pt-2">
           <v-btn @click="insert_data">run</v-btn>
           <v-btn>copy</v-btn>
         </v-card-actions>
