@@ -178,7 +178,7 @@ const data_types = DATA_TYPES
 
 <template>
   <button-with-dialog tooltip-text="Create new table"
-                      activator-btn-color="white"
+                      activator-btn-color=""
                       activator-btn-variant="text"
                       activator-btn-text=""
                       activator-btn-icon="mdi-table-plus"

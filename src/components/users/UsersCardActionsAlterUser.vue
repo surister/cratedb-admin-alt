@@ -17,7 +17,7 @@ const password = ref(null)
                       dialog-width="600"
                       :activator-btn-disabled="user_store.current_open_user.is_superuser"
                       activator-btn-variant="text"
-                      activator-btn-color="white"
+                      activator-btn-color=""
                       activator-btn-text="alter"
                       :dialog-title="title"
                       dialog-submit-btn-text="alter"
@@ -36,15 +36,11 @@ const password = ref(null)
           <v-col>
             <v-container>
 
-              <v-label>Name</v-label>
-
-              <v-text-field variant="outlined"
-                            :disabled="true"/>
-
-              <v-label text="New password"/>
+              <v-label class="my-3" text="New password"/>
 
               <v-text-field v-model="password"
                             variant="outlined"
+
                             hint="There are no constraints"
                             :type="visible ? 'text' : 'password'"
                             :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"

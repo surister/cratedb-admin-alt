@@ -39,7 +39,7 @@ const tables_list = computed(() => {
 
 <template>
   <button-with-dialog tooltip-text="Add new permissions to user"
-                      activator-btn-color="white"
+                      activator-btn-color=""
                       activator-btn-variant="text"
                       activator-btn-text="add permissions"
                       :activator-btn-disabled="user_store.current_open_user.is_superuser"

@@ -18,7 +18,7 @@ const disabled = computed(() => {
   <button-with-dialog tooltip-text="Alter table name"
                       activator-btn-text="rename"
                       activator-btn-variant="text"
-                      activator-btn-color="white"
+                      activator-btn-color=""
                       :activator-btn-disabled="table_store.current_open_schema.is_system"
                       dialog-title="Change table name"
                       dialog-width="500"
