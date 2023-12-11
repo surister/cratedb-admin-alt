@@ -16,16 +16,16 @@ const props = defineProps({
   }
 })
 
-function color_objects(object) {
+function apply_color_class(object) {
   switch (typeof object) {
     case "string":
-      return '#6A8759'
+      return "crate-datatype-string"
     case "number":
-      return '#6897BB'
+      return 'crate-datatype-number'
     case "boolean":
-      return '#CC7832'
+      return 'crate-datatype-boolean'
     default:
-      return ''
+      return 'noclass'
   }
 }
 
@@ -79,7 +79,7 @@ const is_collapsed = ref(false)
             </template>
 
             <template v-else>
-              <span :style="{color: color_objects(data)}">{{ data }} </span>
+              <span :class="[apply_color_class(data)]">{{ data }} </span>
             </template>
           </td>
         </tr>
@@ -94,6 +94,22 @@ const is_collapsed = ref(false)
 <style>
 .tabular .v-data-table-footer {
   border-top: rgba(var(--v-border-color), var(--v-border-opacity)) solid 1px !important;
+}
+
+.v-theme--dark .data-key {
+  color:red !important;
+}
+
+.v-theme--light .data-key {
+    color: black !important;
+}
+
+.v-theme--light .data-key:hover {
+    background-color: rgba(115, 109, 109, 0.1) !important;
+}
+
+.v-theme--light .value-key {
+    color: black !important;
 }
 </style>
 
@@ -111,4 +127,30 @@ const is_collapsed = ref(false)
 .tabular td:hover {
   outline: cornflowerblue solid 1px !important;
 }
+
+.v-theme--dark .crate-datatype-string {
+  color: #6A8759
+}
+
+.v-theme--light .crate-datatype-string {
+  color: #2c5705
+}
+
+.v-theme--dark .crate-datatype-number {
+  color: #6897BB
+}
+
+.v-theme--light .crate-datatype-number{
+  color: #016cbd;
+}
+
+.v-theme--dark .crate-datatype-boolean {
+  color: #CC7832
+}
+
+.v-theme--light .crate-datatype-boolean {
+  color: #ff7600
+}
+
+
 </style>
