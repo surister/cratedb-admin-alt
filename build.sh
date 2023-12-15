@@ -1,0 +1,1 @@
+docker run -it -v "${PWD}:/app" --workdir /app node npm install && npm run build
