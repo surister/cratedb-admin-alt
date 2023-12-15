@@ -1,0 +1,14 @@
+services:
+  admin:
+    build: .
+    ports:
+      - 80
+    networks:
+      - proxy
+
+# Modify or remove the proxy network
+# in my case I have it on my testing setup.
+networks:
+  proxy:
+    external: true
+    name: proxy
