@@ -3,6 +3,7 @@ services:
     build: .
     ports:
       - 8049:80
+
   crate:
     image: crate:latest
     ports:
@@ -10,8 +11,7 @@ services:
     command: [ "crate",
                "-Cdiscovery.type=single-node",
                "-Chttp.cors.enabled=true",
-               "-Chttp.cors.allow-origin=http://localhost:8049",
-
+               "-Chttp.cors.allow-origin=http://192.168.88.251:8049", # Change this to your actual local IP.
     ]
     deploy:
       replicas: 1
@@ -19,3 +19,10 @@ services:
         condition: on-failure
     environment:
       - CRATE_HEAP_SIZE=2g
+    volumes:
+      - crate01:/data
+      - crate_backup:/data/backup
+
+volumes:
+  crate01:
+  crate_backup:
