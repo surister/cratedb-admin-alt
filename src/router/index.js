@@ -46,11 +46,6 @@ const routes = [
         component:() => import('@/views/Repositories.vue')
       },
       {
-        path: 'test',
-        name: 'test',
-        component:() =>  import('@/views/Test.vue')
-      },
-      {
         path: 'notebooks',
         name: 'notebooks',
         component: () => import('@/views/Notebooks.vue')
