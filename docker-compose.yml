@@ -2,13 +2,20 @@ services:
   admin:
     build: .
     ports:
-      - 80
-    networks:
-      - proxy
+      - 8049:80
+  crate:
+    image: crate:latest
+    ports:
+      - "4200:4200"
+    command: [ "crate",
+               "-Cdiscovery.type=single-node",
+               "-Chttp.cors.enabled=true",
+               "-Chttp.cors.allow-origin=http://localhost:8049",
 
-# Modify or remove the proxy network
-# in my case I have it on my testing setup.
-networks:
-  proxy:
-    external: true
-    name: proxy
+    ]
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      - CRATE_HEAP_SIZE=2g
