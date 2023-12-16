@@ -4,7 +4,7 @@ import {use_console_store} from "@/store/console_store";
 import {use_stored_preferences_store} from "@/store/storedPreferences";
 import 'ace-builds/src-noconflict/ext-language_tools'
 import langTools from 'ace-builds/src-noconflict/ext-language_tools'
-import {onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import 'ace-builds/src-noconflict/ace'
 import {
   CRATE_FUNCTIONS,
@@ -16,29 +16,32 @@ import {
 const stored_preferences = use_stored_preferences_store()
 
 const props = defineProps({
-    minLines: {
-        default: null,
-        type: [Number, String]
-    },
-    maxLines: {
-        default: null,
-        type: [Number, String]
-    },
-    content: {
-        type: String
-    },
-    read_only: {
-        type: Boolean,
-        default: false
-    },
-    hide_cursor: {
-        type: Boolean,
-        default: false
-    },
-    unclickable: {
-        type: Boolean,
-        default: false
-    },
+  minLines: {
+    default: null,
+    type: [Number, String]
+  },
+  maxLines: {
+    default: null,
+    type: [Number, String]
+  },
+  content: {
+    type: String
+  },
+  read_only: {
+    type: Boolean,
+    default: false
+  },
+  hide_cursor: {
+    type: Boolean,
+    default: false
+  },
+  unclickable: {
+    type: Boolean,
+    default: false
+  },
+  font_size: {
+    type: Number,
+  }
 })
 
 const editor = ref(null)
@@ -149,6 +152,10 @@ let options = {enableLiveAutocompletion: true}
 if (props.unclickable){
     options = {...options, ...{highlightGutterLine: false,  highlightActiveLine: false}}
 }
+
+const font_size = computed(() => {
+  return props.font_size || stored_preferences.console.font_size
+})
 </script>
 
 <template>
@@ -166,7 +173,7 @@ if (props.unclickable){
               :print-margin="false"
               :options="options"
               :readonly="read_only"
-              :style="{ 'font-size': stored_preferences.console.font_size + 'px', 'pointer-events': unclickable ? 'none': '' }"
+              :style="{ 'font-size': font_size + 'px', 'pointer-events': unclickable ? 'none': '' }"
               :min-lines="minLines || Number.parseInt(stored_preferences.console.min_lines)"
               :max-lines="maxLines || Number.parseInt(stored_preferences.console.max_lines)"/>
 </template>

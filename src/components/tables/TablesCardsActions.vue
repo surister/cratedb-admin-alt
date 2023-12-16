@@ -4,6 +4,7 @@ import {use_console_store} from "@/store/console_store";
 import {useRouter} from "vue-router";
 import TableCardActionDropTable from "@/components/tables/TableCardActionDropTable.vue";
 import TableCardActionRenameTable from "@/components/tables/TableCardActionRenameTable.vue";
+import TablesCardActionsShowCreate from "@/components/tables/TablesCardActionsShowCreate.vue";
 
 const table_store = use_tables_store()
 const console_store = use_console_store()
@@ -22,39 +23,7 @@ async function f() {
 <template>
   <v-row class="py-4">
     <v-col>
-      <v-dialog max-width="600">
-        <template v-slot:activator="{ props }">
-          <v-btn :disabled="table_store.current_open_schema.is_system"
-                 @click="table_store.show_create_table()"
-                 v-bind="props"
-                 flat
-                 text="show create">
-          </v-btn>
-        </template>
-        <template v-slot:default="{ isActive }">
-          <v-card>
-            <v-toolbar>
-              <v-toolbar-title>
-                <h2 class="font-weight-bold ml-4">
-            <span class="text-blue-accent-1">
-              {{
-                table_store.current_open_table.schema
-              }}</span>.{{ table_store.current_open_table.name }}
-                </h2>
-              </v-toolbar-title>
-            </v-toolbar>
-            <v-card-text>
-              <pre>{{ table_store.current_show_create_table }}</pre>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer/>
-              <v-btn text="Close"
-                     @click="isActive.value = false"/>
-            </v-card-actions>
-          </v-card>
-        </template>
-      </v-dialog>
+      <tables-card-actions-show-create></tables-card-actions-show-create>
       <v-btn flat
              class="ml-1"
              @click="f();"
