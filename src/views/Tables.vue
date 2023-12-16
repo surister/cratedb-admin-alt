@@ -8,6 +8,8 @@ import ConsoleEditor from "@/components/console/ConsoleEditor.vue";
 
 import {use_global_store} from "@/store/global_store";
 import {request_crate} from "@/store/http/requests";
+import {useClipboard} from "@vueuse/core";
+import ConsoleEditorReadOnly from "@/components/console/ConsoleEditorReadOnly.vue";
 
 const tables_store = use_tables_store()
 const global_store = use_global_store()
@@ -55,62 +57,56 @@ async function insert_data() {
 </script>
 
 <template>
+
   <tables-drawer/>
+
   <table-card v-if="tables_store.current_open_table"/>
   <span v-else>
+
     <v-row align-content="center"
            class="pt-4">
+
   <v-spacer/>
+
       <v-col cols="8">
         <h2>To get started on tables have a look at the documentation <a
             href="https://cratedb.com/docs/crate/reference/en/latest/general/ddl/index.html"
             target="_blank">here</a> or create your first table here:
         </h2>
-        <v-card class="rounded-0 border-s-sm mt-4">
-          <v-card-title class="pa-0">
-            <console-editor style="outline: 1px solid #c2c2c2"
-                            :content="queries.CREATE_TABLE"
-                            :min-lines="1"
-                            :read_only="true"
-                            :unclickable="false"
-                            :hide_cursor="true"/>
-          </v-card-title>
-          <v-card-actions class="pt-2">
-            <v-btn @click="create_tutorial_table">run</v-btn>
-            <v-btn>copy</v-btn>
-          </v-card-actions>
-        </v-card>
+        <console-editor-read-only :content="queries.CREATE_TABLE"
+                                  :show_run="true"
+                                  :callable="create_tutorial_table"/>
       </v-col>
+
       <v-spacer/>
+
     </v-row>
+
     <v-row align-content="center"
            class="pt-4">
-  <v-spacer/>
+
+    <v-spacer/>
+
     <v-col cols="8">
-            <h2>Now let's add some data</h2>
-      <v-card class="rounded-0 border-s-sm mt-4">
-        <v-card-title class="pa-0">
-          <console-editor style="outline: 1px solid #c2c2c2"
-                          :content="queries.INSERT"
-                          :min-lines="1"
-                          :read_only="true"
-                          :unclickable="false"
-                          :hide_cursor="true"/>
-        </v-card-title>
-        <v-card-actions class="pt-2">
-          <v-btn @click="insert_data">run</v-btn>
-          <v-btn>copy</v-btn>
-        </v-card-actions>
-      </v-card>
+      <h2>Now let's add some data</h2>
+      <console-editor-read-only :content="queries.INSERT"
+                                :show_run="true"
+                                :callable="insert_data"/>
     </v-col>
+
     <v-spacer/>
+
   </v-row>
+
     <v-row>
+
     <v-spacer/>
+
     <v-col cols="8">
       <h2>Isn't this cool? Now explore the UI, you can do everything with the click of a button.</h2>
     </v-col>
-    <v-spacer></v-spacer>
+
+    <v-spacer/>
   </v-row>
   </span>
 </template>
