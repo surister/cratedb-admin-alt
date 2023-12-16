@@ -11,7 +11,7 @@ services:
     command: [ "crate",
                "-Cdiscovery.type=single-node",
                "-Chttp.cors.enabled=true",
-               "-Chttp.cors.allow-origin=http://192.168.88.251:8049", # Change this to your actual local IP.
+               "-Chttp.cors.allow-origin=*", # Change this to your actual (or relevant) local IP.
     ]
     deploy:
       replicas: 1
