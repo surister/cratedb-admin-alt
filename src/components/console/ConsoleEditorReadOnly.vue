@@ -15,6 +15,14 @@ const props = defineProps({
   },
   callable: {
     type: Function,
+  },
+  max_lines: {
+    type: Number,
+    default: 30
+  },
+  font_size: {
+    type: Number,
+    default: 15
   }
 })
 const {text, copy, copied, isSupported} = useClipboard()
@@ -39,11 +47,13 @@ async function copy_content(content) {
 </script>
 
 <template>
-  <v-card class="rounded-0 border-s-sm mt-4">
+  <v-card class="rounded-0 border-s-sm">
     <v-card-title class="pa-0">
       <console-editor style="outline: 1px solid #c2c2c2"
                       :content="content"
                       :min-lines="1"
+                      :max-lines="max_lines"
+                      :font_size="font_size"
                       :read_only="true"
                       :unclickable="false"
                       :hide_cursor="true"/>
