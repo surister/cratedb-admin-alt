@@ -113,70 +113,99 @@ export default {
 
   // TABLE QUERIES
   TABLES: `
-        WITH table_info AS (
+    WITH table_health AS (
+      SELECT
+        he.table_name,
+        he.table_schema,
+        he.health,
+        SUM(he.missing_shards) as missing_shards,
+        ARRAY_AGG(he.partition_ident) as partition_idents,
+        he.severity,
+        SUM(he.underreplicated_shards) as underreplicated_shards
+      FROM
+        sys.health he
+      GROUP BY
+        he.table_name,
+        he.table_schema,
+        he.health,
+        he.severity
+    ),
+    table_info AS (
+      SELECT
+        inf.table_name AS name,
+        inf.table_schema AS schema,
+        inf.number_of_replicas AS replicas,
+        inf.number_of_shards AS shards,
+        inf.table_type,
+        sha.records,
+        sha.size_bytes,
+        he.health,
+        he.missing_shards,
+        he.partition_idents,
+        he.severity,
+        he.underreplicated_shards
+      FROM
+        information_schema.tables inf
+        INNER JOIN (
           SELECT
-            inf.table_name AS name,
-            inf.table_schema AS schema,
-            inf.number_of_replicas AS replicas,
-            inf.number_of_shards AS shards,
-            inf.table_type,
-            sha.records,
-            sha.size_bytes,
-            he.health,
-            he.missing_shards,
-            he.partition_ident,
-            he.severity,
-            he.underreplicated_shards
-          FROM information_schema.tables inf
-            LEFT JOIN (
-              SELECT
-                table_name,
-                schema_name,
-                SUM(size) AS size_bytes,
-                SUM(num_docs) AS records
-              FROM sys.shards
-              WHERE primary = true
-              GROUP BY table_name, schema_name
-            ) sha ON inf.table_name = sha.table_name
-            LEFT JOIN sys.health he ON inf.table_name = he.table_name AND inf.table_schema = he.table_schema
-        ),
-        schema_with_tables AS (
-          SELECT
-            schemata.schema_name,
-            COALESCE(
-              NULLIF(ARRAY_AGG(
-                CASE
-                  WHEN ti.name IS NOT NULL THEN
-                    {
-                      "name" = ti.name,
-                      "schema" = ti.schema,
-                      "replicas" = ti.replicas,
-                      "shards" = ti.shards,
-                      "table_type" = ti.table_type,
-                      "records" = ti.records,
-                      "size_bytes" = ti.size_bytes,
-                      "health" = ti.health,
-                      "missing_shards" = ti.missing_shards,
-                      "partition_ident" = ti.partition_ident,
-                      "severity" = ti.severity,
-                      "underreplicated_shards" = ti.underreplicated_shards
-                    }
-                  ELSE NULL
-                END
-              ), ARRAY[NULL])
-            , ARRAY[]) AS tables
-          FROM information_schema.schemata schemata
-            LEFT JOIN table_info ti ON schemata.schema_name = ti.schema
-          GROUP BY schemata.schema_name
-        )
-        SELECT *
-        FROM schema_with_tables
-        ORDER BY CASE
-                     WHEN schema_name IN ('doc') THEN 0
-                     WHEN schema_name IN ('sys', 'information_schema', 'pg_catalog', 'blob') THEN 2
-                     ELSE 1
-                     END,
-                 schema_name;
+            table_name,
+            schema_name,
+            SUM(size) AS size_bytes,
+            SUM(num_docs) AS records
+          FROM
+            sys.shards
+          WHERE
+            primary = true
+          GROUP BY
+            table_name,
+            schema_name
+        ) sha ON inf.table_name = sha.table_name
+        LEFT JOIN table_health he ON inf.table_name = he.table_name
+        AND inf.table_schema = he.table_schema
+    ),
+    schema_with_tables AS (
+      SELECT
+        schemata.schema_name,
+        COALESCE(
+          NULLIF(
+            ARRAY_AGG(
+              CASE WHEN ti.name IS NOT NULL THEN {
+                "name" = ti.name,
+                "schema" = ti.schema,
+                "replicas" = ti.replicas,
+                "shards" = ti.shards,
+                "table_type" = ti.table_type,
+                "records" = ti.records,
+                "size_bytes" = ti.size_bytes,
+                "health" = ti.health,
+                "missing_shards" = ti.missing_shards,
+                "partition_idents" = ti.partition_idents,
+                "severity" = ti.severity,
+                "underreplicated_shards" = ti.underreplicated_shards
+              } ELSE NULL END
+            ),
+            ARRAY[NULL]
+          ),
+          ARRAY[]
+        ) AS tables
+      FROM
+        information_schema.schemata schemata
+        LEFT JOIN table_info ti ON schemata.schema_name = ti.schema
+      GROUP BY
+        schemata.schema_name
+    )
+    SELECT
+      *
+    FROM
+      schema_with_tables
+    ORDER BY
+      CASE WHEN schema_name IN ('doc') THEN 0 WHEN schema_name IN (
+        'sys',
+        'information_schema',
+        'pg_catalog',
+        'blob'
+      ) THEN 2 ELSE 1 END,
+      schema_name;
   `,
   // Gets the total amount of tables, user created tables get the rows of the primary
   // It also gets system schema tables such as information_schema, pg_catalog and sys.
