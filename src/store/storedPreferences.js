@@ -4,6 +4,7 @@
 import {defineStore} from 'pinia'
 import {reactive, toRefs, watch} from 'vue';
 import {useTheme} from "vuetify";
+import {useRoute} from "vue-router";
 
 const defaultState = {
     theme: 'light',
@@ -24,6 +25,10 @@ const defaultState = {
 export const use_stored_preferences_store = defineStore('stored_preferences', () => {
         const state = reactive(defaultState)
         const theme = useTheme()
+        const router = useRoute()
+        if (router.query.node_uri){
+          state.general.master_node_url = router.query.node_uri
+        }
 
         function delete_from_history(query_id) {
             state.console.query_history.splice(state.console.query_history.findIndex(function (i) {
