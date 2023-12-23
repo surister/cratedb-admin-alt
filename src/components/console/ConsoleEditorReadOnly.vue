@@ -49,8 +49,7 @@ async function copy_content(content) {
 <template>
   <v-card class="rounded-0 border-s-sm">
     <v-card-title class="pa-0">
-      <console-editor style="outline: 1px solid #c2c2c2"
-                      :content="content"
+      <console-editor :content="content"
                       :min-lines="1"
                       :max-lines="max_lines"
                       :font_size="font_size"

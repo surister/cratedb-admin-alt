@@ -5,11 +5,11 @@ import ConsoleSettings from "@/components/TheSettingsDrawerConsoleSettings.vue";
 import GeneralSettings from "@/components/TheSettingsDrawerGeneralSettings.vue";
 
 import {use_global_store} from "@/store/global_store";
-import {use_log_store} from "@/store/log";
 import Debug from "@/components/debug.vue";
+import {use_stored_preferences_store} from "@/store/storedPreferences";
 
 const global_store = use_global_store()
-const log_store = use_log_store()
+const stored_preferences_store = use_stored_preferences_store()
 
 const drawerLinks = [
   {
@@ -64,9 +64,16 @@ const dev_mode = import.meta.env.DEV
       <theme-toggle/>
       <console-settings/>
       <general-settings/>
+      <v-row>
+        <v-col>
+          <v-switch color="red-darken-3"
+                    v-model="stored_preferences_store.experimental_query_limit"
+                    label="Experimental query limit"/>
+          <debug v-if="dev_mode"/>
+        </v-col>
+      </v-row>
     </v-container>
 
-    <debug v-if="dev_mode"></debug>
 
     <template #append>
       <v-divider/>

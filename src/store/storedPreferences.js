@@ -20,6 +20,7 @@ const defaultState = {
     general: {
         master_node_url: 'http://localhost:4201'
     },
+    experimental_query_limit: true,
     tables_drawer_opened: [],
 }
 export const use_stored_preferences_store = defineStore('stored_preferences', () => {

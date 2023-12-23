@@ -23,6 +23,14 @@ export async function request_crate(_stmt, query_params = '', sql_stmt_params= {
     });
   }
 
+  if (is_from_console && stored_preferences.experimental_query_limit) {
+    // We wrap the query in a with statement and apply our query_limit
+    stmt = `with q as (${stmt})
+            select *
+            from q
+            limit ${stored_preferences.console.query_limit}`
+  }
+
   // We add a unique identifier in every query as a comment, so we can differentiate
   // if a given query in a CrateDB is from the Admin UI or Admin UI Console
   if (is_from_console) {
@@ -34,6 +42,8 @@ export async function request_crate(_stmt, query_params = '', sql_stmt_params= {
   if (is_from_console) {
     await log_store.log_stmt_if_needed(stmt)
   }
+
+
 
   try {
     const request = await fetch(
