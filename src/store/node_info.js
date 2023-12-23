@@ -11,7 +11,7 @@ import {AllocationIssues} from "@/store/crate_api/allocations";
 import {NodeChecks} from "@/store/crate_api/node_checks";
 import {Jobs} from "@/store/crate_api/jobs";
 import {QueryStats} from "@/store/crate_api/query_stats";
-import {Users} from "@/store/crate_api/users";
+
 import {use_tables_store} from "@/store/tables";
 import semver from "semver";
 import {use_users_store} from "@/store/users";
@@ -163,9 +163,6 @@ export const use_node_info_store = defineStore('node_info', () => {
     }
 
 
-
-
-
     function is_compatible(version) {
         let node_version = state.nodes.get_master_node().version.number
         // Returns whether this feature is compatible with the current running version
@@ -193,23 +190,25 @@ export const use_node_info_store = defineStore('node_info', () => {
     ])
 
     setInterval(async () => {
-        // Be careful, this ignores exceptions.
+      if (!users_store.current_user_name) {
+        // This is useful in situations of reconnections after the first start.
+        await users_store.update_current_user()
+      }
 
-
-        await Promise.allSettled([
-                update_node_info(),
-                update_health_info(),
-                update_node_checks(),
-                update_jobs_info(),
-                update_chart_load_data(),
-                update_qps_data(),
-                tables_store.update_tables(),
-
-            ],
-        )
-        if (state.should_update_allocation) {
-            await update_allocations_info()
-        }
+      // Be careful, Promise.allSettled ignores exceptions.
+      await Promise.allSettled([
+          update_node_info(),
+          update_health_info(),
+          update_node_checks(),
+          update_jobs_info(),
+          update_chart_load_data(),
+          update_qps_data(),
+          tables_store.update_tables(),
+        ],
+      )
+      if (state.should_update_allocation) {
+        await update_allocations_info()
+      }
     }, REFRESH_EVERY_MS);
 
     return {
