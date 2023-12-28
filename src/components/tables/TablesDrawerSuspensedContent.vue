@@ -40,10 +40,10 @@ const props = defineProps({
 })
 
 function status_color(table){
-  if (!table.health){
+  if (!table.overall_health) {
     return ''
   }
-  return CRATE_HEALTH_LEGEND[table.health].color
+  return table.overall_health
 }
 
 </script>
@@ -100,8 +100,8 @@ function status_color(table){
         </template>
 
         <template #subtitle>
-          {{ table.records == null ? 'n/a' : human_numbers(table.records) }} records - Size
-          {{ !table.size_bytes != null ? human_file_size(table.size_bytes) : 'n/a' }}
+          {{ table.total_records ? 'n/a' : human_numbers(table.total_records) }} records - Size
+          {{ table.total_size_bytes ? human_file_size(table.total_size_bytes) : 'n/a' }}
         </template>
 
       </v-list-item>
@@ -130,7 +130,7 @@ function status_color(table){
                  <v-progress-circular model-value="100"
                                       size="10"
                                       width="5"
-                                      :color="status_color(table)"/>
+                                      :color="table.overall_health ? table.overall_health.toLowerCase() : ''"/>
             </template>
 
           </span>
@@ -138,8 +138,8 @@ function status_color(table){
 
         <template #subtitle>
           <span class="text-subtitle-2">
-            {{ !table.records == null ? 'n/a' : human_numbers(table.records) }} records - Size
-          {{ table.size_bytes != null ? human_file_size(table.size_bytes) : 'n/a' }}
+            {{ table.total_records ? human_numbers(table.total_records) : 'n/a' }} records -
+            {{ table.total_size_bytes ? human_file_size(table.total_size_bytes) : 'n/a' }}
           </span>
         </template>
 
