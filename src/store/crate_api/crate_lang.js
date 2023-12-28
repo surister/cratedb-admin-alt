@@ -149,8 +149,6 @@ export const CRATE_FUNCTIONS = [
   'RTRIM',
   'BTRIM',
   'QUOTE_IDENT',
-  'LEFT',
-  'RIGHT',
   'LPAD',
   'RPAD',
   'ENCODE',
@@ -213,6 +211,8 @@ export const CRATE_FUNCTIONS = [
   // Regex
   'REGEX_REPLACE',
 
+  // Containers
+  'ARRAY_AGG'
 ]
 
 export const CRATE_HEALTH_LEGEND = {

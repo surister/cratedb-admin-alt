@@ -113,103 +113,86 @@ export default {
 
   // TABLE QUERIES
   TABLES: `
-  WITH table_health AS (
-    SELECT
-      he.table_name,
-      he.table_schema,
-      he.health,
-      SUM(he.missing_shards) as missing_shards,
-      ARRAY_AGG(he.partition_ident) as partition_idents,
-      he.severity,
-      SUM(he.underreplicated_shards) as underreplicated_shards
-    FROM
-      sys.health he
-    GROUP BY
-      he.table_name,
-      he.table_schema,
-      he.health,
-      he.severity
-  ),
-  table_info AS (
-    SELECT
-      inf.table_name AS name,
-      inf.table_schema AS schema,
-      inf.number_of_replicas AS replicas,
-      inf.number_of_shards AS shards,
-      inf.table_type,
-      sha.records,
-      sha.size_bytes,
-      he.health,
-      he.missing_shards,
-      he.partition_idents,
-      he.severity,
-      he.underreplicated_shards
-    FROM
-      information_schema.tables inf
-      LEFT JOIN (
+      WITH partitions_health AS (
         SELECT
           table_name,
-          schema_name,
-          SUM(size) AS size_bytes,
-          SUM(num_docs) AS records
+          table_schema,
+          SUM(underreplicated_shards) as total_underreplicated_shards,
+          SUM(missing_shards) as total_missing_shards,
+          ARRAY_AGG(
+            {
+              "health" = health,
+              "missing_shards" = missing_shards,
+              "partition_ident" = partition_ident,
+              "severity" = severity,
+              "underreplicated_shards" = underreplicated_shards
+            }
+          ) AS partitions_health,
+          CASE WHEN 'RED' = ANY(ARRAY_AGG(health)) then 'RED' WHEN 'YELLOW' = ANY(ARRAY_AGG(health)) then 'YELLOW' ELSE 'GREEN' END AS overall_health
+        FROM
+          sys.health
+        GROUP BY
+          table_name,
+          table_schema
+      ),
+      shards AS (
+        SELECT
+          table_name,
+          schema_name as table_schema,
+          SUM(num_docs) as total_records,
+          SUM(size) as total_size_bytes,
+          ARRAY_AGG(
+            {
+              "id" = id,
+              "partition_ident" = partition_ident,
+              "records" = num_docs,
+              "size_bytes" = size,
+              "primary" = primary
+            }
+          ) as shards
         FROM
           sys.shards
-        WHERE
-          primary = true
         GROUP BY
           table_name,
           schema_name
-      ) sha ON inf.table_name = sha.table_name
-      LEFT JOIN table_health he ON inf.table_name = he.table_name
-      AND inf.table_schema = he.table_schema
-  ),
-  schema_with_tables AS (
-    SELECT
-      schemata.schema_name,
-      COALESCE(
-        NULLIF(
-          ARRAY_AGG(
-            CASE WHEN ti.name IS NOT NULL THEN {
-              "name" = ti.name,
-              "schema" = ti.schema,
-              "replicas" = ti.replicas,
-              "shards" = ti.shards,
-              "table_type" = ti.table_type,
-              "records" = ti.records,
-              "size_bytes" = ti.size_bytes,
-              "health" = ti.health,
-              "missing_shards" = ti.missing_shards,
-              "partition_idents" = ti.partition_idents,
-              "severity" = ti.severity,
-              "underreplicated_shards" = ti.underreplicated_shards
-            } END
-          ),
-          ARRAY [NULL]
-        ),
-        ARRAY []
-      ) AS tables
-    FROM
-      information_schema.schemata schemata
-      LEFT JOIN table_info ti ON schemata.schema_name = ti.schema
-    GROUP BY
-      schemata.schema_name
-  )
-  SELECT
-    *
-  FROM
-    schema_with_tables
-  ORDER BY
-    CASE WHEN schema_name IN ('doc') THEN 0 WHEN schema_name IN (
-      'sys',
-      'information_schema',
-      'pg_catalog',
-      'blob'
-    ) THEN 2 ELSE 1 END,
-    schema_name;
-  `,
-  // Gets the total amount of tables, user created tables get the rows of the primary
-  // It also gets system schema tables such as information_schema, pg_catalog and sys.
-  // IMPORTANT: In this query 'schema' always has to go last for values unpacking order reasons, see tables.js
+      )
+      SELECT
+        inf.table_schema,
+        ARRAY_AGG(
+          {
+            "table_name" = inf.table_name,
+            "table_schema" = inf.table_schema,
+            "replicas" = inf.number_of_replicas,
+            "shards" = sha.shards,
+            "partitions_health" = he.partitions_health,
+            "overall_health" = he.overall_health,
+            "total_records" = sha.total_records,
+            "total_size_bytes" = sha.total_size_bytes,
+            "total_missing_shards" = he.total_missing_shards,
+            "total_underreplicated_shards" = he.total_underreplicated_shards,
+            "table_type" = inf.table_type,
+            "partitioned_by" = inf.partitioned_by,
+            "clustered_by" = inf.clustered_by,
+            "version" = inf.version
+          }
+        ) AS tables
+      FROM
+        information_schema.tables inf
+        LEFT JOIN partitions_health he ON inf.table_name = he.table_name
+        and inf.table_schema = he.table_schema
+        LEFT JOIN shards sha ON inf.table_name = sha.table_name
+        AND inf.table_schema = sha.table_schema
+      GROUP BY
+        inf.table_schema
+      ORDER BY
+        CASE WHEN table_schema IN ('doc') THEN 0 WHEN table_schema IN (
+          'sys',
+          'information_schema',
+          'pg_catalog',
+          'blob'
+        ) THEN 2 ELSE 1 END,
+        table_schema;
+        `,
   COLUMNS: `
     SELECT ordinal_position,
            column_name,

@@ -17,6 +17,11 @@ export async function request_crate(_stmt, query_params = '', sql_stmt_params= {
     url = url + '?' + query_params
   }
 
+  if (stmt.endsWith(';')) {
+    // We remove it.
+    stmt = stmt.slice(0, -1)
+  }
+
   if (sql_stmt_params) {
     Object.entries(sql_stmt_params).map(entry => {
       stmt = stmt.replace(entry[0], entry[1] != null ? entry[1]: '')
@@ -42,8 +47,6 @@ export async function request_crate(_stmt, query_params = '', sql_stmt_params= {
   if (is_from_console) {
     await log_store.log_stmt_if_needed(stmt)
   }
-
-
 
   try {
     const request = await fetch(
