@@ -103,6 +103,15 @@ export function human_numbers(number) {
     return `${number > 100 ? '~' : ''}${result}`
 }
 
+export function separate_integer_by(integer, separator){
+  // Separates an `integer` every 3 position by `separator`
+  // separate_integer_by(234234, ' ')
+  // > 234 234
+  // separate_integer_by(23423486, '_')
+  // > 23_423_486
+  return integer.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, separator)
+}
+
 export function color_objects(object) {
     switch (typeof object) {
         case "string":
