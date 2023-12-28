@@ -1,15 +1,16 @@
 <script setup>
+import {separate_integer_by} from "@/store/utils";
+
 const props = defineProps({
-  cols: {
-    type: Number,
-    required: false
-  },
   title: String,
   value: {
     default: null,
     type: [String, Number],
     required: false
   },
+  color: {
+    type: String
+  }
 })
 
 const formatted_value = () => {
@@ -18,15 +19,19 @@ const formatted_value = () => {
   }
   if (Number.isInteger(props.value)) {
     // We format integers such as '100000' to '100 000' so they can be read easily.
-    return props.value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ")
+    return separate_integer_by(props.value, ' ')
   }
   return props.value
 }
 </script>
 
 <template>
-    <v-col><h3>{{ title }}</h3>{{ formatted_value() }}</v-col>
-
+  <v-col>
+    <h3>{{ title }}</h3>
+    <v-label :style="{ 'font-size': 20 + 'px', 'color': color}">
+    {{ formatted_value() }}
+    </v-label>
+  </v-col>
 </template>
 
 <style scoped>
