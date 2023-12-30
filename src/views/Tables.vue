@@ -4,11 +4,10 @@ import TableCard from "@/components/tables/TablesCard.vue";
 
 import {use_tables_store} from "@/store/tables";
 import {onBeforeMount} from "vue";
-import ConsoleEditor from "@/components/console/ConsoleEditor.vue";
 
 import {use_global_store} from "@/store/global_store";
 import {request_crate} from "@/store/http/requests";
-import {useClipboard} from "@vueuse/core";
+
 import ConsoleEditorReadOnly from "@/components/console/ConsoleEditorReadOnly.vue";
 
 const tables_store = use_tables_store()

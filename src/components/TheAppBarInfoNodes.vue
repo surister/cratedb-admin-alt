@@ -2,7 +2,6 @@
 import {use_node_info_store} from "@/store/node_info";
 
 const nodeStore = use_node_info_store()
-
 </script>
 
 <template>
