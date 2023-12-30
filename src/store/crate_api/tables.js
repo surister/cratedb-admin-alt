@@ -14,6 +14,10 @@ export class Schemas {
     }
   }
 
+  get_user_schemas(){
+    return this.schemas.filter((schema) => !schema.is_system)
+  }
+
   get_all_tables(ignore_system_schemas = false) {
     let tables = []
     for (const schema of this.schemas) {
@@ -26,7 +30,7 @@ export class Schemas {
   }
 
   get_unhealthy_tables() {
-    return this.get_all_tables(true).filter((table) => table.severity !== 1 && table.severity)
+    return this.get_user_schemas().filter((table) => table.severity !== 1 && table.severity)
   }
 
   get_current_health_level() {
@@ -48,6 +52,11 @@ export class Schemas {
       return 'YELLOW'
     }
     return 'GREEN'
+  }
+
+  get_total_records() {
+    const schemas = this.get_user_schemas()
+    return schemas.reduce((total, schema) => total + schema.get_total_records(), 0)
   }
 
   constructor(data) {
@@ -72,11 +81,11 @@ class Schema {
   tables = []
 
   get_size_bytes() {
-    let s = 0
-    for (const table of this.tables) {
-      s += table.total_size_bytes
-    }
-    return s
+    return this.tables.reduce((total, table) => total + table.total_size_bytes, 0)
+  }
+
+  get_total_records() {
+    return this.tables.reduce((total, table) => total + table.total_records, 0)
   }
 
   constructor(name, is_system) {
@@ -117,7 +126,7 @@ class Table {
     this.shards = shards
     this.partitions_health = partitions_health
     this.overall_health = overall_health
-    this.total_records = total_records
+    this.total_records = parseInt(total_records)
     this.total_size_bytes = total_size_bytes
     this.total_missing_shards = total_missing_shards
     this.total_underreplicated_shards = total_underreplicated_shards
