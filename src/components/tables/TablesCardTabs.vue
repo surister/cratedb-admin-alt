@@ -37,13 +37,19 @@ const partitions_health_with_shards = computed(()=>{
   return tables_info.current_open_table.partitions_health
 })
 
+function show_tab () {
+  if (tables_info.current_open_schema.is_system){
+    return false
+  }
+  return tables_info.current_open_table.partitions_health.length <= 1
+}
 </script>
 
 <template>
   <v-tabs v-model="tables_info.current_tab">
     <v-tab value="one">Schema</v-tab>
     <v-tab value="two" @click="tables_info.update_table_sample_data()">Sample Data</v-tab>
-    <v-tab value="three" :disabled="tables_info.current_open_table.partitions_health.length <= 1">Partitions</v-tab>
+    <v-tab value="three" :disabled="show_tab">Partitions</v-tab>
   </v-tabs>
   <v-card-text>
     <v-window v-model="tables_info.current_tab">
@@ -55,8 +61,7 @@ const partitions_health_with_shards = computed(()=>{
       <v-window-item value="two">
         <tables-card-tabs-sample/>
       </v-window-item>
-      <v-window-item value="three">
-
+      <v-window-item value="three" v-if="!tables_info.current_open_schema.is_system">
         <v-chip class="mt-2 ml-2" label>
           Partitioned by: {{ tables_info.current_open_table.partitioned_by }}
         </v-chip>

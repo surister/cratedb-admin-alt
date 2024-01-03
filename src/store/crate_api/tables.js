@@ -102,7 +102,7 @@ class Table {
   }
 
   shard_count() {
-    return this.shards.length
+    return this.shards ? this.shards.length : 0
   }
 
   constructor(name,
