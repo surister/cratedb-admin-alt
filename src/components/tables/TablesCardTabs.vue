@@ -8,9 +8,9 @@ import {computed} from "vue";
 const tables_info = use_tables_store()
 
 const table_columns_table_headers = adaptVTableHeader(
-    [
-      'ordinal_position', 'column_name', 'data_type', 'is_nullable', 'column_default'
-    ]
+  [
+    'ordinal_position', 'column_name', 'data_type', 'is_nullable', 'column_default'
+  ]
 )
 
 function severity_color(severity) {
@@ -22,12 +22,12 @@ function severity_color(severity) {
   }
 }
 
-const partitions_health_with_shards = computed(()=>{
+const partitions_health_with_shards = computed(() => {
   // partitions_health can be 'joined' with shards on partition_ident, this can give us
   // how many records and size any given partition has - or any sys.shard column,
   // which is as much richer table than sys.health, which is where partitions_health come from.
 
-  // In this case we aggregate all the records and size_bytes that matched with the partition_ident.
+  // In this case, we aggregate all the records and size_bytes that matched with the partition_ident.
   for (const partition of tables_info.current_open_table.partitions_health) {
     const shards = tables_info.current_open_table.shards.filter((shard) => shard.partition_ident === partition.partition_ident)
 
@@ -37,12 +37,14 @@ const partitions_health_with_shards = computed(()=>{
   return tables_info.current_open_table.partitions_health
 })
 
-function show_tab () {
-  if (tables_info.current_open_schema.is_system){
+const show_tab = computed(() => {
+  if (tables_info.current_open_schema.is_system) {
     return false
   }
   return tables_info.current_open_table.partitions_health.length <= 1
-}
+})
+
+
 </script>
 
 <template>
