@@ -38,10 +38,10 @@ const partitions_health_with_shards = computed(() => {
 })
 
 const show_tab = computed(() => {
-  if (tables_info.current_open_schema.is_system) {
-    return false
+  if (!tables_info.current_open_schema.is_system && tables_info.current_open_table.partitions_health) {
+    return tables_info.current_open_table.partitions_health.length <= 1
   }
-  return tables_info.current_open_table.partitions_health.length <= 1
+  return false
 })
 
 
