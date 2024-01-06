@@ -194,7 +194,7 @@ export const CRATE_FUNCTIONS = [
   'POWER',
   'RADIANS',
   'RANDOM',
-  'GET_RANDOM_TEXT_UUID',
+  'GEN_RANDOM_TEXT_UUID',
   'ROUND',
   'TRUNC',
   'SQRT',
