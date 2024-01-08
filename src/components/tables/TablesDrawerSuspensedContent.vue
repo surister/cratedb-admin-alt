@@ -3,7 +3,6 @@ import {human_file_size, human_numbers} from "@/store/utils";
 
 import {use_tables_store} from "@/store/tables";
 import {ref} from "vue";
-import {CRATE_HEALTH_LEGEND} from "@/store/crate_api/crate_lang";
 
 const tables_info = use_tables_store()
 

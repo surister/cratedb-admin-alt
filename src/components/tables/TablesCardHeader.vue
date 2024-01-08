@@ -50,7 +50,7 @@ const is_system_table = computed(() => tables_info.current_open_schema.is_system
               :text="tables_info.current_open_table.is_view() ? 'view': 'table'"/>
 
       <v-chip class="mt-2 ml-2"
-              v-if="!is_system_table"
+              v-if="!is_system_table && !tables_info.current_open_table.is_view()"
               label>
 
         <span v-if="tables_info.current_open_table.version">created: {{
@@ -59,9 +59,8 @@ const is_system_table = computed(() => tables_info.current_open_schema.is_system
             tables_info.current_open_table.upgraded ? tables_info.current_open_table.version : false
           }}</span>
       </v-chip>
-
       <v-chip class="mt-2 ml-2"
-              v-if="!is_system_table"
+              v-if="!is_system_table && !tables_info.current_open_table.is_view()"
               label>
         Clustered by: {{ tables_info.current_open_table.clustered_by }}
       </v-chip>
