@@ -25,6 +25,10 @@ const props = defineProps({
     type: String,
     default: null
   },
+  activatorBtnSize:{
+    type: String,
+    default: 'small'
+  },
   activatorBtnColor: {
     type: String,
     default: 'primary',
@@ -144,6 +148,7 @@ const dialog = ref(false)
                :disabled="activatorBtnDisabled"
                :icon="activatorBtnIcon"
                :class="activatorBtnClasses"
+               :size="activatorBtnSize"
                v-bind="props">
             {{ activatorBtnText }}
             <template v-if="activatorBtnIcon">
