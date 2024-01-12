@@ -85,7 +85,7 @@ class Schema {
   }
 
   get_total_records() {
-    return this.tables.reduce((total, table) => total + table.total_records, 0)
+    return this.tables.filter((table) => !table.is_view()).reduce((total, table) => total + table.total_records, 0)
   }
 
   constructor(name, is_system) {
