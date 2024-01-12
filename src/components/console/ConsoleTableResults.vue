@@ -35,14 +35,20 @@ const is_collapsed = ref(false)
 
 <template>
   <v-card v-if="data.rows && data.rows.length !== 0 && data.rows[0].length !== 0"
-          class="rounded-t-0">
+          :class="[is_collapsed ? 'border-b-0' : '', 'rounded-t-0']" elevation="0">
 
     <v-toolbar flat class="bg-surface border-b-sm">
+
       <v-toolbar-title>Showing: {{ data.headers.length }} columns and {{ data.rows.length }}
         record(s)
-        <vertical-divider></vertical-divider>
-        <v-btn @click="is_collapsed = !is_collapsed" :text="is_collapsed ? 'expand' : 'collapse'"
-               class="ml-1" variant="text"/>
+
+        <vertical-divider/>
+
+        <v-btn @click="is_collapsed = !is_collapsed"
+               :text="is_collapsed ? 'expand' : 'collapse'"
+               class="ml-1"
+               variant="text"/>
+
       </v-toolbar-title>
 
       <console-table-results-toolbar-actions/>
@@ -50,6 +56,7 @@ const is_collapsed = ref(false)
     </v-toolbar>
 
     <v-expand-transition>
+
       <v-data-table :items="adaptVTableItems(data.rows, data.headers)"
                     :items-per-page="!console_store.show_full_screen_response ? 5: 10"
                     class="tabular"
