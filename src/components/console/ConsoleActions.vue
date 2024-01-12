@@ -13,10 +13,10 @@ const console_store = use_console_store()
 </script>
 
 <template>
-  <v-sheet border>
+  <v-sheet class="v-border-a" rounded>
     <v-container fluid>
       <v-row align="center">
-        <v-col cols="2">
+        <v-col cols="1">
           <v-text-field density="compact"
                         v-model="console_store.consoles[console_store.current_console_index].name"
                         variant="underlined"

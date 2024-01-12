@@ -18,6 +18,7 @@ const name = ref()
              variant="tonal"
              icon="mdi-content-save"
              v-bind="props"
+             size="small"
              :disabled="!(console_store.current_console.content !== '')"
              @click="dialog = true">
       </v-btn>

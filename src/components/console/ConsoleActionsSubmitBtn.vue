@@ -1,7 +1,6 @@
 <script setup>
 
 import {use_console_store} from "@/store/console_store";
-import {use_stored_preferences_store} from "@/store/storedPreferences";
 
 const console_store = use_console_store()
 </script>
@@ -13,6 +12,7 @@ const console_store = use_console_store()
          variant="outlined"
          color="success"
          prepend-icon="mdi-play"
+         size="small"
          text="run"/>
 </template>
 

@@ -9,6 +9,7 @@ const console_store = use_console_store()
          prepend-icon="mdi-format-text-rotation-down-vertical"
          @click="console_store.format_query_content()"
          variant="tonal"
+         size="small"
          text="format"/>
 </template>
 
