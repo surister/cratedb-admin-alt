@@ -72,12 +72,11 @@ let data = computed(() => {
 </script>
 
 <template>
-  <v-card class="pa-2">
-    <VueApexCharts
-        type="line"
-        height="350"
-        :options="chart_config"
-        :series="data.series">
+  <v-card class="pa-2 v-border-a" elevation="0">
+    <VueApexCharts type="line"
+                   height="350"
+                   :options="chart_config"
+                   :series="data.series">
     </VueApexCharts>
   </v-card>
 </template>

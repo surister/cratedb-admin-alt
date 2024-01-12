@@ -42,7 +42,7 @@ const config = {
       dashArray: [0, 8, 5]
     },
     title: {
-      text: 'Load',
+      text: 'Load (last 5 minutes)',
       align: 'left'
     },
     legend: {
@@ -93,7 +93,7 @@ setInterval(() => {
 </script>
 
 <template>
-  <v-card class="pa-2">
+  <v-card class="pa-2 v-border-a" elevation="0">
 
     <div id="chart">
 
