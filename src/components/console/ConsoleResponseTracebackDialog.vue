@@ -12,7 +12,7 @@ const props = defineProps({
 <template>
   <v-dialog width="70vw">
     <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" text="View traceback"/>
+      <v-btn v-bind="props" text="View traceback" size="small"/>
     </template>
     <template v-slot:default="{ isActive }">
       <v-card title="Crate DB server traceback">
