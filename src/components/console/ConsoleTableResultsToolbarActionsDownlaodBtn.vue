@@ -15,7 +15,7 @@ const console_store = use_console_store()
 
 <template>
 <span v-show="false">
-  <v-btn size="x-large"
+  <v-btn size="small"
          class="ml-2"
          ref="button">
   </v-btn>
@@ -33,19 +33,26 @@ const console_store = use_console_store()
     </template>
   </v-select>
 </span>
+
   <v-menu>
+
     <template v-slot:activator="{ props }">
       <v-btn v-bind="props"
-             icon="mdi-download"/>
+             icon="mdi-download"
+             size="small"/>
     </template>
-    <v-list>
+
+    <v-list border="sm">
+
       <v-list-item v-for="(item, index) in items"
                    :key="index"
                    :value="index"
                    :prepend-icon="item.icon"
                    @click="download(console_store.current_console.response.data.rows, item.format)">
-        <v-list-item-title>{{ item.title }}</v-list-item-title>
+
+        <v-list-item-title class="text-subtitle-2">{{ item.title }}</v-list-item-title>
       </v-list-item>
+
     </v-list>
   </v-menu>
 </template>

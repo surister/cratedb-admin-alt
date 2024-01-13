@@ -46,6 +46,7 @@ const is_collapsed = ref(false)
 
         <v-btn @click="is_collapsed = !is_collapsed"
                :text="is_collapsed ? 'expand' : 'collapse'"
+               size="small"
                class="ml-1"
                variant="text"/>
 
@@ -87,7 +88,7 @@ const is_collapsed = ref(false)
               </template>
 
               <template v-else>
-                <span :class="[apply_color_class(data)]">{{ data }} </span>
+                <span :class="apply_color_class(data)">{{ data }} </span>
               </template>
             </td>
           </tr>

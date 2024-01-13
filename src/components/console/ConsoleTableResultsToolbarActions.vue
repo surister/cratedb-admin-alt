@@ -18,10 +18,14 @@ const consoleStore = use_console_store()
   <vertical-divider/>
 
   <console-table-results-toolbar-actions-view-raw :object="consoleStore.current_console.response.data.rows"/>
+
   <download-btn/>
+
   <v-btn v-if="!consoleStore.show_full_screen_response"
          icon="mdi-fullscreen"
+         size="small"
          @click="consoleStore.show_full_screen_response = !consoleStore.show_full_screen_response"/>
+
 </template>
 
 <style scoped>
