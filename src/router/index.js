@@ -26,11 +26,6 @@ const routes = [
         component: () => import('@/views/Tables.vue')
       },
       {
-        path: 'cluster',
-        name: 'cluster',
-        component: () => import('@/views/Cluster.vue')
-      },
-      {
         path: 'users',
         name: 'users',
         component: () => import('@/views/Users.vue'),
@@ -43,13 +38,13 @@ const routes = [
       {
         path: 'repositories',
         name: 'repositories',
-        component:() => import('@/views/Repositories.vue')
+        component: () => import('@/views/Repositories.vue')
       },
       {
         path: 'notebooks',
         name: 'notebooks',
         component: () => import('@/views/Notebooks.vue')
-      }
+      },
     ],
   },
 ]
