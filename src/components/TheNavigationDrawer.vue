@@ -32,13 +32,6 @@ const routes = [
     active_if_matches: '/tables'
   },
   {
-    to: 'cluster',
-    icon: 'mdi-checkerboard',
-    value: 'cluster',
-    title: 'Cluster',
-    active_if_matches: '/cluster'
-  },
-  {
     to: 'users',
     icon: 'mdi-account-group',
     value: 'users',
