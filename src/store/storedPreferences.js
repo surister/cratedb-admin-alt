@@ -20,7 +20,7 @@ const defaultState = {
     general: {
         master_node_url: 'http://localhost:4201'
     },
-    experimental_query_limit: true,
+    experimental_query_limit: false,
     tables_drawer_opened: [],
 }
 export const use_stored_preferences_store = defineStore('stored_preferences', () => {
@@ -41,7 +41,7 @@ export const use_stored_preferences_store = defineStore('stored_preferences', ()
             state.console.query_history = []
         }
 
-        function save_query(name, stmt) {
+        async function save_query(name, stmt) {
             let lastIndex = 0
 
             if (state.console.saved_queries.length !== 0) {
@@ -55,6 +55,7 @@ export const use_stored_preferences_store = defineStore('stored_preferences', ()
                     stmt: stmt
                 }
             )
+          return {ok: true}
         }
 
         function remove_saved_query(query_id) {
