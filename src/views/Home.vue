@@ -21,7 +21,7 @@ const tabs = ref()
     </v-col>
   </v-row>
 
-  <v-row class="mb-4">
+  <v-row class="mb-2">
     <v-col cols="4">
       <v-tabs v-model="tabs">
         <v-tab value="one">
@@ -52,11 +52,20 @@ const tabs = ref()
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col cols="3" class="">
+        <v-col cols="3">
           <v-card elevation="0" class="v-border-a pa-2" height="100">
             <v-card-title class="text-subtitle-1">Total Records</v-card-title>
             <v-card-text class="text-h5 font-weight-bold">
               {{ separate_integer_by(tables_store.schemas.get_total_records(), ' ') }}
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="3">
+          <v-card elevation="0" class="v-border-a pa-2" height="100">
+            <v-card-title class="text-subtitle-1">Schemas / Tables</v-card-title>
+            <v-card-text class="text-h5 font-weight-bold">
+              {{ tables_store.schemas.get_user_schemas().length }} /
+              {{ tables_store.schemas.get_all_tables(true).length }}
             </v-card-text>
           </v-card>
         </v-col>
