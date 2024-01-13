@@ -23,13 +23,14 @@ const is_success = computed(()=> props.data.type === 'success')
           elevation="0">
 
     <v-card-text>
+      <v-icon size="small">mdi-console-line</v-icon>
       [{{ data.timestamp }}]:
       <v-chip label size="small" class="mb-1" color="info"
               v-if="stored_preferences_store.experimental_query_limit">Limited at
         {{ stored_preferences_store.console.query_limit }} row(s)
       </v-chip>
       <span :class="[ data.type === 'success' ? 'text-green-accent-3' : 'text-red-accent-4', 'mx-1', 'pb-2'] ">
-                  <v-icon :icon="data.type === 'success' ? 'mdi-check' : 'mdi-alert-decagram'"></v-icon>
+                  <v-icon :icon="is_success ? 'mdi-check' : 'mdi-alert-decagram'"></v-icon>
             </span>
       <span class="text-h7">{{ data.subtitle }}</span>
     </v-card-text>
