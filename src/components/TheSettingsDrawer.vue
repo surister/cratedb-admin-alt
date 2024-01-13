@@ -6,10 +6,8 @@ import GeneralSettings from "@/components/TheSettingsDrawerGeneralSettings.vue";
 
 import {use_global_store} from "@/store/global_store";
 import Debug from "@/components/debug.vue";
-import {use_stored_preferences_store} from "@/store/storedPreferences";
 
 const global_store = use_global_store()
-const stored_preferences_store = use_stored_preferences_store()
 
 const drawerLinks = [
   {
@@ -61,22 +59,34 @@ const dev_mode = import.meta.env.DEV
     </v-toolbar>
 
     <v-container>
+
       <theme-toggle/>
+
       <console-settings/>
+
       <general-settings/>
+
       <v-row>
+
         <v-col>
-          <v-switch color="red-darken-3"
-                    v-model="stored_preferences_store.experimental_query_limit"
-                    label="Experimental query limit"/>
           <debug v-if="dev_mode"/>
         </v-col>
+
       </v-row>
+
     </v-container>
 
-
     <template #append>
+      <v-row>
+        <v-col>
+          <p class="text-body-2 px-2">
+            This software is under MIT License. It's not related to Crate.io
+          </p>
+        </v-col>
+      </v-row>
+
       <v-divider/>
+
       <v-list>
         <list-item-link v-for="link in drawerLinks"
                         :key="link.title"
@@ -84,8 +94,7 @@ const dev_mode = import.meta.env.DEV
                         :append-icon="link.appendIcon"
                         :preprend-icon="link.preprendIcon"
                         :link-title="link.linkTitle"
-                        :link-to="link.linkTo"
-        ></list-item-link>
+                        :link-to="link.linkTo"/>
       </v-list>
     </template>
   </v-navigation-drawer>
