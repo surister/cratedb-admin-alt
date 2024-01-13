@@ -1,7 +1,5 @@
 <script setup>
-
 import {ref} from "vue";
-import {use_node_info_store} from "@/store/node_info";
 import {use_repositories_store} from "@/store/repositories";
 import RepositoriesDrawerAddRepository
   from "@/components/repositories/RepositoriesDrawerAddRepository.vue";
@@ -22,13 +20,15 @@ const repository_store = use_repositories_store()
 
           <v-spacer/>
 
-          <v-btn icon="mdi-table-search" @click="show_search = !show_search" flat/>
+<!--          <v-btn icon="mdi-table-search" @click="show_search = !show_search" flat/>-->
+
           <repositories-drawer-add-repository/>
         </v-row>
 
       </v-list-item>
 
       <v-divider/>
+
       <v-list-item v-for="repository in  repository_store.repositories.repositories"
                    :key="repository.name"
                    :value="repository.name"

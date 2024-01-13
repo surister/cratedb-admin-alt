@@ -51,12 +51,11 @@ function status_color(table){
   <v-expand-transition>
     <v-text-field v-model="filter"
                   clearable
-                  density="compact"
+                  density="comfortable"
                   hide-details
                   variant="solo-filled"
                   placeholder="Search table.."
                   :focused="true"
-                  class="rounded-0"
                   rounded="0"
                   v-if="showSearch"/>
   </v-expand-transition>

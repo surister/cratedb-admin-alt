@@ -6,8 +6,7 @@ import TableCardTabs from "@/components/tables/TablesCardTabs.vue";
 
 <template>
   <v-card class="pa-5"
-          border="sm"
-          rounded="0">
+          border="sm">
 
     <template #title>
       <tables-card-header/>

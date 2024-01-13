@@ -14,8 +14,11 @@ const stored_preferences = use_stored_preferences_store()
     <v-list v-model:opened="stored_preferences.tables_drawer_opened" :mandatory="true">
       <v-list-item>
         <v-row no-gutters>
+
           <v-label text="tables"/>
+
           <v-spacer/>
+
           <inner-tables-drawer-add-table/>
 
             <v-tooltip text="Filter tables" location="top">
@@ -23,6 +26,7 @@ const stored_preferences = use_stored_preferences_store()
                 <v-btn icon="mdi-table-search"
                        @click="show_search = !show_search"
                        v-bind="props"
+                       size="small"
                        flat/>
               </template>
             </v-tooltip>

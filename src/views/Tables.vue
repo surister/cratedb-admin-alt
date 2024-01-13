@@ -14,6 +14,7 @@ const tables_store = use_tables_store()
 const global_store = use_global_store()
 
 onBeforeMount(async () => {
+  // Might want to delete this
   await tables_store.update_tables()
 })
 
@@ -60,6 +61,7 @@ async function insert_data() {
   <tables-drawer/>
 
   <table-card v-if="tables_store.current_open_table"/>
+
   <span v-else>
 
     <v-row align-content="center"

@@ -4,8 +4,11 @@ import UsersCard from "@/components/users/UsersCard.vue";
 </script>
 
 <template>
+
   <users-drawer/>
+
   <users-card/>
+
 </template>
 
 <style scoped>
