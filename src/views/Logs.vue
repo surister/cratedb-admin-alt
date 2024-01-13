@@ -2,7 +2,6 @@
 import {adaptVTableHeader} from "@/store/utils";
 import {use_log_store} from "@/store/log";
 import {computed, reactive, ref} from "vue";
-import ViewTitle from "@/components/shared/text/ViewTitle.vue";
 
 const headers = adaptVTableHeader([
     'Id',
@@ -106,7 +105,7 @@ let filtered_data = computed(() => {
                     :items-per-page="25"
                     density="compact"
                     item-key="name"
-                    class="rounded-0 border-sm">
+                    class="rounded border-sm">
 
         <template v-slot:[`item.type`]="{ item }">
           <v-chip label>{{ item.type }}</v-chip>

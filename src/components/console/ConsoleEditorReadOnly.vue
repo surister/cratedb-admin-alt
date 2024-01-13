@@ -40,7 +40,6 @@ async function copy_content(content) {
     button_state.value = button_states.copied
     setTimeout(function () {
       button_state.value = button_states.normal
-      console.log(button_state.value)
     }, 3000)
   }
 }

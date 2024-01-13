@@ -24,20 +24,13 @@ const headers = adaptVTableHeader([
 </script>
 
 <template>
-  <v-card border="sm"
-          rounded="0">
+  <v-card border="sm" elevation="0">
 
     <v-data-table v-model:expanded="expanded"
                   :headers="headers"
                   :items="node_info_store.nodes.to_table_format()"
                   item-value="name"
                   class="overflow-visible">
-
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>Nodes</v-toolbar-title>
-        </v-toolbar>
-      </template>
 
       <template v-slot:expanded-row="{ columns, item }">
         <tr>
@@ -48,9 +41,11 @@ const headers = adaptVTableHeader([
       </template>
 
       <template v-slot:[`item.node_name`]="{ value }">
-        <v-row class="">
+        <v-row>
           <v-col>
+
             <v-tooltip :text="value.is_master ? 'Master node' : 'Not master'">
+
               <template v-slot:activator="{ props }">
                 <v-btn v-bind="props"
                        variant="text"
@@ -59,7 +54,9 @@ const headers = adaptVTableHeader([
                        :ripple="false">{{ value.name }}
                 </v-btn>
               </template>
+
             </v-tooltip>
+
           </v-col>
         </v-row>
       </template>
