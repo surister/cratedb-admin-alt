@@ -6,14 +6,15 @@ const console_store = use_console_store()
 
 <template>
   <v-tooltip text="Queries" location="top">
+
     <template v-slot:activator="{ props }">
-      <v-btn variant="tonal"
-             class="ml-2"
+      <v-btn class="ml-2"
              size="small"
              icon="mdi-history"
              v-bind="props"
              @click="console_store.history_drawer = !console_store.history_drawer"/>
     </template>
+
   </v-tooltip>
 
 

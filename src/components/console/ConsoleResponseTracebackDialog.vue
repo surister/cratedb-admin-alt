@@ -24,8 +24,8 @@ const props = defineProps({
         <v-card-actions>
           <v-spacer/>
           <v-btn block
-            text="Close"
-            @click="isActive.value = false"/>
+                 text="Close"
+                 @click="isActive.value = false"/>
         </v-card-actions>
       </v-card>
     </template>

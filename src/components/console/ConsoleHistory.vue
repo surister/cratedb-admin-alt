@@ -18,17 +18,17 @@ let search_text = ref('')
 
 <template>
   <v-card>
-    <v-data-table
-        items-per-page="5"
-        item-key="query"
-        :headers="historyHeader"
-        :items="stored_preferences.console.query_history"
-        :search="search_text">
+    <v-data-table items-per-page="5"
+                  item-key="query"
+                  :headers="historyHeader"
+                  :items="stored_preferences.console.query_history"
+                  :search="search_text">
       <template v-slot:top>
 
         <v-toolbar flat>
           <v-toolbar-title>Query history</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
+
+          <v-divider class="mx-4" inset vertical/>
 
           <v-scale-transition>
             <v-text-field v-model="search_text"

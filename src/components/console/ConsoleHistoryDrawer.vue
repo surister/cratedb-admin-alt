@@ -39,33 +39,45 @@ const is_history_opened = computed(() => groups.value.includes('history'))
                      v-model="console_store.history_drawer">
   <v-list v-model:opened="groups">
     <v-list-item>
+
       <v-row no-gutters>
+
         <v-label text="Queries"/>
+
         <v-spacer/>
+
         <v-btn icon="mdi-table-search"
+               size="small"
                @click="show_search = !show_search"
                flat/>
+
       </v-row>
+
     </v-list-item>
+
     <v-divider/>
+
     <v-expand-transition>
       <v-text-field clearable
+                    rounded="0"
                     placeholder="Search query.."
                     :focused="true"
-                    class="rounded-0 border-0"
+                    density="comfortable"
+                    hide-details
                     variant="solo-filled"
                     v-model="search"
                     v-if="show_search"/>
     </v-expand-transition>
+
     <v-expand-transition>
-      <div v-if="is_history_opened">
-        <v-pagination v-model="current_page"
+        <v-pagination v-if="is_history_opened"
+                      v-model="current_page"
                       class="my-2"
                       total-visible="1"
                       :length="stored_preferences.console.query_history.length / QUERIES_PER_PAGE"
                       density="compact"/>
         <v-divider/>
-      </div>
+
     </v-expand-transition>
 
     <v-list-group value="saved"
@@ -78,18 +90,25 @@ const is_history_opened = computed(() => groups.value.includes('history'))
       <v-list-item link v-for="query in stored_preferences.console.saved_queries"
                    :key="query.id"
                    @click="console_store.current_console.content = query.stmt">
+
         <template #title>
+
           <v-tooltip :text="query.stmt">
+
             <template #default>
               <pre>{{ query.stmt }}</pre>
             </template>
+
             <template v-slot:activator="{ props }">
                 <span v-bind="props" class="text-subtitle-2">
                  {{ query.name }}
                 </span>
             </template>
+
           </v-tooltip>
+
         </template>
+
         <template #append>
           <v-btn icon="mdi-delete"
                  size="x-small"
@@ -97,31 +116,41 @@ const is_history_opened = computed(() => groups.value.includes('history'))
                  class="ml-1"
                  @click.stop="stored_preferences.remove_saved_query(query.id)"/>
         </template>
+
       </v-list-item>
 
     </v-list-group>
 
     <v-list-group value="history"
                   color="primary" class="border-t-sm border-b-sm">
+
       <template #activator="{ props }">
         <v-list-item v-bind="props">Query history</v-list-item>
       </template>
-      <v-list-item link v-for="(query, i) in queries"
+
+      <v-list-item link
+                   v-for="(query, i) in queries"
                    :key="i"
                    @click="console_store.current_console.content = query.query"
                    class="border-t-sm">
         <template #title>
+
           <v-tooltip>
+
             <template #default>
               <pre>{{ query.query }}</pre>
             </template>
+
             <template v-slot:activator="{ props }">
                 <span v-bind="props" class="text-subtitle-2">
                   {{ query.query }}
                 </span>
             </template>
+
           </v-tooltip>
+
         </template>
+
         <template #append>
           <v-btn icon="mdi-delete"
                  size="x-small"
@@ -129,7 +158,9 @@ const is_history_opened = computed(() => groups.value.includes('history'))
                  class="ml-1"
                  @click.stop="stored_preferences.delete_from_history(query.id)"/>
         </template>
+
       </v-list-item>
+
     </v-list-group>
   </v-list>
 </v-navigation-drawer>

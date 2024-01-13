@@ -1,6 +1,5 @@
 <script setup>
 import {VAceEditor} from "vue3-ace-editor";
-import {use_console_store} from "@/store/console_store";
 import {use_stored_preferences_store} from "@/store/storedPreferences";
 import 'ace-builds/src-noconflict/ext-language_tools'
 import langTools from 'ace-builds/src-noconflict/ext-language_tools'
@@ -163,7 +162,7 @@ const font_size = computed(() => {
       editor = el
       const handler = editor.textInput.getElement()
       handler.addEventListener('keydown', (e) => {
-          // Emit only arrow up,left,right and down events which are blocked by default on ACE.
+          // Emit only arrow up, left, right and down events which are blocked by default on ACE.
           if ([37,38,39,40].includes(e.keyCode)){$emit('keydown', e)
         }
       })
