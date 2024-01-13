@@ -35,9 +35,9 @@ const is_collapsed = ref(false)
 
 <template>
   <v-card v-if="data.rows && data.rows.length !== 0 && data.rows[0].length !== 0"
-          :class="[is_collapsed ? 'border-b-0' : '', 'rounded-t-0']" elevation="0">
+          elevation="0">
 
-    <v-toolbar flat class="bg-surface border-b-sm">
+    <v-toolbar flat :class="[is_collapsed ? 'border-b-0' : 'border-b-sm', 'bg-surface']">
 
       <v-toolbar-title>Showing: {{ data.headers.length }} columns and {{ data.rows.length }}
         record(s)

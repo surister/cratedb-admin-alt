@@ -47,7 +47,7 @@ async function copy_content(content) {
 </script>
 
 <template>
-  <v-card class="rounded-0 border-s-sm">
+  <v-card class="border-sm" elevation="0">
     <v-card-title class="pa-0">
       <console-editor :content="content"
                       :min-lines="1"

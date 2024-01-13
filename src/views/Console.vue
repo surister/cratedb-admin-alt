@@ -13,31 +13,35 @@ const console_store = use_console_store()
 </script>
 
 <template>
+
   <console-history-drawer/>
+
   <v-row no-gutters>
     <v-col>
       <console-tabs></console-tabs>
     </v-col>
   </v-row>
+
   <v-row no-gutters>
     <v-col>
       <console-actions></console-actions>
     </v-col>
   </v-row>
+
   <v-row no-gutters>
-    <v-col>
+    <v-col class="border-sm rounded-b">
       <console-editor v-model:content="console_store.current_console.content"
                       @keydown.shift.enter.prevent="() => {
             if(console_store.current_console.content !== ''){console_store.query_from_console()
                   }
       }"
       />
-      <console-response :data="console_store.current_console.response"/>
-      <console-table-results :data="console_store.current_console.response.data" class="border-sm"/>
+      <console-response :data="console_store.current_console.response" class="border-b-sm border-t-sm"/>
+      <console-table-results :data="console_store.current_console.response.data"/>
     </v-col>
   </v-row>
 
-  <!-- Dialogs -->
+  <!-- Dialog -->
   <v-dialog v-model="console_store.show_full_screen_response">
     <console-table-results :data="console_store.current_console.response.data" v-if="console_store.show_full_screen_response"/>
   </v-dialog>
