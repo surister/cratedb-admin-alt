@@ -14,6 +14,9 @@ import { createVuetify } from 'vuetify'
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
+    options:{
+      customProperties: true
+    },
     themes: {
       light: {
         colors: {
@@ -23,6 +26,8 @@ export default createVuetify({
       },
       dark:{
         colors: {
+          background: '#09090b',
+          surface: '#09090b',
           primary: '#19c0ea',
           secondary: '#00375a',
         }

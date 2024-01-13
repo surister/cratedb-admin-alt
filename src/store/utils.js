@@ -143,7 +143,6 @@ export function download(object, format) {
 }
 
 function rows_to_table_values(rows, _max_rows) {
-  console.log(rows)
   let max_rows = Math.min(rows.length, _max_rows)
   let rows_table = ``
   for (let i = 0; i < max_rows; i++) {
