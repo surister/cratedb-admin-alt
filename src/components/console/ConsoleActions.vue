@@ -28,14 +28,12 @@ const console_store = use_console_store()
         </v-col>
         <v-divider class="mx-1"
                    vertical/>
-        <v-col>
+        <v-col class="d-flex justify-start">
           <submit-btn/>
           <cancel-query-btn/>
-          <query-history-switch/>
-          <query-watcher/>
           <format-query-btn/>
-          <console-actions-share-query-btn/>
-
+          <query-watcher/>
+          <query-history-switch/>
         </v-col>
 
         <v-col class="text-right d-block"
