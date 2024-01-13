@@ -9,14 +9,13 @@ const items = [
 </script>
 
 <template>
-  <v-menu
-    close-delay="100"
-    location="bottom end"
-    open-delay="60"
-    open-on-hover
-  >
+  <v-menu close-delay="100"
+          location="bottom end"
+          open-delay="60"
+          open-on-hover
+          class="border-sm">
     <template v-slot:activator="{ props }">
-      <v-btn class="ml-2" v-bind="props" text="Support" variant="tonal"/>
+      <v-btn class="ml-2" v-bind="props" text="Support" variant="tonal" size="small"/>
     </template>
 
     <v-list>

@@ -11,28 +11,28 @@ let menu = ref(false)
 const status = computed(() => {
   const checksSucceed = node_info_store.node_checks.is_empty()
   return checksSucceed ? {
-        color: 'success',
-        icon: 'mdi-check',
-        message: 'All checks passed successfully'
-      }
-      : {
-        color: 'red',
-        icon: 'mdi-alert-box',
-        message: 'Some checks failed'
-      }
+      color: 'success',
+      icon: 'mdi-check',
+      message: 'All checks passed successfully'
+    }
+    : {
+      color: 'red',
+      icon: 'mdi-alert-box',
+      message: 'Some checks failed'
+    }
 })
 </script>
 
 <template>
   <span>
     <v-menu
-        v-model="menu"
-        :close-on-content-click="false"
-        location="bottom left">
+      v-model="menu"
+      :close-on-content-click="false"
+      location="bottom left">
     <template v-slot:activator="{ props }">
-      <v-chip
-          label
-          v-bind="props">
+      <v-chip label
+              v-bind="props"
+              size="small">
         <v-icon start
                 :icon="status.icon"
                 :color="status.color"/>
@@ -41,11 +41,10 @@ const status = computed(() => {
                  text="Node Checks"/>
       </v-chip>
     </template>
-    <node-checks-pop-over
-        :icon="status.icon"
-        :color="status.color"
-        :message="status.message"
-        :node_checks="node_info_store.node_checks"/>
+    <node-checks-pop-over :icon="status.icon"
+                          :color="status.color"
+                          :message="status.message"
+                          :node_checks="node_info_store.node_checks"/>
   </v-menu>
   </span>
 </template>

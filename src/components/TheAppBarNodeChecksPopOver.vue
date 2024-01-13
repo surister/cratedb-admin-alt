@@ -10,9 +10,15 @@ const props = defineProps(
 </script>
 
 <template>
-  <v-card min-width="300" class="pa-5">
-    <v-icon :icon="icon" :color="color"></v-icon>
+  <v-card min-width="300"
+          class="pa-5 mt-2"
+          elevation="0"
+          border="sm">
+
+    <v-icon :icon="icon" :color="color"/>
+
     <v-label class="ml-1">{{ message }}</v-label>
+
     <template
       v-for="node_check in node_checks.node_checks" :key="node_check.id">
       <div class="pa-4">
@@ -29,8 +35,11 @@ const props = defineProps(
             node_check.description
           }}</p>
       </div>
+
       <v-divider/>
+
     </template>
+
   </v-card>
 </template>
 

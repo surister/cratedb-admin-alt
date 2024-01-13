@@ -18,13 +18,13 @@ const health_status = computed(() => CRATE_HEALTH_LEGEND[node_info_store.health.
     <template v-slot:activator="{ props }">
       <v-chip class="ml-2 mr-2"
               :clickable="true"
-              text=""
+              size="small"
               v-bind="props"
               label>
         <span class="pr-2">Health</span>
         <v-progress-circular model-value="100"
-                             size="20"
-                             width="5"
+                             size="15"
+                             width="3"
                              :color="health_status.color"/>
       </v-chip>
     </template>

@@ -18,7 +18,7 @@ const props = defineProps(
 </script>
 
 <template>
-  <v-card min-width="300" max-width="800">
+  <v-card min-width="300" max-width="800" elevation="0" border="sm">
     <v-container class="pa-5">
       <v-icon :icon="icon"
               :color="color"/>
@@ -30,9 +30,9 @@ const props = defineProps(
     <template v-for="health in unhealthy_tables"
               :key="health.table_name">
 
-      <v-expansion-panels class="border-sm elevation-0 border-0">
+      <v-expansion-panels class="border-t-sm elevation-0 border-0">
         <v-expansion-panel rounded="0">
-          <v-expansion-panel-title>
+          <v-expansion-panel-title color="grey-darken-4">
             <p>Table
               <span class="font-weight-bold text-h6">"{{ health.table_name }}"</span>
               has <span class="text-red">{{ health.missing_shards }}</span> missing shards and
