@@ -1,18 +1,19 @@
 <template>
   <v-app>
-    <settings-drawer></settings-drawer>
-    <bar></bar>
-    <navigation-drawer></navigation-drawer>
+    <settings-drawer/>
+    <the-app-bar/>
+    <navigation-drawer/>
     <default-view />
-    <connection-alert></connection-alert>
+    <the-bottom-app-bar/>
+    <connection-alert/>
   </v-app>
 </template>
 
 <script setup>
   import DefaultView from './View.vue'
-
-  import Bar from "@/components/TheAppBar.vue";
   import SettingsDrawer from "@/components/TheSettingsDrawer.vue";
   import NavigationDrawer from "@/components/TheNavigationDrawer.vue";
   import ConnectionAlert from "@/components/shared/snackbars/NetworkErrorSnackbar.vue";
+  import TheAppBar from "@/components/TheAppBar.vue";
+  import TheBottomAppBar from "@/components/TheBottomAppBar.vue";
 </script>
