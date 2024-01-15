@@ -38,6 +38,7 @@ const tabs = [
                       dialog-title="Share your query"
                       activator-btn-icon="mdi-share-variant"
                       activator-btn-text=""
+                      activator-btn-size="x-small"
                       activator-btn-variant="text"
                       activator-btn-color=""
                       :activator-btn-classes="['ml-1']">
