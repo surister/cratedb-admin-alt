@@ -34,6 +34,7 @@ const console_store = use_console_store()
           <format-query-btn/>
           <query-watcher/>
           <query-history-switch/>
+          <console-actions-share-query-btn/>
         </v-col>
 
         <v-col class="text-right d-block"
