@@ -5,7 +5,8 @@ import {use_global_store} from "@/store/global_store";
 const stored_preferences_store = use_stored_preferences_store()
 const global_store = use_global_store()
 
-const commit_hash = import.meta.env.VITE_COMMIT_HASH
+const commit_hash = import.meta.env.VITE_COMMIT_HASH.substring(0, 7)
+const commit_url = `https://github.com/surister/cratedb-admin-alt/commit/${commit_hash}`
 </script>
 
 <template>
@@ -56,8 +57,8 @@ const commit_hash = import.meta.env.VITE_COMMIT_HASH
               </v-chip>
 
               <v-btn prepend-icon="mdi-github" size="small"
-                     href="https://github.com/surister/cratedb-admin-alt"
-                     target="_blank">#{{ commit_hash }}
+                     :href="commit_url"
+                     target="_blank">#{{ commit_hash.substring(0, 7) }}
               </v-btn>
             </v-col>
 
