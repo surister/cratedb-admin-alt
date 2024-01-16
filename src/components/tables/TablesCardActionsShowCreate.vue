@@ -11,6 +11,7 @@ const table_store = use_tables_store()
       <v-btn :disabled="table_store.current_open_schema.is_system"
              @click="table_store.show_create_table()"
              v-bind="props"
+             size="small"
              flat
              text="show create">
       </v-btn>

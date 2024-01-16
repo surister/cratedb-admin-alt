@@ -27,6 +27,7 @@ async function f() {
       <v-btn flat
              class="ml-1"
              @click="f();"
+             size="small"
              text="query table"/>
       <table-card-action-rename-table/>
       <table-card-action-drop-table/>
