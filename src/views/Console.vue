@@ -29,15 +29,17 @@ const console_store = use_console_store()
   </v-row>
 
   <v-row no-gutters>
-    <v-col class="border-sm rounded-b">
-      <console-editor v-model:content="console_store.current_console.content"
-                      @keydown.shift.enter.prevent="() => {
+    <v-col>
+      <div class="border-sm rounded-b">
+        <console-editor v-model:content="console_store.current_console.content"
+                        @keydown.shift.enter.prevent="() => {
             if(console_store.current_console.content !== ''){console_store.query_from_console()
                   }
       }"
-      />
-      <console-response :data="console_store.current_console.response" class="border-b-sm border-t-sm"/>
-      <console-table-results :data="console_store.current_console.response.data"/>
+        />
+        <console-response :data="console_store.current_console.response"/>
+        <console-table-results :data="console_store.current_console.response.data"/>
+      </div>
     </v-col>
   </v-row>
 

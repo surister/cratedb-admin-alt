@@ -13,7 +13,7 @@ const console_store = use_console_store()
 </script>
 
 <template>
-  <v-sheet class="v-border-a" rounded>
+  <v-sheet class="rounded-t border-t-sm border-e-sm border-s-sm">
     <v-container fluid>
       <v-row align="center">
         <v-col cols="1">
