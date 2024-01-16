@@ -126,7 +126,7 @@ export function color_objects(object) {
 }
 
 export function format_sql(stmt) {
-    return sqlFormatter.format(stmt, {language: 'n1ql', tabulateAlias: true})
+    return sqlFormatter.format(stmt, {language: 'sql', tabulateAlias: true})
 }
 
 export function download(object, format) {
