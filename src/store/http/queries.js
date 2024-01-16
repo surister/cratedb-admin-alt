@@ -152,6 +152,8 @@ export default {
           ) as shards
         FROM
           sys.shards
+        WHERE
+          primary = TRUE
         GROUP BY
           table_name,
           schema_name
