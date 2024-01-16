@@ -9,6 +9,7 @@ const table_store = use_tables_store()
   <button-with-dialog tooltip-text="Delete table"
                       activator-btn-text="DROP"
                       activator-btn-color="red"
+                      activator-btn-variant="outline"
                       :activator-btn-disabled="table_store.current_open_schema.is_system"
                       dialog-title="Delete the table"
                       dialog-width="600"

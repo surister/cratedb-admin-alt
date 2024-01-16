@@ -12,6 +12,7 @@ const repository_store = use_repositories_store()
                       activator-btn-color="red"
                       dialog-submit-btn-text="YES, DROP"
                       dialog-submit-btn-color="red"
+                      activator-btn-variant="outline"
                       dialog-title="Drop repository"
                       dialog-width="600"
                       :submit-callback="() => repository_store.drop_repository()"
