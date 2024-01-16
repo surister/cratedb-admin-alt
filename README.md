@@ -1,4 +1,4 @@
-# CrateDB Alt panel - 0.2.1
+# CrateDB Alt panel - 0.3.0
 
 This is an Admin panel that intends to support all the features from CrateDB 5.4+ and add extra
 functionality to make the lives of CrateDB users easy.
@@ -24,7 +24,8 @@ functionality to make the lives of CrateDB users easy.
 ![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/overview.png)
 ![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/console.png)
 ![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/tables.png)
-![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/cluster.png)
+![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/cluster_jobs.png)
+![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/notebooks.png)
 You can see more screenshots in `/screenshots`
 
 ## Local project setup
@@ -67,7 +68,7 @@ docker run --rm -d \
       --name=crate01 \
       --net=crate \
       -p 4200:4200 \
-      --env CRATE_HEAP_SIZE=2g \
+      --env CRATE_HEAP_SIZE=1g \
       crate -Cnetwork.host=_site_ \
             -Cnode.name=crate01 \
             -Chttp.cors.enabled=true \
