@@ -9,7 +9,7 @@ const console_store = use_console_store()
 
     <template v-slot:activator="{ props }">
       <v-btn class="ml-2"
-             size="small"
+             size="x-small"
              icon="mdi-history"
              v-bind="props"
              @click="console_store.history_drawer = !console_store.history_drawer"/>

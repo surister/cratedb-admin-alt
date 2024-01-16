@@ -14,6 +14,7 @@ const name = ref()
                       activator-btn-color=""
                       activator-btn-icon="mdi-content-save"
                       activator-btn-text=""
+                      activator-btn-size="x-small"
                       dialog-width="350"
                       dialog-override-success-component-message="Query added"
                       dialog-submit-btn-color="primary"
