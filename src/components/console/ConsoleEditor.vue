@@ -2,6 +2,7 @@
 import {VAceEditor} from "vue3-ace-editor";
 import {use_stored_preferences_store} from "@/store/storedPreferences";
 import 'ace-builds/src-noconflict/ext-language_tools'
+import '@/components/console/extra/theme-my-theme'
 import langTools from 'ace-builds/src-noconflict/ext-language_tools'
 import {computed, onMounted, ref, watch} from "vue";
 import 'ace-builds/src-noconflict/ace'
@@ -11,7 +12,7 @@ import {
   CRATE_VALUES,
   DATA_TYPES
 } from "@/store/crate_api/crate_lang";
-
+//TWILIGHT
 const stored_preferences = use_stored_preferences_store()
 
 const props = defineProps({
@@ -51,11 +52,11 @@ function group_keywords(arr, token, value_name = null) {
   for (const el of arr) {
     const keyword_name = value_name == null ? el : el[value_name]
     result_array.push(
-        {
-          token: token,
-          value: keyword_name,
-          regex: keyword_name,
-        }
+      {
+        token: token,
+        value: keyword_name,
+        regex: keyword_name,
+      }
     )
   }
   return result_array
@@ -79,8 +80,9 @@ const kwmap = [
     token: "string",
     regex: "`.*?`"
   },
-  {token: "integers",
-  regex: '(?<!\\.)\\d+(?!\\.)'
+  {
+    token: "integers",
+    regex: '(?<!\\.)\\d+(?!\\.)'
   },
   ...group_keywords(CRATE_VALUES, 'value'),
   ...group_keywords(CRATE_KEYWORDS, 'keyword'),
@@ -122,18 +124,19 @@ onMounted(() => {
       editor.value.session.bgTokenizer.start(0);
     })
 
-    if (props.hide_cursor){
+    if (props.hide_cursor) {
       // Removes the cursor if in clickable mode.
       editor.value.renderer.$cursorLayer.element.style.display = "none"
     }
   }
+
   setup()
 })
 
 let _content = ref(props.content)
 
 watch(
-    () => props.content, (prev) => {
+  () => props.content, (prev) => {
     _content.value = prev
 
     if (_content.value.startsWith('%md') && editor.value.$enableLiveAutocompletion) {
@@ -148,8 +151,8 @@ watch(
 
 let options = {enableLiveAutocompletion: true}
 
-if (props.unclickable){
-    options = {...options, ...{highlightGutterLine: false,  highlightActiveLine: false}}
+if (props.unclickable) {
+  options = {...options, ...{highlightGutterLine: false, highlightActiveLine: false}}
 }
 
 const font_size = computed(() => {
