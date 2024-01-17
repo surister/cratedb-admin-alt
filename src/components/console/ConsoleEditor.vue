@@ -1,10 +1,10 @@
 <script setup>
 import {VAceEditor} from "vue3-ace-editor";
 import {use_stored_preferences_store} from "@/store/storedPreferences";
-import 'ace-builds/src-noconflict/ext-language_tools'
-import '@/components/console/extra/theme-my-theme'
-import langTools from 'ace-builds/src-noconflict/ext-language_tools'
 import {computed, onMounted, ref, watch} from "vue";
+
+import 'ace-builds/src-noconflict/ext-language_tools'
+import langTools from 'ace-builds/src-noconflict/ext-language_tools'
 import 'ace-builds/src-noconflict/ace'
 import {
   CRATE_FUNCTIONS,
@@ -12,7 +12,7 @@ import {
   CRATE_VALUES,
   DATA_TYPES
 } from "@/store/crate_api/crate_lang";
-//TWILIGHT
+
 const stored_preferences = use_stored_preferences_store()
 
 const props = defineProps({
