@@ -20,7 +20,7 @@ const is_success = computed(() => props.data.type === 'success')
   <v-card v-if="data.type"
           rounded="0"
           elevation="0"
-          :class="data.data.headers.length > 0 ? 'border-b-sm': ''">
+          class="border-b-sm">
     <v-card-text class="ma-0">
       <v-icon size="small">mdi-console-line</v-icon>
       [{{ data.timestamp }}]:
