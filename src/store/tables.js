@@ -18,6 +18,7 @@ export const use_tables_store = defineStore('tables', () => {
         current_show_create_table: null,
         sample_data: null,
         response_from_create_table: {},
+        current_last_inserted_ms: null,
 
         drawer_opened_tabs: []
         // Keeps tracks of the tabs that are opened in the tables drawer, for example ['doc', 'doc.tables'] would be the state
@@ -120,34 +121,58 @@ export const use_tables_store = defineStore('tables', () => {
         state.current_show_create_table = data.rows[0][0]
     }
 
+    async function get_last_insert(table_schema, table_name) {
+      const response = await request_crate(
+        queries.TABLE_LAST_INSERT,
+        null,
+        {
+          '%table_schema': table_name,
+          '%table_name': table_schema
+        }
+      )
+
+      const data = await response.json()
+
+      if (data.rows.length > 0) {
+        state.current_last_inserted_ms = data.rows[0][0]
+      } else {
+        state.current_last_inserted_ms = null
+      }
+    }
+
     watch(
         () => state.current_open_table, async (value) => {
-            if (value == null) {
-                // We check for null because this could get triggered in situations where for example:
-                // state.current_open_table is 'doc.table_test', we DROP the table, we set
-                // state.current_open_table to null, resetting the entire view, closing the table card
-                // and updating the left drawer, in that situation, we do not want this to be called
-                // since there is no table to get the columns for, nor the need.
-                return
-            }
-            await update_table_columns_information(value.name, value.schema)
+        if (value == null) {
+          // We check for null because this could get triggered in situations where for example:
+          // state.current_open_table is 'doc.table_test', we DROP the table, we set
+          // state.current_open_table to null, resetting the entire view, closing the table card
+          // and updating the left drawer, in that situation, we do not want this to be called
+          // since there is no table to get the columns for, nor the need.
+          return
+        }
+        await update_table_columns_information(value.name, value.schema)
 
-            // If we change from one table to another, reset the tab position, this is intended
-            // to avoid unnecessary calls, for example if the user is in 'doc.table' and has
-            // the sample_table tab selected, if he changes to another table, it is preferable
-            // not to open the table in the same tab, but reset it to the column's, if the
-            // user wants again sample_table, for example, he will have to click once again.
-            state.sample_data = null
-            state.current_tab = 'one'
+        if (!state.current_open_table.is_view() && !state.current_open_schema.is_system) {
+          await get_last_insert(value.name, value.schema)
+        }
+
+        // If we change from one table to another, reset the tab position, this is intended
+        // to avoid unnecessary calls, for example if the user is in 'doc.table' and has
+        // the sample_table tab selected, if he changes to another table, it is preferable
+        // not to open the table in the same tab, but reset it to the column's, if the
+        // user wants again sample_table, for example, he will have to click once again.
+        state.sample_data = null
+        state.current_tab = 'one'
         }
     )
     return {
-        ...toRefs(state),
-        create_table,
-        update_tables,
-        update_table_sample_data,
-        drop_table,
-        show_create_table,
-        rename_table
+      ...toRefs(state),
+      create_table,
+      update_tables,
+      update_table_sample_data,
+      drop_table,
+      show_create_table,
+      rename_table,
+      get_last_insert
     }
 })

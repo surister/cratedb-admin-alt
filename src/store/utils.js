@@ -170,3 +170,8 @@ export function query_to_markdown(date, crate_version, query, query_meta_subtitl
   const query_result_table_values = query_result_rows ? rows_to_table_values(query_result_rows, max_rows) : ''
   return query_meta + sql_query + query_result_meta + query_result_table_headers + query_result_table_header_separator + query_result_table_values
 }
+
+export function delta_from_now(time) {
+  const diff = new Date().getTime() - new Date(time).getTime();
+  return Math.round( (diff / 60000));
+}

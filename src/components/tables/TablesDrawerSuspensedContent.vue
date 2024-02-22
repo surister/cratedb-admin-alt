@@ -38,13 +38,6 @@ const props = defineProps({
   }
 })
 
-function status_color(table){
-  if (!table.overall_health) {
-    return ''
-  }
-  return table.overall_health
-}
-
 </script>
 
 <template>

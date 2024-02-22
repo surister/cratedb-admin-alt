@@ -2,8 +2,8 @@
 import TablesColumnText from "@/components/tables/TablesCardHeaderColumnText.vue";
 import {use_tables_store} from "@/store/tables";
 import {CRATE_HEALTH_LEGEND} from "@/store/crate_api/crate_lang";
-import {human_file_size} from "@/store/utils";
-import {computed} from "vue";
+import {delta_from_now, human_file_size} from "@/store/utils";
+import {computed, onMounted} from "vue";
 
 const tables_info = use_tables_store()
 
@@ -24,7 +24,6 @@ function short_description(table) {
 }
 
 const is_system_table = computed(() => tables_info.current_open_schema.is_system)
-
 </script>
 
 <template>
@@ -35,8 +34,10 @@ const is_system_table = computed(() => tables_info.current_open_schema.is_system
       <span class="font-weight-bold text-h4 mt-5">
             <span class="text-blue-accent-1">{{
                 tables_info.current_open_table.schema
-              }}</span>.{{ tables_info.current_open_table.name }}
+              }}
+            </span>.{{ tables_info.current_open_table.name }}
       </span>
+
       <br>
 
       <v-chip class="mt-2"
@@ -63,6 +64,10 @@ const is_system_table = computed(() => tables_info.current_open_schema.is_system
               v-if="!is_system_table && !tables_info.current_open_table.is_view()"
               label>
         Clustered by: {{ tables_info.current_open_table.clustered_by }}
+      </v-chip>
+      <v-chip class="mt-2 ml-2" label>
+        Last insert:
+        {{ tables_info.current_last_inserted_ms ? `${ delta_from_now(tables_info.current_last_inserted_ms)} min ago` : 'n/a' }}
       </v-chip>
 
     </v-col>
