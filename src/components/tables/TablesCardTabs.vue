@@ -37,8 +37,8 @@ const partitions_health_with_shards = computed(() => {
   return tables_info.current_open_table.partitions_health
 })
 
-const show_tab = computed(() => {
-  if (!tables_info.current_open_table.is_view() || !tables_info.current_open_schema.is_system && tables_info.current_open_table.partitions_health) {
+const show_partition_tab = computed(() => {
+  if ((!tables_info.current_open_table.is_view() || !tables_info.current_open_schema.is_system) && tables_info.current_open_table.partitions_health) {
     return tables_info.current_open_table.partitions_health.length <= 1
   }
   return true
@@ -50,7 +50,7 @@ const show_tab = computed(() => {
   <v-tabs v-model="tables_info.current_tab">
     <v-tab value="one">Schema</v-tab>
     <v-tab value="two" @click="tables_info.update_table_sample_data()">Sample Data</v-tab>
-    <v-tab value="three" :disabled="show_tab">Partitions</v-tab>
+    <v-tab value="three" :disabled="show_partition_tab">Partitions</v-tab>
   </v-tabs>
   <v-card-text>
     <v-window v-model="tables_info.current_tab">
