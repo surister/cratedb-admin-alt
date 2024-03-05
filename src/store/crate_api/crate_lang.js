@@ -215,6 +215,40 @@ export const CRATE_FUNCTIONS = [
   'ARRAY_AGG'
 ]
 
+export const CRATE_TYPES = {
+  0: {name: 'NULL'},
+  1: {name: 'Not supported'},
+  2: {name: 'CHAR'},
+  3: {name: 'BOOLEAN'},
+  4: {name: 'TEXT'},
+  5: {name: 'IP'},
+  6: {name: 'DOUBLE PRECISION'},
+  7: {name: 'READ'},
+  8: {name: 'SMALLINT'},
+  9: {name: 'INTEGER'},
+  10: {name: 'BIGINT'},
+  11: {name: 'TIMESTAMP WITH TIME ZONE'},
+  12: {name: 'OBJECT'},
+  13: {name: 'GEO_POINT'},
+  14: {name: 'GEO_SHAPE'},
+  15: {name: 'TIMESTAMP WITHOUT TIME ZONE'},
+  16: {name: 'Unchecked object'},
+
+  19: {name: 'REGPROC'},
+  20: {name: 'TIME'},
+  21: {name: 'OIDVECTOR'},
+  22: {name: 'NUMERIC'},
+  23: {name: 'REGCLASS'},
+  24: {name: 'DATE'},
+  25: {name: 'BIT'},
+  26: {name: 'JSON'},
+  27: {name: 'CHARACTER'},
+
+  100: {name: 'ARRAY'},
+
+
+}
+
 export const CRATE_HEALTH_LEGEND = {
   GREEN: {
     icon: 'mdi-check',

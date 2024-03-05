@@ -80,13 +80,14 @@ export const use_console_store = defineStore('console', () => {
     current_console.value.response.error_trace = error_trace
   }
 
-  async function set_console_response_to_success(type, title, subtitle, rows, headers, row_count) {
+  async function set_console_response_to_success(type, title, subtitle, rows, headers, header_types, row_count) {
     current_console.value.response.timestamp = new Date().toLocaleString()
     current_console.value.response.type = 'success'
     current_console.value.response.title = 'Success'
     current_console.value.response.subtitle = subtitle
     current_console.value.response.data.rows = rows
     current_console.value.response.data.headers = headers
+    current_console.value.response.data.header_types = header_types
     current_console.value.response.data.row_count = row_count
     current_console.value.response.error_trace = null
   }
@@ -123,7 +124,14 @@ export const use_console_store = defineStore('console', () => {
 
     if (_response.ok) {
       stored_preferences_store.add_to_history(current_console.value.content)
-      await set_console_response_to_success('success', 'Success!', `${json_response.rowcount} record(s) returned in ${(json_response.duration / 1000).toFixed(4)}s`, json_response.rows, json_response.cols, json_response.rowcount)
+      await set_console_response_to_success(
+        'success',
+        'Success!',
+        `${json_response.rowcount} record(s) returned in ${(json_response.duration / 1000).toFixed(4)}s`,
+        json_response.rows,
+        json_response.cols,
+        json_response.col_types,
+        json_response.rowcount)
     } else {
       await set_console_response_to_error('error', 'Error', json_response.error.message, json_response.error_trace)
       state.live_update = false

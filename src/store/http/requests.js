@@ -10,11 +10,11 @@ export async function request_crate(_stmt, query_params = '', sql_stmt_params= {
   const global_store = use_global_store()
   const log_store = use_log_store()
 
-  let url = stored_preferences.general.master_node_url + '/_sql'
+  let url = stored_preferences.general.master_node_url + '/_sql' + '?types'
   let stmt = _stmt // https://airbnb.io/javascript/#functions--reassign-params
 
   if (query_params) {
-    url = url + '?' + query_params
+    url = url + '&' + query_params
   }
 
   if (stmt.endsWith(';')) {
