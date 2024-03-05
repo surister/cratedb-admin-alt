@@ -1,12 +1,13 @@
 <script setup>
 import {use_console_store} from "@/store/console_store";
-import {adaptVTableHeader, adaptVTableItems, is_object} from "@/store/utils";
+import {adaptVTableItems, is_object} from "@/store/utils";
 import {JsonTreeView} from "json-tree-view-vue3";
 import ConsoleTableResultsToolbarActions
   from "@/components/console/ConsoleTableResultsToolbarActions.vue";
 import DialogText from "@/components/shared/text/DialogText.vue";
 import {ref} from "vue";
 import VerticalDivider from "@/components/shared/VerticalDivider.vue";
+import {CRATE_TYPES} from "@/store/crate_api/crate_lang";
 
 const console_store = use_console_store()
 
@@ -31,6 +32,17 @@ function apply_color_class(object) {
 
 const is_clicked = ref()
 const is_collapsed = ref(false)
+
+function map_headers_with_types(headers, header_types) {
+  //  An example of data is:
+  //  { "rows": [ [ "23", 2 ] ], "headers": [ "col1", "col2" ], "row_count": 1, "header_types": [ 4, 9 ] }
+  // we further map header_types with headers, to get something like  "headers": [ "col1 - String", "col2 - Integer" ]
+
+  // We assume that the position matches, this is how it works in crate, if this changes this will
+  // break.
+  return headers.map((curr_el, index) => `${curr_el} (${CRATE_TYPES[header_types[index]].name.toLowerCase()})`)
+
+}
 </script>
 
 <template>
@@ -55,17 +67,17 @@ const is_collapsed = ref(false)
       <console-table-results-toolbar-actions/>
 
     </v-toolbar>
-
     <v-expand-transition>
 
-      <v-data-table :items="adaptVTableItems(data.rows, data.headers)"
+      <v-data-table :items="adaptVTableItems(data.rows, map_headers_with_types(data.headers, data.header_types))"
                     :items-per-page="!console_store.show_full_screen_response ? 5: 10"
                     class="tabular"
                     v-if="!is_collapsed">
 
         <template v-slot:headers="{ columns }">
           <tr>
-            <th :key=column.key v-for="column in columns">{{ column.title }}</th>
+
+            <th :key=column.key v-for="column in columns">{{ column.value }}</th>
           </tr>
         </template>
 
