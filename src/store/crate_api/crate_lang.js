@@ -233,7 +233,7 @@ export const CRATE_TYPES = {
   14: {name: 'GEO_SHAPE'},
   15: {name: 'TIMESTAMP WITHOUT TIME ZONE'},
   16: {name: 'Unchecked object'},
-
+  17: {name: 'Interval'},
   19: {name: 'REGPROC'},
   20: {name: 'TIME'},
   21: {name: 'OIDVECTOR'},
@@ -243,10 +243,9 @@ export const CRATE_TYPES = {
   25: {name: 'BIT'},
   26: {name: 'JSON'},
   27: {name: 'CHARACTER'},
+  28: {name: 'FLOAT_VECTOR'},
 
   100: {name: 'ARRAY'},
-
-
 }
 
 export const CRATE_HEALTH_LEGEND = {
