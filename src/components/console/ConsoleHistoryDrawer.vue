@@ -61,7 +61,7 @@ const is_history_opened = computed(() => groups.value.includes('history'))
       <v-text-field clearable
                     rounded="0"
                     placeholder="Search query.."
-                    :focused="true"
+                    :autofocus="true"
                     density="comfortable"
                     hide-details
                     variant="solo-filled"

@@ -48,7 +48,7 @@ const props = defineProps({
                   hide-details
                   variant="solo-filled"
                   placeholder="Search table.."
-                  :focused="true"
+                  :autofocus="true"
                   rounded="0"
                   v-if="showSearch"/>
   </v-expand-transition>
