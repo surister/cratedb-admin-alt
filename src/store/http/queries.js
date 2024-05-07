@@ -17,13 +17,13 @@ export default {
     order by severity DESC
   `,
   ALLOCATIONS: `
-      SELECT current_state,
-             decisions,
-             explanation,
-             node_id,
-             partition_ident, primary, shard_id, table_name, table_schema
-      FROM
-          SYS.ALLOCATIONS
+    SELECT current_state,
+           decisions,
+           explanation,
+           node_id,
+           partition_ident, primary, shard_id, table_name, table_schema
+    FROM
+      SYS.ALLOCATIONS
   `,
   NODE_CHECKS: 'SELECT id, node_id, severity, acknowledged, description FROM SYS.node_checks WHERE passed = false',
   JOBS: 'SELECT id, node, started, stmt, username FROM sys.jobs',
@@ -47,31 +47,23 @@ export default {
 
   // Repositories
   REPOSITORIES: `
-      SELECT
-        repos.name,
-        repos.type,
-        repos.settings,
-        (
-          SELECT
-            ARRAY_AGG(
-              {
-                "name" = snaps.name,
-                "state" = snaps.state,
-                "concrete_indices" = snaps.concrete_indices,
-                "failures" = snaps.failures,
-                "started" = snaps.started,
-                "finished" = snaps.finished,
-                "table_partitions" = snaps.table_partitions,
-                "tables" = snaps.tables,
-                "version" = snaps.version
-              }
+    SELECT repos.name,
+           repos.type,
+           repos.settings,
+           (SELECT ARRAY_AGG(
+                     {
+                "name" = snaps.name, "state" = snaps.state,
+                                     "concrete_indices" = snaps.concrete_indices,
+                                     "failures" = snaps.failures,
+                                     "started" = snaps.started,
+                                     "finished" = snaps.finished,
+                                     "table_partitions" = snaps.table_partitions,
+                                     "tables" = snaps.tables,
+                                     "version" = snaps.version }
             )
-          FROM
-            sys.snapshots snaps
-          WHERE repos.name = snaps.repository
-        ) as snapshots
-      FROM
-        sys.repositories repos
+            FROM sys.snapshots snaps
+            WHERE repos.name = snaps.repository) as snapshots
+    FROM sys.repositories repos
   `,
   DROP_REPOSITORY: `DROP REPOSITORY "%repository_name"`,
   CREATE_REPOSITORY: 'CREATE REPOSITORY "%repository_name" TYPE %type WITH (%options)',
@@ -80,30 +72,20 @@ export default {
 
   // USER QUERIES
   USERS: `
-        SELECT
-          usr.name,
-          usr.superuser,
-          (
-            SELECT
-              ARRAY_AGG(
-                {
-                  "class" = priv.class,
-                  "grantor" = priv.grantor,
-                  "ident" = priv.ident,
-                  "state" = priv.state,
-                  "type" = priv.type
-                }
+    SELECT usr.name,
+           usr.superuser,
+           (SELECT ARRAY_AGG(
+                     {
+                  "class" = priv.class, "grantor" = priv.grantor,
+                                        "ident" = priv.ident,
+                                        "state" = priv.state,
+                                        "type" = priv.type }
               )
-            FROM
-              sys.privileges priv
-            WHERE
-              priv.grantee = usr.name
-          ) as privileges
-        FROM
-          sys.users usr
-        ORDER BY
-          usr.superuser DESC,
-          usr.name ASC
+            FROM sys.privileges priv
+            WHERE priv.grantee = usr.name) as privileges
+    FROM sys.users usr
+    ORDER BY usr.superuser DESC,
+             usr.name ASC
   `,
   REVOKE: 'REVOKE %permission ON %type %ident FROM %to',
   DROP_USER: 'DROP USER %user_name',
@@ -114,88 +96,76 @@ export default {
 
   // TABLE QUERIES
   TABLES: `
-      WITH partitions_health AS (
-        SELECT
-          table_name,
-          table_schema,
-          SUM(underreplicated_shards) as total_underreplicated_shards,
-          SUM(missing_shards) as total_missing_shards,
-          ARRAY_AGG(
-            {
-              "health" = health,
-              "missing_shards" = missing_shards,
-              "partition_ident" = partition_ident,
-              "severity" = severity,
-              "underreplicated_shards" = underreplicated_shards
-            }
+    WITH partitions_health AS (SELECT table_name,
+                                      table_schema,
+                                      SUM(underreplicated_shards)                              as total_underreplicated_shards,
+                                      SUM(missing_shards)                                      as total_missing_shards,
+                                      ARRAY_AGG(
+                                        {
+              "health" = health, "missing_shards" = missing_shards,
+                                 "partition_ident" = partition_ident,
+                                 "severity" = severity,
+                                 "underreplicated_shards" = underreplicated_shards }
           ) AS partitions_health,
-          CASE WHEN 'RED' = ANY(ARRAY_AGG(health)) then 'RED' WHEN 'YELLOW' = ANY(ARRAY_AGG(health)) then 'YELLOW' ELSE 'GREEN' END AS overall_health
-        FROM
-          sys.health
-        GROUP BY
-          table_name,
-          table_schema
-      ),
-      shards AS (
-        SELECT
-          table_name,
-          schema_name as table_schema,
-          SUM(num_docs) as total_records,
-          SUM(size) as total_size_bytes,
-          ARRAY_AGG(
-            {
-              "id" = id,
-              "partition_ident" = partition_ident,
-              "records" = num_docs,
-              "size_bytes" = size,
-              "primary" = primary
-            }
+                                      CASE
+                                        WHEN 'RED' = ANY(ARRAY_AGG(health)) then 'RED'
+                                        WHEN 'YELLOW' = ANY(ARRAY_AGG(health)) then 'YELLOW'
+                                        ELSE 'GREEN' END                                       AS overall_health
+                               FROM sys.health
+                               GROUP BY table_name,
+                                        table_schema),
+         shards AS (SELECT table_name,
+                           schema_name                   as table_schema,
+                           SUM(num_docs)                 as total_records,
+                           SUM(size)                     as total_size_bytes,
+                           ARRAY_AGG(
+                             {
+              "id" = id, "partition_ident" = partition_ident,
+                         "records" = num_docs,
+                         "size_bytes" = size,
+                         "primary" = primary }
           ) as shards
-        FROM
-          sys.shards
-        WHERE
-          primary = TRUE
-        GROUP BY
-          table_name,
-          schema_name
-      )
-      SELECT
-        inf.table_schema,
-        ARRAY_AGG(
-          {
-            "table_name" = inf.table_name,
-            "table_schema" = inf.table_schema,
-            "replicas" = inf.number_of_replicas,
-            "shards" = sha.shards,
-            "partitions_health" = he.partitions_health,
-            "overall_health" = he.overall_health,
-            "total_records" = sha.total_records,
-            "total_size_bytes" = sha.total_size_bytes,
-            "total_missing_shards" = he.total_missing_shards,
-            "total_underreplicated_shards" = he.total_underreplicated_shards,
-            "table_type" = inf.table_type,
-            "partitioned_by" = inf.partitioned_by,
-            "clustered_by" = inf.clustered_by,
-            "version" = inf.version
-          }
+                    FROM sys.shards
+                    WHERE
+                      primary = TRUE
+                    GROUP BY
+                      table_name,
+                      schema_name)
+    SELECT inf.table_schema,
+           ARRAY_AGG(
+             {
+            "table_name" = inf.table_name, "table_schema" = inf.table_schema,
+                                           "replicas" = inf.number_of_replicas,
+                                           "shards" = sha.shards,
+                                           "partitions_health" = he.partitions_health,
+                                           "overall_health" = he.overall_health,
+                                           "total_records" = sha.total_records,
+                                           "total_size_bytes" = sha.total_size_bytes,
+                                           "total_missing_shards" = he.total_missing_shards,
+                                           "total_underreplicated_shards" =
+                                           he.total_underreplicated_shards,
+                                           "table_type" = inf.table_type,
+                                           "partitioned_by" = inf.partitioned_by,
+                                           "clustered_by" = inf.clustered_by,
+                                           "version" = inf.version }
         ) AS tables
-      FROM
-        information_schema.tables inf
-        LEFT JOIN partitions_health he ON inf.table_name = he.table_name
-        and inf.table_schema = he.table_schema
-        LEFT JOIN shards sha ON inf.table_name = sha.table_name
-        AND inf.table_schema = sha.table_schema
-      GROUP BY
-        inf.table_schema
-      ORDER BY
-        CASE WHEN table_schema IN ('doc') THEN 0 WHEN table_schema IN (
-          'sys',
-          'information_schema',
-          'pg_catalog',
-          'blob'
-        ) THEN 2 ELSE 1 END,
-        table_schema;
-        `,
+    FROM information_schema.tables inf
+           LEFT JOIN partitions_health he ON inf.table_name = he.table_name
+      and inf.table_schema = he.table_schema
+           LEFT JOIN shards sha ON inf.table_name = sha.table_name
+      AND inf.table_schema = sha.table_schema
+    GROUP BY inf.table_schema
+    ORDER BY CASE
+               WHEN table_schema IN ('doc') THEN 0
+               WHEN table_schema IN (
+                                     'sys',
+                                     'information_schema',
+                                     'pg_catalog',
+                                     'blob'
+                 ) THEN 2
+               ELSE 1 END,
+             table_schema;
+  `,
   COLUMNS: `
     SELECT ordinal_position,
            column_name,
@@ -221,7 +191,19 @@ export default {
     FROM "sys"."jobs_log"
     WHERE classification['type'] = 'INSERT'
       AND stmt LIKE '%%table_schema.%table_name%'
-    ORDER BY Ended DESC LIMIT
-        1
+    ORDER BY Ended DESC
+    LIMIT 1
   `,
+  KNN_SEARCH: `
+    with q as (SELECT %extra_fields _score
+               FROM %table_name
+               WHERE knn_match(%vec_column_name, [%vector], %n_results))
+    SELECT qe._score, fs.content, fs.type, fs.sub_root
+    FROM q qe,
+         doc.fs_search fs
+    where qe.source_id = fs.uuid
+    ORDER BY _score DESC;
+  `
 }
+
+

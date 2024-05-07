@@ -34,6 +34,7 @@ const is_clicked = ref()
 const is_collapsed = ref(false)
 
 function map_headers_with_types(headers, header_types) {
+  return headers
   //  An example of data is:
   //  { "rows": [ [ "23", 2 ] ], "headers": [ "col1", "col2" ], "row_count": 1, "header_types": [ 4, 9 ] }
   // we further map header_types with headers, to get something like  "headers": [ "col1 - String", "col2 - Integer" ]
