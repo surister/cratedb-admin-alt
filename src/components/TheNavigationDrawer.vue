@@ -58,6 +58,13 @@ const routes = [
     value: 'notebooks',
     title: 'Notebooks',
     active_if_matches: '/notebooks'
+  },
+  {
+    to: 'ai',
+    icon: 'mdi-vector-combine',
+    value: 'ai',
+    title: 'Vector Workbench',
+    active_if_matches: '/ai'
   }
 ]
 </script>
