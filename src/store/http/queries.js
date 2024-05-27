@@ -194,15 +194,68 @@ export default {
     ORDER BY Ended DESC
     LIMIT 1
   `,
+  KNN_SEARCH_WITH_JOIN: `
+    SELECT %selects_from_join, vec._score
+    FROM %vec_table vec
+      JOIN %join_table fs
+    ON fs.%join_table_on = vec.%vec_join_table_on
+    WHERE KNN_MATCH(
+      %vec_column
+        , [%vector]
+        , %limit_results
+      )
+    ORDER BY _score DESC
+    LIMIT 10
+    WHERE KNN_MATCH(
+      %vec_column
+        , [%vector]
+        , %limit_results
+      )
+    ORDER BY _score DESC
+    LIMIT 10
+  `,
   KNN_SEARCH: `
-    with q as (SELECT %extra_fields _score
-               FROM %table_name
-               WHERE knn_match(%vec_column_name, [%vector], %n_results))
-    SELECT qe._score, fs.content, fs.type, fs.sub_root
-    FROM q qe,
-         doc.fs_search fs
-    where qe.source_id = fs.uuid
-    ORDER BY _score DESC;
+    SELECT *
+    FROM %vector_table vec
+    WHERE KNN_MATCH(%vector_column, [%vector], %limit_results)
+    ORDER BY _score DESC
+    LIMIT 20
+  `,
+  HYBRID_SEARCH: `
+    WITH fs as (SELECT (_score - 0) / (MAX(_score) OVER () - 0) AS fs_score,
+                       _id    as fs_id
+                FROM %fs_table
+                WHERE MATCH ((%fs_columns), '%fs_search_term') USING best_fields
+                with (fuzziness = %fs_fuzziness)
+                ORDER BY fs_score DESC),
+         vec as (SELECT _score vec_score, fs_search_id
+                 FROM %vector_table
+                 WHERE KNN_MATCH("%vector_column", [%vector], %vector_limit)
+                 ORDER BY vec_score DESC),
+
+         hybrid as (SELECT fs.fs_id                                           AS id_from_fs,
+                           vec.fs_search_id                                   AS id_from_vec,
+                           coalesce("fs_score", 0)                            AS fs_score,
+                           coalesce("vec_score", 0)                           AS vec_score,
+                           coalesce("fs_score", 0) + coalesce("vec_score", 0) AS final_score
+                    FROM fs FULL JOIN vec
+                    ON fs.fs_id = vec.fs_search_id
+                    ORDER BY final_score DESC)
+    SELECT fs.title, hybrid.*
+    FROM hybrid,
+         fs_search5 fs
+    WHERE fs._id = hybrid.id_from_fs
+       OR fs._id = hybrid.id_from_vec
+    ORDER BY final_score DESC
+    LIMIT 10
+  `,
+  FS_SEARCH: `
+    SELECT %selected_fields, _score
+    FROM %table_name
+    WHERE MATCH ((%column_name), '%text') USING best_fields
+    WITH (fuzziness = 1)
+    ORDER BY _score DESC
+    LIMIT 10;
   `
 }
 
