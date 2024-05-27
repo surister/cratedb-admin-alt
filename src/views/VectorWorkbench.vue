@@ -31,7 +31,7 @@ const fs_search_options = ref({
 
 const hybrid_search_options = ref({
   weights: .5,
-  text: '',
+  text: 'k-nearest neighbour search',
   fs_results: [],
   knn_results: []
 })
@@ -117,19 +117,6 @@ async function hybrid_search() {
   });
   const vector = embedding.data[0].embedding
 
-
-  // const fs_result = await vector_store.fs_search(fs_search_options.value.table, fs_search_options.value.column, fs_search_options.value.text, fs_search_options.value.selected_fields)
-  // const knn_result = await vector_store.knn_search(
-  //   knn_search_options.value.table,
-  //   knn_search_options.value.vector_column_name,
-  //   vector,
-  //   knn_search_options.value.results,
-  //   knn_search_options.value.join_table_name,
-  //   knn_search_options.value.join_table_on,
-  //   knn_search_options.value.vec_join_table_on,
-  //   knn_search_options.value.selects_from_join
-  // )
-
   const result = await vector_store.hybrid_search(
     fs_search_options.value.table,
     fs_search_options.value.column,
@@ -140,11 +127,29 @@ async function hybrid_search() {
     vector,
     10
   )
+
+  for (const resultElement of result.rows) {
+    let vec_rank = resultElement[1] || 0;
+    let fs_rank = resultElement[2] || 0;
+    let final_rank = 0;
+    for (const fsRankElement of [vec_rank, fs_rank]) {
+      if (fsRankElement !== 0) {
+        final_rank += 1 / (fsRankElement + 0)
+      }
+    }
+
+    resultElement.push(
+      final_rank
+    )
+  }
+  let sorted = result.rows.sort((a, b) => {
+    return  b[a.length - 1] - a[a.length - 1]
+  })
+  result.cols.push('final_weight')
   hybrid_search_results.value = {
     headers: result.cols,
-    rows: result.rows
+    rows: sorted
   }
-
 }
 </script>
 
