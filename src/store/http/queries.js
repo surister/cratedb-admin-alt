@@ -222,32 +222,32 @@ export default {
     LIMIT 20
   `,
   HYBRID_SEARCH: `
-    WITH fs as (SELECT (_score - 0) / (MAX(_score) OVER () - 0) AS fs_score,
-                       _id    as fs_id
+    WITH fs as (SELECT _score                             AS fs_score,
+                       _id                                as fs_id,
+                       RANK() over (ORDER BY _score DESC) as fs_rank
                 FROM %fs_table
                 WHERE MATCH ((%fs_columns), '%fs_search_term') USING best_fields
                 with (fuzziness = %fs_fuzziness)
-                ORDER BY fs_score DESC),
-         vec as (SELECT _score vec_score, fs_search_id
+                ORDER BY fs_score DESC LIMIT 15),
+         vec as (SELECT _score, fs_search_id, RANK() over (ORDER BY _score DESC) as vec_rank
                  FROM %vector_table
                  WHERE KNN_MATCH("%vector_column", [%vector], %vector_limit)
-                 ORDER BY vec_score DESC),
+                 ORDER BY _score DESC
+                 LIMIT 15),
 
-         hybrid as (SELECT fs.fs_id                                           AS id_from_fs,
-                           vec.fs_search_id                                   AS id_from_vec,
-                           coalesce("fs_score", 0)                            AS fs_score,
-                           coalesce("vec_score", 0)                           AS vec_score,
-                           coalesce("fs_score", 0) + coalesce("vec_score", 0) AS final_score
+         hybrid as (SELECT fs.fs_id                AS id_from_fs,
+                           vec.fs_search_id        AS id_from_vec,
+                           vec.vec_rank,
+                           fs.fs_rank,
+                           coalesce("fs_score", 0) AS fs_score,
+                           coalesce("_score", 0)   AS vec_score
                     FROM fs FULL JOIN vec
-                    ON fs.fs_id = vec.fs_search_id
-                    ORDER BY final_score DESC)
-    SELECT fs.title, hybrid.*
+                    ON fs.fs_id = vec.fs_search_id)
+    SELECT fs.title, hybrid.vec_rank, hybrid.fs_rank
     FROM hybrid,
          fs_search5 fs
     WHERE fs._id = hybrid.id_from_fs
        OR fs._id = hybrid.id_from_vec
-    ORDER BY final_score DESC
-    LIMIT 10
   `,
   FS_SEARCH: `
     SELECT %selected_fields, _score
