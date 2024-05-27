@@ -9,8 +9,6 @@ import {use_notebooks_store} from "@/store/notebooks_store";
 
 import {format_sql} from "@/store/utils";
 
-
-
 const notebooks_store = use_notebooks_store()
 
 const refs = reactive({})
