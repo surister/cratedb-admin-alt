@@ -14,6 +14,10 @@ const console_store = use_console_store()
 const props = defineProps({
   data: {
     type: Object
+  },
+  extra_title:{
+    type: String,
+    default: ''
   }
 })
 
@@ -54,7 +58,7 @@ function map_headers_with_types(headers, header_types) {
 
       <v-toolbar-title>Showing: {{ data.headers.length }} columns and {{ data.rows.length }}
         record(s)
-
+        <v-label class="mx-2" v-if="extra_title">{{ extra_title }}</v-label>
         <vertical-divider/>
 
         <v-btn @click="is_collapsed = !is_collapsed"
@@ -62,7 +66,6 @@ function map_headers_with_types(headers, header_types) {
                size="small"
                class="ml-1"
                variant="text"/>
-
       </v-toolbar-title>
 
       <console-table-results-toolbar-actions/>

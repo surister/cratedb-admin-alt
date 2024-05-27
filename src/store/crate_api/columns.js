@@ -2,7 +2,7 @@
 // Table: tbl1
 // Columns:
 // |-------------------------|
-// | Col | type | is_nullable |
+// | Col | type | is_nullable|
 // | id  | int  | false      |
 // | name| str  | true       |
 // |-------------------------|
