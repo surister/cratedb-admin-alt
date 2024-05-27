@@ -40,7 +40,7 @@ const tabs = ref()
     <v-window-item value="one" :transition="false">
       <v-row>
         <v-col cols="3">
-          <v-card elevation="0" class="v-border-a pa-2" height="100">
+          <v-card elevation="0" class="border-sm pa-2" height="100">
             <v-card-title class="text-subtitle-1">Overall Health</v-card-title>
             <v-card-text class="font-weight-bold">
               <v-chip size="small"
@@ -53,7 +53,7 @@ const tabs = ref()
           </v-card>
         </v-col>
         <v-col cols="3">
-          <v-card elevation="0" class="v-border-a pa-2" height="100">
+          <v-card elevation="0" class="border-sm pa-2" height="100">
             <v-card-title class="text-subtitle-1">Total Records</v-card-title>
             <v-card-text class="text-h5 font-weight-bold">
               {{ separate_integer_by(tables_store.schemas.get_total_records(), ' ') }}
@@ -61,7 +61,7 @@ const tabs = ref()
           </v-card>
         </v-col>
         <v-col cols="3">
-          <v-card elevation="0" class="v-border-a pa-2" height="100">
+          <v-card elevation="0" class="border-sm pa-2" height="100">
             <v-card-title class="text-subtitle-1">Schemas / Tables</v-card-title>
             <v-card-text class="text-h5 font-weight-bold">
               {{ tables_store.schemas.get_user_schemas().length }} /
