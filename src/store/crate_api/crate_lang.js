@@ -223,7 +223,7 @@ export const CRATE_TYPES = {
   4: {name: 'TEXT'},
   5: {name: 'IP'},
   6: {name: 'DOUBLE PRECISION'},
-  7: {name: 'READ'},
+  7: {name: 'REAL'},
   8: {name: 'SMALLINT'},
   9: {name: 'INTEGER'},
   10: {name: 'BIGINT'},
@@ -246,6 +246,12 @@ export const CRATE_TYPES = {
   28: {name: 'FLOAT_VECTOR'},
 
   100: {name: 'ARRAY'},
+
+  null: {name: 'UNKNOWN'}
+}
+
+export function get_type_name(id) {
+  return CRATE_TYPES[id].name.toLowerCase()
 }
 
 export const CRATE_HEALTH_LEGEND = {

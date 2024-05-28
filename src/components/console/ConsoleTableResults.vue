@@ -7,7 +7,7 @@ import ConsoleTableResultsToolbarActions
 import DialogText from "@/components/shared/text/DialogText.vue";
 import {ref} from "vue";
 import VerticalDivider from "@/components/shared/VerticalDivider.vue";
-import {CRATE_TYPES} from "@/store/crate_api/crate_lang";
+import {CRATE_TYPES, get_type_name} from "@/store/crate_api/crate_lang";
 
 const console_store = use_console_store()
 
@@ -36,17 +36,27 @@ function apply_color_class(object) {
 
 const is_clicked = ref()
 const is_collapsed = ref(false)
+const show_types = ref(true)
 
 function map_headers_with_types(headers, header_types) {
-  return headers
+  if (!show_types.value){
+    return headers
+  }
   //  An example of data is:
   //  { "rows": [ [ "23", 2 ] ], "headers": [ "col1", "col2" ], "row_count": 1, "header_types": [ 4, 9 ] }
-  // we further map header_types with headers, to get something like  "headers": [ "col1 - String", "col2 - Integer" ]
+  // we map header_types with headers, to get "headers": [ "col1 - String", "col2 - Integer" ]
 
   // We assume that the position matches, this is how it works in crate, if this changes this will
   // break.
-  return headers.map((curr_el, index) => `${curr_el} (${CRATE_TYPES[header_types[index]].name.toLowerCase()})`)
+  return headers.map((curr_el, index) =>{
+     const types = header_types[index]
 
+      if (Array.isArray(types)){
+        return `${curr_el} ${get_type_name(types[0])}[${get_type_name(types[1])}]`
+      }
+
+     return `${curr_el} (${get_type_name(header_types[index])})`
+  })
 }
 </script>
 
@@ -67,7 +77,13 @@ function map_headers_with_types(headers, header_types) {
                class="ml-1"
                variant="text"/>
       </v-toolbar-title>
-
+      <!--      TODO: Put into toolbar-actions -->
+      <v-switch hide-details
+                v-model="show_types"
+                color="primary"
+                label="Show types"
+                class="mr-5"
+      />
       <console-table-results-toolbar-actions/>
 
     </v-toolbar>
