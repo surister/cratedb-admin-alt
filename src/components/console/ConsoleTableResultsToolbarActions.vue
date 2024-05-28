@@ -6,10 +6,10 @@ import {use_console_store} from "@/store/console_store";
 import VerticalDivider from "@/components/shared/VerticalDivider.vue";
 
 const consoleStore = use_console_store()
-
 </script>
 
 <template>
+
   <v-switch hide-details
             class="switch-right"
             v-model="consoleStore.object_representation_mode"
