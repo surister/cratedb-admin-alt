@@ -22,6 +22,9 @@ const props = defineProps({
 })
 
 function apply_color_class(object) {
+  // Applies a class to element that displays the data.
+  // We currently use the resulting javascript object rather than the Crate data type id.
+  // could improve this in the future and save the class or color value into crate_lang.CRATE_TYPES or DATA_TYPES
   switch (typeof object) {
     case "string":
       return "crate-datatype-string"

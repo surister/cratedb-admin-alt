@@ -251,7 +251,8 @@ export const CRATE_TYPES = {
 }
 
 export function get_type_name(id) {
-  return CRATE_TYPES[id].name.toLowerCase()
+  const type = CRATE_TYPES[id] || CRATE_TYPES.null
+  return type.name.toLowerCase()
 }
 
 export const CRATE_HEALTH_LEGEND = {
