@@ -1,7 +1,21 @@
-# CrateDB Alt panel - 0.3.0
+![Docker Image Version](https://img.shields.io/docker/v/surister/cratedbaltadmin)
+![Docker Image Size](https://img.shields.io/docker/image-size/surister/cratedbaltadmin)
+
+# CrateDB Alt panel - 0.3.2
 
 This is an Admin panel that intends to support all the features from CrateDB 5.4+ and add extra
 functionality to make the lives of CrateDB users easy.
+
+## Why this tool?
+
+On-prem CrateDB currently ships with the [admin-ui](https://github.com/crate/crate-admin), it is no
+longer developed, it is quite dated and lacks certain modern features, it still works fine for
+querying though.
+
+Cloud users have their own ui in https://console.cratedb.cloud/.
+
+This admin tool is intended for on-prem users that want to have a modern,
+updated and feature rich solution.
 
 ## Features:
 
@@ -17,7 +31,8 @@ functionality to make the lives of CrateDB users easy.
   drop user, create user, alter user.
 - Logs: Actions from the Admin UI (Example: drop table, create user, drop user..) are logged and can
   be filtered depending on the severity.
-- Repositories & Snapshots: Create, delete and admin your repositories, create, delete and restore the snapshots.
+- Repositories & Snapshots: Create, delete and admin your repositories, create, delete and restore
+  the snapshots.
 - Notebooks: Full-on notebooks with Markdown support, directly connected to your CrateDB instance
   and automatic save-on disk (local storage)
 
@@ -26,40 +41,41 @@ functionality to make the lives of CrateDB users easy.
 ![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/tables.png)
 ![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/cluster_jobs.png)
 ![](https://raw.githubusercontent.com/surister/crate-admin-alt/master/screenshots/notebooks.png)
+
 You can see more screenshots in `/screenshots`
 
-## Local project setup
+## Getting started
 
-```
-# yarn
-yarn
-
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# bun
-bun install
-```
-
-## Run with docker
+The easiest way of getting started is to run a docker container:
 
 ```shell
 docker run -p 3000:80 surister/cratedbaltadmin:latest
 ```
 
+We also upload different versions, more
+in https://hub.docker.com/repository/docker/surister/cratedbaltadmin/general
+
+## Which version should I pick for my CrateDB instance?
+
+If you are running a CrateDB version >=5.4, any version of the admin UI should work, bear in mind
+that some features might not be available as they are directly linked to the running CrateDB
+version, you should upgrade your CrateDB cluster.
+
+If you are running <5.4, the admin ui might not fully work;
+I would only rely on basic console querying, since many features depend on CrateDB >2-3 version;
+again, you shouldn't be running such an old version, upgrade your CrateDB cluster!
+
 ## Solving the cors 'issue'
 
-In order to be able to query CrateDB's API you will need to start the cluster with these options:
+To query CrateDB's HTTP endpoint, you need to start the cluster with Cors headers
+enabled; these are the CrateDB options:
+
+https://cratedb.com/docs/crate/reference/en/latest/config/node.html#cross-origin-resource-sharing-cors
 
 ```
 -Chttp.cors.enabled=true
 -Chttp.cors.allow-origin=http://localhost:3000
 ```
-
-https://cratedb.com/docs/crate/reference/en/5.4/config/node.html#cross-origin-resource-sharing-cors
 
 An example in docker would be:
 
@@ -78,13 +94,34 @@ docker run --rm -d \
 Bear in mind that if you run the admin panel from another port, it will have to match
 the `http.cors.allow-origin` setting.
 
+## Developer setup
+
+Clone the repo:
+
+`git clone git@github.com:surister/cratedb-admin-alt.git`
+
+Install dependencies:
+
+```
+# yarn
+yarn
+
+# npm
+npm install
+
+# pnpm
+pnpm install
+
+# bun
+bun install
+```
+
 ## CrateDB versions.
 
 This panel supports v5.4.3 as the base version, any new version will be added afterward.
 
-For maximum compatibility any new version feature will be added with a versioned Component, meaning
+For maximum compatibility, any new version feature will be added with a versioned Component, meaning
 that those features will only be unlocked if your connected CrateDB cluster supports it.
-
 
 ## Known limitations
 
@@ -103,23 +140,5 @@ We do not support restoring a snapshot from a partition.
 ## Contributing
 
 This project is currently being developed by me, but it's open for contributions, also if you
-have some ideas, feature request or happen to find a bug, please let me know in an issue, so it can be addressed.
-
-## Notice
-
-Copyright 2023 surister
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-associated documentation files (the “Software”), to deal in the Software without restriction,
-including without limitation the rights to use, copy, modify, merge, publish, distribute,
-sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial
-portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, IN INCLUDING BUT
-NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
-OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+have some ideas, feature request or happen to find a bug, please let me know in an issue, so it can
+be addressed.
