@@ -7,6 +7,7 @@ import Queries from "@/store/http/queries";
 import {format_sql} from "@/store/utils";
 import {useRoute, useRouter} from "vue-router";
 import {use_stored_preferences_store} from "@/store/storedPreferences";
+import queries from "@/store/http/queries";
 
 
 const default_console_response = {
@@ -48,6 +49,7 @@ export const use_console_store = defineStore('console', () => {
     show_full_screen_response: false,
     object_representation_mode: true,
     history_drawer: false,
+    analyze: "", // The response of analyze query.
   })
   const current_console = computed(() => {
     if (state.current_console_index >= state.consoles.length) {
@@ -140,6 +142,14 @@ export const use_console_store = defineStore('console', () => {
 
   }
 
+  async function explain_query(analyze=false){
+    let query = analyze ? queries.EXPLAIN_ANALYZE : queries.EXPLAIN
+    console.log(current_console.value)
+    return await request_crate(query, null, {
+      '%query': current_console.value.content,
+    })
+  }
+
   // If there is a ?query=MYQUERY on the url, set it as the current console's content.
   if (route.query.query) {
     current_console.value.content = route.query.query
@@ -173,6 +183,7 @@ export const use_console_store = defineStore('console', () => {
     add_console,
     cancel_current_running_query,
     set_console_response_to_empty,
-    format_query_content
+    format_query_content,
+    explain_query
   }
 })

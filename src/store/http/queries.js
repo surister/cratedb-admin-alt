@@ -228,7 +228,8 @@ export default {
                 FROM %fs_table
                 WHERE MATCH ((%fs_columns), '%fs_search_term') USING best_fields
                 with (fuzziness = %fs_fuzziness)
-                ORDER BY fs_score DESC LIMIT 15),
+                ORDER BY fs_score DESC
+                LIMIT 15),
          vec as (SELECT _score, fs_search_id, RANK() over (ORDER BY _score DESC) as vec_rank
                  FROM %vector_table
                  WHERE KNN_MATCH("%vector_column", [%vector], %vector_limit)
@@ -256,7 +257,9 @@ export default {
     WITH (fuzziness = 1)
     ORDER BY _score DESC
     LIMIT 10;
-  `
+  `,
+  EXPLAIN: `EXPLAIN %query`,
+  EXPLAIN_ANALYZE: `EXPLAIN ANALYZE %query`
 }
 
 
