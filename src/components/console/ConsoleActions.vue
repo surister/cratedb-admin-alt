@@ -9,6 +9,7 @@ import ConsoleActionsHistoryBtn from "@/components/console/ConsoleActionsHistory
 
 import {use_console_store} from "@/store/console_store";
 import ConsoleActionsShareQueryBtn from "@/components/console/ConsoleActionsShareQueryBtn.vue";
+import ConsoleActionsAnalyzeQuery from "@/components/console/ConsoleActionsAnalyzeQuery.vue";
 const console_store = use_console_store()
 </script>
 
@@ -35,6 +36,7 @@ const console_store = use_console_store()
           <query-watcher/>
           <query-history-switch/>
           <console-actions-share-query-btn/>
+          <console-actions-analyze-query/>
         </v-col>
 
         <v-col class="text-right d-block"

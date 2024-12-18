@@ -46,7 +46,7 @@ const tabs = [
     <template #dialog-content>
       <v-card-text>
         <v-tabs v-model="tab">
-          <v-tab :value="tab.title" :key="i" v-for="(tab,i ) in tabs">{{ tab.title }}</v-tab>
+          <v-tab :value="tab.title" :key="i" v-for="(tab, i) in tabs">{{ tab.title }}</v-tab>
         </v-tabs>
 
         <v-card-text>
