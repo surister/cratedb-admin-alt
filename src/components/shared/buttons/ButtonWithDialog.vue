@@ -25,7 +25,7 @@ const props = defineProps({
     type: String,
     default: null
   },
-  activatorBtnSize:{
+  activatorBtnSize: {
     type: String,
     default: 'small'
   },
@@ -51,7 +51,7 @@ const props = defineProps({
   dialogText: {
     type: String
   },
-  removeDialogSubmitBtn :{
+  removeDialogSubmitBtn: {
     type: Boolean,
     default: false,
   },
@@ -97,28 +97,30 @@ const props = defineProps({
   submitCallback: {
     type: Function,
     required: false,
-  }
+  },
 })
 const result = ref({})
 const loading = ref(false)
+
 async function handleClick() {
   loading.value = true
 
   props.submitCallback().then(async (res) => {
     // We expect the received function to return a dictionary.
     result.value = {}
+    const data = await res.json()
     if (res.ok) {
       result.value['type'] = 'success'
       result.value['title'] = props.dialogOverrideSuccessComponentMessage ? props.dialogOverrideSuccessComponentMessage : props.dialogResponseComponentMessage['success']
+      result.value['data'] = data
     } else {
       result.value['type'] = 'error'
       result.value['title'] = props.dialogResponseComponentMessage['error']
-
-      const data = await res.json()
       result.value['message'] = data.error.message
     }
 
     emit("onSubmit")
+    emit("onResponse", result.value)
 
     if (props.dialogResponseComponent === 'snackbar') {
       const store = use_global_store()
@@ -135,8 +137,9 @@ async function handleClick() {
   })
 }
 
-const emit = defineEmits(['onSubmit'])
+const emit = defineEmits(['onSubmit', 'onResponse'])
 const dialog = ref(false)
+
 </script>
 
 <template>
