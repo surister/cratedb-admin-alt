@@ -13,6 +13,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  show_copy: {
+    type: Boolean,
+    default: true
+  },
   callable: {
     type: Function,
   },
@@ -56,10 +60,11 @@ async function copy_content(content) {
                       :unclickable="false"
                       :hide_cursor="true"/>
     </v-card-title>
-    <v-card-actions class="pt-2">
+    <v-card-actions class="pt-2" v-if="show_run || show_copy">
 
       <v-btn @click="callable" v-if="show_run">run</v-btn>
       <v-badge :icon="button_state.icon"
+               v-if="show_copy"
                :color="button_state.color">
         <v-btn @click="copy_content(content)"
                :text="button_states.normal.text"/>
