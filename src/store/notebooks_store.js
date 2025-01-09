@@ -27,7 +27,7 @@ const NETFLIX_TUTORIAL_NOTEBOOK = {
     }, {
         "id": 2,
         "name": "Copy data",
-        "content": "COPY netflix_catalog\nFROM\n 'https://github.com/crate/cratedb-datasets/raw/main/cloud-tutorials/data_netflix.json.gz' WITH (format = 'json', compression = 'gzip');",
+        "content": "COPY netflix_catalog\nFROM\n 'https://cdn.crate.io/downloads/datasets/cratedb-datasets/cloud-tutorials/data_netflix.json.gz' WITH (format = 'json', compression = 'gzip');",
         "cursor_is_at_the_beginning": true,
         "cursor_is_at_the_end": true,
         "response": {"type": ""},
