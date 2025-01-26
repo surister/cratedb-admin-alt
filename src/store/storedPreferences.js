@@ -27,8 +27,8 @@ export const use_stored_preferences_store = defineStore('stored_preferences', ()
         const state = reactive(defaultState)
         const theme = useTheme()
         const router = useRoute()
-        if (router.query.node_uri){
-          state.general.master_node_url = router.query.node_uri
+        if (router.query.base_uri){
+          state.general.master_node_url = router.query.base_uri
         }
 
         function delete_from_history(query_id) {
