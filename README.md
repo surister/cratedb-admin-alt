@@ -65,20 +65,22 @@ If you are running <5.4, the admin ui might not fully work;
 I would only rely on basic console querying, since many features depend on CrateDB >2-3 version;
 again, you shouldn't be running such an old version, upgrade your CrateDB cluster!
 
-## Solving the cors 'issue'
+## Solving the CORS 'issue'
 
-To query CrateDB's HTTP endpoint, you need to start the cluster with Cors headers
-enabled; these are the CrateDB options:
-
-https://cratedb.com/docs/crate/reference/en/latest/config/node.html#cross-origin-resource-sharing-cors
-
+When running CrateDB, please make sure to enable *Cross-Origin
+Resource Sharing* in your [CrateDB configuration], like:
 ```
 -Chttp.cors.enabled=true
 -Chttp.cors.allow-origin=http://localhost:3000
 ```
 
-An example in docker would be:
+When invoking cratedb-admin-alt, you need to supply the `base_uri` parameter,
+like this:
+```
+http://localhost:3000/?base_uri=http://localhost:4200
+```
 
+An incantation example using Docker would be:
 ```shell
 docker run --rm -d \
       --name=crate01 \
@@ -142,3 +144,6 @@ We do not support restoring a snapshot from a partition.
 This project is currently being developed by me, but it's open for contributions, also if you
 have some ideas, feature request or happen to find a bug, please let me know in an issue, so it can
 be addressed.
+
+
+[CrateDB configuration]: https://cratedb.com/docs/crate/reference/en/latest/config/node.html#cross-origin-resource-sharing-cors
