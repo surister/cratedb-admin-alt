@@ -1,6 +1,6 @@
 {
   "name": "cratedb-alt-admin",
-  "version": "0.0.3",
+  "version": "0.3.3",
   "private": true,
   "scripts": {
     "dev": "vite",
