@@ -53,13 +53,6 @@ const routes = [
     active_if_matches: '/repositories'
   },
   {
-    to: 'notebooks',
-    icon: 'mdi-notebook',
-    value: 'notebooks',
-    title: 'Notebooks',
-    active_if_matches: '/notebooks'
-  },
-  {
     to: 'ai',
     icon: 'mdi-vector-combine',
     value: 'ai',

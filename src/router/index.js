@@ -41,11 +41,6 @@ const routes = [
         component: () => import('@/views/Repositories.vue')
       },
       {
-        path: 'notebooks',
-        name: 'notebooks',
-        component: () => import('@/views/Notebooks.vue')
-      },
-      {
         path: 'debug',
         name: 'debug',
         component: () => import('@/views/Develop2.vue')
