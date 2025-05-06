@@ -52,13 +52,6 @@ const routes = [
     title: 'Repositories',
     active_if_matches: '/repositories'
   },
-  {
-    to: 'ai',
-    icon: 'mdi-vector-combine',
-    value: 'ai',
-    title: 'Vector Workbench',
-    active_if_matches: '/ai'
-  }
 ]
 </script>
 

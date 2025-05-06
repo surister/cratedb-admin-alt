@@ -41,15 +41,10 @@ const routes = [
         component: () => import('@/views/Repositories.vue')
       },
       {
-        path: 'debug',
+        path: '_debug',
         name: 'debug',
         component: () => import('@/views/Develop2.vue')
       },
-      {
-        path: 'ai',
-        name: 'ai',
-        component: () => import('@/views/VectorWorkbench.vue')
-      }
     ],
   },
 ]
