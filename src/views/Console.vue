@@ -45,7 +45,9 @@ const console_store = use_console_store()
 
   <!-- Dialog -->
   <v-dialog v-model="console_store.show_full_screen_response">
-    <console-table-results :data="console_store.current_console.response.data" v-if="console_store.show_full_screen_response"/>
+    <console-table-results
+      :data="console_store.current_console.response.data"
+      v-if="console_store.show_full_screen_response"/>
   </v-dialog>
 
 </template>

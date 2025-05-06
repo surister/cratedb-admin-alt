@@ -91,7 +91,16 @@ export const use_stored_preferences_store = defineStore('stored_preferences', ()
             remove_saved_query
         }
     },
-    {
-        persist: true
-    }
+  {
+    persist: {
+      afterHydrate: (ctx) => {
+        const router = useRoute()
+        if (router.query.theme && ['light', 'dark'].includes(router.query.theme)){
+          // Make http://localhost:9000/?theme=light (theme) to take preference over
+          // saved store value.
+          ctx.store.$state.theme = router.query.theme
+        }
+      }
+    },
+  }
 )
