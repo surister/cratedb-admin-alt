@@ -49,7 +49,7 @@ You can see more screenshots in `/screenshots`
 The easiest way of getting started is to run a docker container:
 
 ```shell
-docker run -p 9000:80 surister/cratedbaltadmin:latest
+docker run -p 3000:80 surister/cratedbaltadmin:latest
 ```
 
 We also upload different versions, more
@@ -71,13 +71,13 @@ When running CrateDB, please make sure to enable *Cross-Origin
 Resource Sharing* in your [CrateDB configuration], like:
 ```
 -Chttp.cors.enabled=true
--Chttp.cors.allow-origin=http://localhost:9000
+-Chttp.cors.allow-origin=http://localhost:3000
 ```
 
 When invoking cratedb-admin-alt, you need to supply the `base_uri` parameter,
 like this:
 ```
-http://localhost:9000/?base_uri=http://localhost:4200
+http://localhost:3000/?base_uri=http://localhost:4200
 ```
 
 An incantation example using Docker would be:
@@ -90,7 +90,7 @@ docker run --rm -d \
       crate -Cnetwork.host=_site_ \
             -Cnode.name=crate01 \
             -Chttp.cors.enabled=true \
-            -Chttp.cors.allow-origin=http://localhost:9000
+            -Chttp.cors.allow-origin=http://localhost:3000
 ```
 
 Bear in mind that if you run the admin panel from another port, it will have to match
