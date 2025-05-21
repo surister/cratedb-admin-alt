@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "5.2.3",
-    "eslint": "^9.26.0",
+    "eslint": "^9.27.0",
     "eslint-plugin-vue": "^10.1.0",
     "sass": "^1.89.0",
     "unplugin-fonts": "^1.3.1",
