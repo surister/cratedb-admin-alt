@@ -16,7 +16,7 @@
     "core-js": "^3.43.0",
     "dexie": "^4.0.11",
     "json-tree-view-vue3": "^1.0.2",
-    "pinia": "^3.0.2",
+    "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.3.0",
     "roboto-fontface": "*",
     "semver": "^7.7.2",
