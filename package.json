@@ -12,7 +12,7 @@
     "@mdi/font": "7.4.47",
     "@vueuse/core": "^13.3.0",
     "ace-builds": "^1.42.0",
-    "chart.js": "^4.4.9",
+    "chart.js": "^4.5.0",
     "core-js": "^3.43.0",
     "dexie": "^4.0.11",
     "json-tree-view-vue3": "^1.0.2",
