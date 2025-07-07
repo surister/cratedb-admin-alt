@@ -20,7 +20,7 @@ export const use_global_store = defineStore('global_store', () => {
         }
     })
 
-    function show_successful_snackbar(message, location =  'top right') {
+    function show_successful_snackbar(message, location = 'top right') {
         state.snackbar_opts = {
           title: 'Success',
           message: message,
