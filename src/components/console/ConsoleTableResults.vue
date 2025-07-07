@@ -80,13 +80,13 @@ function map_headers_with_types(headers, header_types) {
                class="ml-1"
                variant="text"/>
       </v-toolbar-title>
+
       <!--      TODO: Put into toolbar-actions -->
       <v-switch hide-details
                 v-model="show_types"
                 color="primary"
                 label="Show types"
-                class="mr-5"
-      />
+                class="mr-5"/>
       <console-table-results-toolbar-actions/>
 
     </v-toolbar>
@@ -99,7 +99,6 @@ function map_headers_with_types(headers, header_types) {
 
         <template v-slot:headers="{ columns }">
           <tr>
-
             <th :key=column.key v-for="column in columns">{{ column.value }}</th>
           </tr>
         </template>
@@ -114,7 +113,7 @@ function map_headers_with_types(headers, header_types) {
               <template v-if="is_object(data) || Array.isArray(data)">
                 <component
                   :is="console_store.object_representation_mode ? JsonTreeView : DialogText"
-                  class="my-1"
+                  class="my-1 mx-1"
                   colorScheme="dark"
                   rootKey="Object"
                   :maxDepth="0"
@@ -123,7 +122,7 @@ function map_headers_with_types(headers, header_types) {
               </template>
 
               <template v-else>
-                <span :class="apply_color_class(data)">{{ data }} </span>
+                <span :class="apply_color_class(data)">{{ data }}</span>
               </template>
             </td>
           </tr>
