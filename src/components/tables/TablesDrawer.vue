@@ -1,7 +1,5 @@
 <script setup>
 import {ref} from "vue";
-import InnerTablesDrawerAddTable
-  from "@/components/tables/TablesDrawerSuspensedContentAddTable.vue";
 import TablesDrawerSuspensedContent from "@/components/tables/TablesDrawerSuspensedContent.vue";
 import {use_stored_preferences_store} from "@/store/storedPreferences";
 
