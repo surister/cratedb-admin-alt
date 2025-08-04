@@ -29,7 +29,7 @@
     "vuetify": "^3.9.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "5.2.4",
+    "@vitejs/plugin-vue": "6.0.1",
     "eslint": "^9.31.0",
     "eslint-plugin-vue": "^10.2.0",
     "sass": "^1.89.2",
